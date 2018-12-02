@@ -2,23 +2,27 @@
 
 namespace App\Controller;
 
-//use Symfony\Component\HttpFoundation\Request;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ArticleController
+class ArticleController extends AbstractController
 {
     /**
-     * @Route("/")
+     * @Route("/article", name="article")
      */
-    public function index(){
-        return new Response('My first page!');
+    public function index()
+    {
+        return $this->render('article/index.html.twig', [
+            'controller_name' => 'ArticleController',
+        ]);
     }
 
     /**
-     * @Route("/news")
+     * @Route("/blog/{page}")
      */
     public function show(){
-        return new Response('Future page to show one space article!');
+        return new Response('List of articles.');
     }
+
 }

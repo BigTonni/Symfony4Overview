@@ -2,18 +2,10 @@
 #    path: /
 #    controller: App\Controller\DefaultController::index
 
-index:
-  path: /
-  controller: App\Controller\ArticleController::index
-
-blog_list:
+blog_show:
   path:      /blog/{page}
-  controller: App\Controller\ArticleController::list
+  controller: App\Controller\ArticleController::show
   defaults:
       page: 1
   requirements:
       page: '\d+'
-
-blog_show:
-  path: /blog/{slug}
-  controller: App\Controller\ArticleController::show
