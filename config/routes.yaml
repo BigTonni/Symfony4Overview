@@ -1,3 +1,11 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+
+blog_show:
+  path:      /blog/{page}
+  controller: App\Controller\ArticleController::show
+  defaults:
+      page: 1
+  requirements:
+      page: '\d+'
