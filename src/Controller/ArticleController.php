@@ -17,12 +17,19 @@ class ArticleController extends AbstractController
             'controller_name' => 'ArticleController',
         ]);
     }
+    
+    /**
+     * @Route("/blog/list")
+     */
+    public function bloglist(){
+        return new Response('List of articles.');
+    }
 
     /**
      * @Route("/blog/{page}")
      */
     public function show(){
-        return new Response('List of articles.');
+        return new Response('Current article.');
     }
 
 }
