@@ -22,7 +22,14 @@ class ArticleController extends AbstractController
      * @Route("/blog/list")
      */
     public function bloglist(){
-        return new Response('List of articles.');
+        $articles = [
+            ['title' => 'First', 'authorName' => 'Author1', 'body' => 'Desc1'],
+            ['title' => 'Second', 'authorName' => 'Author2', 'body' => 'Desc2'],
+            ['title' => 'Third', 'authorName' => 'Author3', 'body' => 'Desc3'],
+        ];
+        return $this->render('article/list.html.twig', [
+            'articles' => $articles,
+        ]);
     }
 
     /**
