@@ -11,7 +11,7 @@ class ArticleController extends AbstractController
     /**
      * @Route("/article", name="article")
      */
-    public function index()
+    public function index(): Response
     {
         return $this->render('article/index.html.twig', [
             'controller_name' => 'ArticleController',
@@ -21,11 +21,12 @@ class ArticleController extends AbstractController
     /**
      * @Route("/blog/list")
      */
-    public function bloglist(){
+    public function bloglist(): Response
+    {
         $articles = [
-            ['title' => 'First', 'authorName' => 'Author1', 'body' => 'Desc1'],
-            ['title' => 'Second', 'authorName' => 'Author2', 'body' => 'Desc2'],
-            ['title' => 'Third', 'authorName' => 'Author3', 'body' => 'Desc3'],
+            ['title' => 'First', 'slug' => '1', 'authorName' => 'Author1', 'body' => 'Desc1'],
+            ['title' => 'Second', 'slug' => '2', 'authorName' => 'Author2', 'body' => 'Desc2'],
+            ['title' => 'Third', 'slug' => '3', 'authorName' => 'Author3', 'body' => 'Desc3'],
         ];
         return $this->render('article/list.html.twig', [
             'articles' => $articles,
@@ -33,10 +34,13 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/blog/{page}")
+     * @Route("/blog/{slug}")
      */
-    public function show(){
-        return new Response('Current article.');
+    public function show($article): Response
+    {
+        return $this->render('article/article_details.html.twig', [
+            'article' => $article,
+        ]);
     }
 
 }
