@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}List articles{% endblock %}
+
+{% block body %}
+    
+    {% for article in articles %}
+        {{ include('article/article_details.html.twig', { 'article': article }) }}
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,15 @@
+<div class="container">
+    <div class="blog-header">
+{#        <a href="{{ path('blog_show', {'slug': article.slug}) }}">#}
+            <h2 class="blog-title">{{ article.title|upper }}</h2>
+{#        </a>#}
+            
+    </div>
+
+    <h4 class="byline">by {{ article.authorName }}</h4>
+    <div class="row">
+        <div class="col-md-12 col-lg-12 col-xl-12">
+            {{ article.body }}
+        </div>
+    </div>
+</div>
