@@ -2,8 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Comment;
 use App\Entity\Article;
+use App\Entity\Comment;
+use App\Form\ArticleType;
 use App\Form\CommentType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,7 +38,7 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/article/{slug}", methods={"GET"}, name="blog_article")
+     * @Route("/article/{slug}", methods={"GET"}, name="blog_article", requirements={"slug"="\d+"})
      */
     public function articleShow($slug = 1): Response
     {
@@ -60,9 +61,7 @@ class ArticleController extends AbstractController
     {
         $article = new Article();
         
-        $form = $this->createForm(ArticleType::class, $article, [
-            'action' => $this->generateUrl('article_new'),
-        ]);
+        $form = $this->createForm(ArticleType::class, $article);
         
         $form->handleRequest($request);
         
