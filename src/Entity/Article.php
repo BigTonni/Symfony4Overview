@@ -2,8 +2,8 @@
 
 namespace App\Entity;
 
-//use Doctrine\Common\Collections\ArrayCollection;
-//use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 //use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -11,33 +11,46 @@ class Article
 {
     /**
      * @var int
+     * @Assert\NotNull
+     * @Assert\Type(
+     *     type="integer",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
      */
     private $id;
+    
     /**
      * @var string
-     *
      * @Assert\NotBlank
      */
     private $title;
+    
     /**
      * @var string
+     * @Assert\NotNull
+     * @Assert\Type("string")
      */
     private $slug;
+    
     /**
      * @var string
-     * 
      * @Assert\NotBlank(message="article.blank_body")
      * @Assert\Length(min=10, minMessage="article.too_short_content")
      */
     private $body;
+    
     /**
      * @var \DateTime
+     * @Assert\DateTime
+     * @var string A "d-m-Y" formatted value
      */
     private $publishedAt;
+    
     /**
      * @var User
      */
     private $author;
+    
     /**
      * @var Comment[]|ArrayCollection
      */
