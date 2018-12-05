@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Article;
+use App\Form\CommentType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,6 +50,29 @@ class ArticleController extends AbstractController
         
         return $this->render('article/article_show.html.twig', [
             'article' => $article,
+        ]);
+    }
+    
+    /**
+     * @Route("/article/new", name="article_new")
+     */
+    public function articleNew(Request $request)
+    {
+        $article = new Article();
+        
+        $form = $this->createForm(ArticleType::class, $article, [
+            'action' => $this->generateUrl('article_new'),
+        ]);
+        
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() && $form->isValid()) {
+            $article = $form->getData();
+            dump($article);
+        }
+        
+        return $this->render('article/article_new.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 

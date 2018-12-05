@@ -1,0 +1,45 @@
+<?php
+
+namespace App\Form;
+
+use App\Entity\Article;
+use App\Form\Type\DateTimePickerType;
+
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
+class ArticleType extends AbstractType
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder
+            ->add('title', null, [
+                'attr' => ['autofocus' => true],
+                'label' => 'label.title',
+            ])
+            ->add('body', TextareaType::class, [
+                'help' => 'help.article_body',
+                'label' => 'label.body',
+            ])
+            ->add('publishedAt', DateTimePickerType::class, [
+                'label' => 'label.published_at',
+                'help' => 'help.article_publication',
+            ])
+        ;
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => Article::class,
+        ]);
+    }
+}
