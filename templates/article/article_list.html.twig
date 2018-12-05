@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}List articles{% endblock %}
+
+{% block body_id 'blog_list' %}
+
+{% block main %}
+    {% for article in articles %}
+        <article class="post">
+            <h2>
+                <a href="{{ path('blog_article', {slug: article.slug}) }}">
+                    {{ article.title }}
+                </a>
+            </h2>
+
+            <p class="post-metadata">
+                <span class="metadata"><i class="fa fa-calendar"></i> {{ article.publishedAt }}</span>
+                <span class="metadata"><i class="fa fa-user"></i>by {{ article.author }}</span>
+            </p>
+
+            <div class="col-md-12 col-lg-12 col-xl-12">
+                {{ article.body }}
+            </div>
+        </article>
+    {% else %}
+        <div class="well">Posts not found</div>
+    {% endfor %}
+    
+{% endblock %}

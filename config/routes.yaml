@@ -1,15 +1,15 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+homepage:
+    path: /
+    controller: App\Controller\DefaultController::index
       
-blog_list:
-  path:      /blog/list
-  controller: App\Controller\ArticleController::bloglist
+#blog_list:
+#  path:      /blog/list
+#  controller: App\Controller\ArticleController::blogList
   
-blog_show:
-  path:      /blog/{slug}
-  controller: App\Controller\ArticleController::show
-  defaults:
-      page: 1
-  requirements:
-      page: '\d+'
+#blog_article:
+#  path:      /articles/{slug}
+#  controller: App\Controller\ArticleController::articleShow
+#  defaults:
+#      page: 1
+#  requirements:
+#      page: '\d+'

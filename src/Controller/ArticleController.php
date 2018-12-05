@@ -2,43 +2,43 @@
 
 namespace App\Controller;
 
+use App\Entity\Article;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ArticleController extends AbstractController
 {
     /**
-     * @Route("/article", name="article")
+     * @Route("/", name="blog_index")
      */
     public function index(): Response
     {
-        return $this->render('article/index.html.twig', [
-            'controller_name' => 'ArticleController',
-        ]);
+        return $this->render('article/index.html.twig');
     }
     
     /**
-     * @Route("/blog/list")
+     * @Route("/blog/list", name="blog_list")
      */
-    public function bloglist(): Response
+    public function blogList(): Response
     {
         $articles = [
-            ['title' => 'First', 'slug' => '1', 'authorName' => 'Author1', 'body' => 'Desc1'],
-            ['title' => 'Second', 'slug' => '2', 'authorName' => 'Author2', 'body' => 'Desc2'],
-            ['title' => 'Third', 'slug' => '3', 'authorName' => 'Author3', 'body' => 'Desc3'],
+            ['title' => 'First', 'slug' => '1', 'author' => 'Author1', 'body' => 'Desc1', 'publishedAt' => '04-12-2018'],
+            ['title' => 'Second', 'slug' => '2', 'author' => 'Author2', 'body' => 'Desc2', 'publishedAt' => '04-12-2018'],
+            ['title' => 'Third', 'slug' => '3', 'author' => 'Author3', 'body' => 'Desc3', 'publishedAt' => '04-12-2018'],
         ];
-        return $this->render('article/list.html.twig', [
+        return $this->render('article/article_list.html.twig', [
             'articles' => $articles,
         ]);
     }
 
     /**
-     * @Route("/blog/{slug}")
+     * @Route("/articles/{slug}", methods={"GET"}, name="blog_article")
      */
-    public function show($article): Response
+    public function articleShow(Article $article): Response
     {
-        return $this->render('article/article_details.html.twig', [
+        return $this->render('article/article_show.html.twig', [
             'article' => $article,
         ]);
     }
