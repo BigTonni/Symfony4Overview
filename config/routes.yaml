@@ -7,7 +7,7 @@ homepage:
 #  controller: App\Controller\ArticleController::blogList
   
 #blog_article:
-#  path:      /articles/{slug}
+#  path:      /article/{slug}
 #  controller: App\Controller\ArticleController::articleShow
 #  defaults:
 #      page: 1

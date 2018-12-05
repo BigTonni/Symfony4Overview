@@ -10,6 +10,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ArticleController extends AbstractController
 {
+    
+    public $articles = [
+            ['title' => 'First', 'slug' => '1', 'author' => 'Author1', 'body' => 'Desc1', 'publishedAt' => '04-12-2018'],
+            ['title' => 'Second', 'slug' => '2', 'author' => 'Author2', 'body' => 'Desc2', 'publishedAt' => '04-12-2018'],
+            ['title' => 'Third', 'slug' => '3', 'author' => 'Author3', 'body' => 'Desc3', 'publishedAt' => '04-12-2018'],
+        ];
     /**
      * @Route("/", name="blog_index")
      */
@@ -23,21 +29,23 @@ class ArticleController extends AbstractController
      */
     public function blogList(): Response
     {
-        $articles = [
-            ['title' => 'First', 'slug' => '1', 'author' => 'Author1', 'body' => 'Desc1', 'publishedAt' => '04-12-2018'],
-            ['title' => 'Second', 'slug' => '2', 'author' => 'Author2', 'body' => 'Desc2', 'publishedAt' => '04-12-2018'],
-            ['title' => 'Third', 'slug' => '3', 'author' => 'Author3', 'body' => 'Desc3', 'publishedAt' => '04-12-2018'],
-        ];
         return $this->render('article/article_list.html.twig', [
-            'articles' => $articles,
+            'articles' => $this->articles,
         ]);
     }
 
     /**
-     * @Route("/articles/{slug}", methods={"GET"}, name="blog_article")
+     * @Route("/article/{slug}", methods={"GET"}, name="blog_article")
      */
-    public function articleShow(Article $article): Response
+    public function articleShow($slug = 1): Response
     {
+        $article = [];
+        foreach ($this->articles as $key => $article_val) {
+            if ($article_val['slug'] == $slug) {
+                $article = $this->articles[$key];
+            }
+        }
+        
         return $this->render('article/article_show.html.twig', [
             'article' => $article,
         ]);
