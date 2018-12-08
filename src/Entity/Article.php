@@ -2,8 +2,8 @@
 
 namespace App\Entity;
 
-//use Doctrine\Common\Collections\ArrayCollection;
-//use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 //use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -11,33 +11,45 @@ class Article
 {
     /**
      * @var int
+     * @Assert\Type(
+     *     type="integer",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
      */
     private $id;
+    
     /**
      * @var string
-     *
      * @Assert\NotBlank
      */
     private $title;
+    
     /**
      * @var string
+     * @Assert\NotNull
+     * @Assert\Type("string")
      */
     private $slug;
+    
     /**
      * @var string
-     * 
-     * @Assert\NotBlank(message="article.blank_body")
-     * @Assert\Length(min=10, minMessage="article.too_short_content")
+     * @Assert\NotBlank(message="Not body blank")
+     * @Assert\Length(min=10, minMessage="Min length is 10")
      */
     private $body;
+    
     /**
      * @var \DateTime
+     * @Assert\DateTime
+     * @var string A "d-m-Y H:i" formatted value
      */
     private $publishedAt;
+    
     /**
      * @var User
      */
     private $author;
+    
     /**
      * @var Comment[]|ArrayCollection
      */
@@ -49,12 +61,12 @@ class Article
         $this->comments = new ArrayCollection();
     }
     
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
     
-    public function getTitle(): string
+    public function getTitle(): ?string
     {
         return $this->title;
     }
@@ -63,7 +75,7 @@ class Article
         $this->title = $title;
     }
     
-    public function getSlug(): string
+    public function getSlug(): ?string
     {
         return $this->slug;
     }
@@ -73,7 +85,7 @@ class Article
         $this->slug = $slug;
     }
     
-    public function getBody(): string
+    public function getBody(): ?string
     {
         return $this->body;
     }
@@ -83,7 +95,7 @@ class Article
         $this->body = $body;
     }
     
-    public function getPublishedAt(): \DateTime
+    public function getPublishedAt(): ?\DateTime
     {
         return $this->publishedAt;
     }
@@ -114,11 +126,5 @@ class Article
         if (!$this->comments->contains($comment)) {
             $this->comments->add($comment);
         }
-    }
-    
-    public function removeComment(Comment $comment): void
-    {
-        $comment->setPost(null);
-        $this->comments->removeElement($comment);
-    }    
+    }   
 }
