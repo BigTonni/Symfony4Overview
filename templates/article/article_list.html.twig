@@ -11,6 +11,7 @@
                 <a href="{{ path('blog_article', {slug: article.slug}) }}">
                     {{ article.title }}
                 </a>
+                <div style="float: right;"><a href="{{ path('article_edit', {slug: article.slug}) }}" class="btn btn-xs btn-success">Edit</a></div>
             </h2>
 
             <p class="post-metadata">
@@ -21,6 +22,7 @@
             <div class="col-md-12 col-lg-12 col-xl-12">
                 {{ article.body }}
             </div>
+            
         </article>
     {% else %}
         <div class="well">Posts not found</div>

@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit article{% endblock %}
+
+{% block body_id 'article_edit' %}
+
+{% block main %}
+    
+    {{ form_start(form) }}
+        {{ form_row(form.title) }}
+        {{ form_row(form.slug) }}
+        {{ form_row(form.body) }}
+        {{ form_row(form.publishedAt) }}
+{#        {{ form_row(form.author) }}#}
+    {{ form_end(form) }}
+    
+{% endblock %}
