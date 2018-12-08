@@ -25,12 +25,12 @@ class Comment
     
     /**
      * @var string
-     * @Assert\NotBlank(message="comment.blank")
+     * @Assert\NotBlank(message="Not comment blank")
      * @Assert\Length(
      *     min=5,
-     *     minMessage="comment.too_short",
-     *     max=10000,
-     *     maxMessage="comment.too_long"
+     *     minMessage="Min length is 5",
+     *     max=100,
+     *     maxMessage="Max length is 100"
      * )
      */
     private $content;
@@ -38,7 +38,7 @@ class Comment
     /**
      * @var \DateTime
      * @Assert\DateTime
-     * @var string A "d-m-Y" formatted value
+     * @var string A "d-m-Y H:i" formatted value
      */
     private $publishedAt;
     
@@ -58,7 +58,7 @@ class Comment
         return $this->id;
     }
     
-    public function getContent(): string
+    public function getContent(): ?string
     {
         return $this->content;
     }
@@ -68,7 +68,7 @@ class Comment
         $this->content = $content;
     }
     
-    public function getPublishedAt(): \DateTime
+    public function getPublishedAt(): ?\DateTime
     {
         return $this->publishedAt;
     }
