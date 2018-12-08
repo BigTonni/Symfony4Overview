@@ -4,54 +4,46 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <title>{% block title %}Symfony Demo-Blog{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
         
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        {% block stylesheets %}
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+        {% endblock %}        
         
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     </head>
     
     <body id="{% block body_id %}{% endblock %}">
-        
-        {% block header %}
-            <header>
-                <div class="navbar navbar-default navbar-static-top" role="navigation">
-                    <div class="container">
-                        <div class="navbar-header col-md-3 col-lg-2">
-                            <a class="navbar-brand" href="{{ path('homepage') }}">Home</a>
-                            <a class="navbar-brand" href="{{ path('article_new') }}">New article</a>
-                        </div>
-                        
-                        <div class="navbar-collapse collapse">
-                            <ul class="nav navbar-nav navbar-right">
-
-                                {% block header_navigation_links %}
-                                    <li>
-                                        <a href="{{ path('blog_index') }}">
-                                            <i class="fa fa-home" aria-hidden="true"></i>
-                                        </a>
-                                    </li>
-                                {% endblock %}
-                                
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </header>
-        {% endblock %}
-        
-        <div class="container body-container">
+        <div class="container">
+            
+            <header class="blog-header py-3">
+                {% block header %}{% endblock %}
+            </header>                                  
+            
+            
+            <div class="nav-scroller py-1 mb-2">
+                <nav class="nav d-flex justify-content-between">
+                    {% block header_navigation_links %}
+                        <a class="p-2 text-primary" href="{{ path('homepage') }}">Home</a>
+                        <a class="p-2 text-primary" href="{{ path('blog_list') }}">Blog</a>
+                        <a class="p-2 text-primary" href="{{ path('article_new') }}">New article</a>
+                    {% endblock %}
+                </nav>
+            </div>
+        </div>
+        <main role="main" class="container">
             {% block body %}
                 <div class="row">
-                    {% block main %}{% endblock %}
+                    <div class="col-md-8 blog-main">
+                        {% block main %}{% endblock %}
+                    </div>
+                    <aside class="col-md-4 blog-sidebar">
+                        {% block sidebar %}{% endblock %}
+                    </aside>
                 </div>
             {% endblock %}
-        </div>
-        
+        </main>
+
         {% block footer %}
-            <footer class="footer">
+            <footer class="blog-footer" style="background-color: #f9f9f9;padding: 2.5rem 0;">
                 <div class="container">
                     <div class="row">
                         <div id="footer-copyright" class="col-md-12">
@@ -61,7 +53,11 @@
                 </div>
             </footer>
         {% endblock %}
+
+        {% block javascripts %}
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>        
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+        {% endblock %}
         
-        {% block javascripts %}{% endblock %}
     </body>
 </html>
