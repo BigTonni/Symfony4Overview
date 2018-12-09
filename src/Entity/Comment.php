@@ -7,13 +7,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class Comment
 {
-   /**
+    /**
      * @var int
-     * @Assert\NotNull
-     * @Assert\Type(
-     *     type="integer",
-     *     message="The value {{ value }} is not a valid {{ type }}."
-     * )
      */
     private $id;
     
@@ -25,12 +20,10 @@ class Comment
     
     /**
      * @var string
-     * @Assert\NotBlank(message="Not comment blank")
+     * @Assert\NotNull
      * @Assert\Length(
      *     min=5,
-     *     minMessage="Min length is 5",
-     *     max=100,
-     *     maxMessage="Max length is 100"
+     *     max=100
      * )
      */
     private $content;
@@ -38,7 +31,6 @@ class Comment
     /**
      * @var \DateTime
      * @Assert\DateTime
-     * @var string A "d-m-Y H:i" formatted value
      */
     private $publishedAt;
     
@@ -96,5 +88,5 @@ class Comment
     public function setArticle(Article $article): void
     {
         $this->article = $article;
-    } 
+    }
 }

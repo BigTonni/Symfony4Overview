@@ -11,10 +11,6 @@ class Article
 {
     /**
      * @var int
-     * @Assert\Type(
-     *     type="integer",
-     *     message="The value {{ value }} is not a valid {{ type }}."
-     * )
      */
     private $id;
     
@@ -26,22 +22,21 @@ class Article
     
     /**
      * @var string
-     * @Assert\NotNull
+     * @Assert\NotBlank
      * @Assert\Type("string")
      */
     private $slug;
     
     /**
      * @var string
-     * @Assert\NotBlank(message="Not body blank")
-     * @Assert\Length(min=10, minMessage="Min length is 10")
+     * @Assert\NotBlankuse Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+     * @Assert\Length(min=10)
      */
     private $body;
     
     /**
      * @var \DateTime
      * @Assert\DateTime
-     * @var string A "d-m-Y H:i" formatted value
      */
     private $publishedAt;
     
@@ -70,6 +65,7 @@ class Article
     {
         return $this->title;
     }
+
     public function setTitle(string $title): void
     {
         $this->title = $title;
@@ -126,5 +122,5 @@ class Article
         if (!$this->comments->contains($comment)) {
             $this->comments->add($comment);
         }
-    }   
+    }
 }
