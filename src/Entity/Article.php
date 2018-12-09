@@ -29,7 +29,7 @@ class Article
     
     /**
      * @var string
-     * @Assert\NotBlankuse Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+     * @Assert\NotBlank
      * @Assert\Length(min=10)
      */
     private $body;
