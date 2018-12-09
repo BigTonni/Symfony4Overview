@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New user{% endblock %}
+
+{% block body_id 'user_new' %}
+
+{% block main %}
+
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+
+{% endblock %}

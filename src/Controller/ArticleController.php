@@ -16,12 +16,12 @@ class ArticleController extends AbstractController
 {
     
     public $articles = [
-            ['title' => 'First', 'slug' => '1', 'author' => 'Author1', 'body' => 'Desc1', 'publishedAt' => '04-12-2018'],
-            ['title' => 'Second', 'slug' => '2', 'author' => 'Author2', 'body' => 'Desc2', 'publishedAt' => '04-12-2018'],
-            ['title' => 'Third', 'slug' => '3', 'author' => 'Author3', 'body' => 'Desc3', 'publishedAt' => '04-12-2018'],
+            ['title' => 'First', 'slug' => 1, 'author' => 'Author1', 'body' => 'Desc1', 'publishedAt' => '04-12-2018'],
+            ['title' => 'Second', 'slug' => 2, 'author' => 'Author2', 'body' => 'Desc2', 'publishedAt' => '04-12-2018'],
+            ['title' => 'Third', 'slug' => 3, 'author' => 'Author3', 'body' => 'Desc3', 'publishedAt' => '04-12-2018'],
         ];
     /**
-     * @Route("/", name="blog_index")
+     * @Route("/", name="article_index")
      */
     public function index(): Response
     {
@@ -29,9 +29,9 @@ class ArticleController extends AbstractController
     }
     
     /**
-     * @Route("/blog/list", name="blog_list")
+     * @Route("/article/list", name="article_list")
      */
-    public function blogList(): Response
+    public function articleList(): Response
     {
         return $this->render('article/article_list.html.twig', [
             'articles' => $this->articles,
@@ -39,9 +39,9 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/article/{slug}", methods={"GET"}, name="blog_article", requirements={"slug"="\d+"})
+     * @Route("/article/{slug}", methods={"GET"}, name="article_show", requirements={"slug"="\d+"}, defaults={"slug"=1})
      */
-    public function articleShow($slug = 1): Response
+    public function articleShow($slug): Response
     {
         $article = [];
         foreach ($this->articles as $key => $article_val) {
@@ -70,7 +70,7 @@ class ArticleController extends AbstractController
             $article = $form->getData();
             dump($article);
             
-            return $this->redirectToRoute('blog_list');
+            return $this->redirectToRoute('article_list');
         }
         
         return $this->render('article/article_new.html.twig', [
@@ -79,9 +79,9 @@ class ArticleController extends AbstractController
     }
     
     /**
-     * @Route("/article/{slug}/edit", name="article_edit", requirements={"slug"="\d+"})
+     * @Route("/article/{slug}/edit", name="article_edit", requirements={"slug"="\d+"}, defaults={"slug"=1})
      */
-    public function articleEdit(Request $request, $slug = 1): Response
+    public function articleEdit(Request $request, $slug): Response
     {        
         $article_arr = [];
         foreach ($this->articles as $key => $article_val) {
@@ -112,7 +112,7 @@ class ArticleController extends AbstractController
             $article = $form->getData();
             dump($article);
             
-            return $this->redirectToRoute('blog_list');
+            return $this->redirectToRoute('article_list');
         }
         return $this->render('article/article_edit.html.twig', [
             'form' => $form->createView(),

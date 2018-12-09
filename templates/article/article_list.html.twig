@@ -2,13 +2,13 @@
 
 {% block title %}List articles{% endblock %}
 
-{% block body_id 'blog_list' %}
+{% block body_id 'article_list' %}
 
 {% block main %}
     {% for article in articles %}
         <article class="post">
             <h2>
-                <a href="{{ path('blog_article', {slug: article.slug}) }}">
+                <a href="{{ path('article_show', {slug: article.slug}) }}">
                     {{ article.title }}
                 </a>
                 <div style="float: right;"><a href="{{ path('article_edit', {slug: article.slug}) }}" class="btn btn-xs btn-success">Edit</a></div>

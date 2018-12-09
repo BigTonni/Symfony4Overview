@@ -48,12 +48,12 @@ class User
         $this->fullName = $fullName;
     }
     
-    public function getFullName(): string
+    public function getFullName(): ?string
     {
         return $this->fullName;
     }
     
-    public function getUsername(): string
+    public function getUsername(): ?string
     {
         return $this->username;
     }
@@ -63,7 +63,7 @@ class User
         $this->username = $username;
     }
     
-    public function getEmail(): string
+    public function getEmail(): ?string
     {
         return $this->email;
     }
@@ -73,7 +73,7 @@ class User
         $this->email = $email;
     }
     
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }

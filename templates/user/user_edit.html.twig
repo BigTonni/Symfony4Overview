@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit user{% endblock %}
+
+{% block body_id 'user_edit' %}
+
+{% block main %}
+
+    {{ form_start(form) }}
+    {{ form_row(form.fullName) }}
+    {{ form_row(form.username) }}
+    {{ form_row(form.email) }}
+    {{ form_row(form.password.first) }}
+    {{ form_row(form.password.second) }}
+    {{ form_end(form) }}
+
+{% endblock %}
