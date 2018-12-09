@@ -9,11 +9,6 @@ class User
 {
     /**
      * @var int
-     * @Assert\NotNull
-     * @Assert\Type(
-     *     type="integer",
-     *     message="The value {{ value }} is not a valid {{ type }}."
-     * )
      */
     private $id;
     
@@ -42,12 +37,6 @@ class User
      * @Assert\NotBlank()
      */
     private $password;
-    
-    /**
-     * @var string
-     * @Assert\NotBlank()
-     */
-    private $password_confirm;
 
     public function getId(): int
     {
@@ -92,13 +81,5 @@ class User
     public function setPassword(string $password): void
     {
         $this->password = $password;
-    }
-    
-    /**
-     * @Assert\IsTrue(message="Passwords do not match")
-     */
-    public function isPasswordSafe(): bool
-    {
-        return $this->password_confirm !== $this->password;
     }
 }

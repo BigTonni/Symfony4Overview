@@ -68,7 +68,7 @@ class ArticleController extends AbstractController
         
         if ($form->isSubmitted() && $form->isValid()) {
             $article = $form->getData();
-            dump($article); die;
+            dump($article);
             
             return $this->redirectToRoute('blog_list');
         }
@@ -110,7 +110,7 @@ class ArticleController extends AbstractController
         
         if ($form->isSubmitted() && $form->isValid()) {
             $article = $form->getData();
-            dump($article); die;
+            dump($article);
             
             return $this->redirectToRoute('blog_list');
         }
@@ -118,5 +118,4 @@ class ArticleController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-
 }
