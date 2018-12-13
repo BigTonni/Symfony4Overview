@@ -2,125 +2,97 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-//use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @ORM\Entity(repositoryClass="App\Repository\ArticleRepository")
+ */
 class Article
 {
     /**
-     * @var int
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
      */
     private $id;
-    
+
     /**
-     * @var string
+     * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
      */
     private $title;
-    
+
     /**
-     * @var string
+     * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
      * @Assert\Type("string")
      */
     private $slug;
-    
+
     /**
-     * @var string
+     * @ORM\Column(type="text", nullable=true)
      * @Assert\NotBlank
      * @Assert\Length(min=10)
      */
     private $body;
-    
+
     /**
-     * @var \DateTime
+     * @ORM\Column(type="datetime")
      * @Assert\DateTime
      */
     private $publishedAt;
-    
-    /**
-     * @var User
-     */
-    private $author;
-    
-    /**
-     * @var Comment[]|ArrayCollection
-     */
-    private $comments;
-    
-    public function __construct()
-    {
-        $this->publishedAt = new \DateTime();
-        $this->comments = new ArrayCollection();
-    }
-    
+
     public function getId(): ?int
     {
         return $this->id;
     }
-    
+
     public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    public function setTitle(string $title): void
+    public function setTitle(string $title): self
     {
         $this->title = $title;
+
+        return $this;
     }
-    
+
     public function getSlug(): ?string
     {
         return $this->slug;
     }
-    
-    public function setSlug(string $slug): void
+
+    public function setSlug(string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
     }
-    
+
     public function getBody(): ?string
     {
         return $this->body;
     }
-    
-    public function setBody(string $body): void
+
+    public function setBody(?string $body): self
     {
         $this->body = $body;
+
+        return $this;
     }
-    
-    public function getPublishedAt(): ?\DateTime
+
+    public function getPublishedAt(): ?\DateTimeInterface
     {
         return $this->publishedAt;
     }
-    
-    public function setPublishedAt(\DateTime $publishedAt): void
+
+    public function setPublishedAt(\DateTimeInterface $publishedAt): self
     {
         $this->publishedAt = $publishedAt;
-    }
-    
-    public function getAuthor(): User
-    {
-        return $this->author;
-    }
-    
-    public function setAuthor(User $author): void
-    {
-        $this->author = $author;
-    }
-    
-    public function getComments(): Collection
-    {
-        return $this->comments;
-    }
-    
-    public function addComment(Comment $comment): void
-    {
-        $comment->setPost($this);
-        if (!$this->comments->contains($comment)) {
-            $this->comments->add($comment);
-        }
+
+        return $this;
     }
 }
