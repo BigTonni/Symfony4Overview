@@ -81,8 +81,8 @@ class ArticleController extends AbstractController
             $em->persist($article);
             $em->flush();
 
-            return new Response('Saved new article with id '.$article->getId());
-//            return $this->redirectToRoute('article_list');
+//            return new Response('Saved new article with id '.$article->getId());
+            return $this->redirectToRoute('article_list');
         }
         
         return $this->render('article/article_new.html.twig', [
@@ -117,8 +117,8 @@ class ArticleController extends AbstractController
 
             $em->flush();
 
-            return new Response('Updated article with id '.$id);
-//            return $this->redirectToRoute('article_list');
+//            return new Response('Updated article with id '.$id);
+            return $this->redirectToRoute('article_list');
         }
         return $this->render('article/article_edit.html.twig', [
             'form' => $form->createView(),
@@ -128,8 +128,9 @@ class ArticleController extends AbstractController
     /**
      * @param int $id
      * @Route("/article/delete/{id}", name="article_delete", requirements={"id"="\d+"})
+     * @return Response
      */
-    public function articleDelete($id): void
+    public function articleDelete($id): Response
     {
         $em = $this->getDoctrine()->getManager();
         $article = $em->getRepository(Article::class)->find($id);
@@ -142,5 +143,7 @@ class ArticleController extends AbstractController
 
         $em->remove($article);
         $em->flush();
+
+        return $this->redirectToRoute('article_list');
     }
 }

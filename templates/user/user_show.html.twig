@@ -5,7 +5,9 @@
 {% block body_id 'user_show' %}
 
 {% block main %}
-    <h1>{{ user.fullName }} <div style="float: right;"><a href="{{ path('user_edit', {id: user.id}) }}" class="btn btn-xs btn-success">Edit</a></div></h1>
+    <h1>{{ user.fullName }} <div style="float: right;"><a href="{{ path('user_edit', {id: user.id}) }}" class="btn btn-xs btn-success">Edit</a></div>
+        <div style="float: right;"><a href="{{ path('user_delete', {id: user.id}) }}" class="btn btn-xs btn-danger">Delete</a></div>
+    </h1>
 
     <p class="post-metadata">
         <span class="metadata">{{ user.username }}</span>

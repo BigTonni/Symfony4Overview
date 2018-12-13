@@ -68,8 +68,8 @@ class UserController extends AbstractController
             $em->persist($user);
             $em->flush();
 
-            return new Response('Saved new user with id '.$user->getId());
-//            return $this->redirectToRoute('user_list');
+//            return new Response('Saved new user with id '.$user->getId());
+            return $this->redirectToRoute('user_list');
         }
 
         return $this->render('user/user_new.html.twig', [
@@ -103,8 +103,8 @@ class UserController extends AbstractController
 
             $em->flush();
 
-            return new Response('Updated user with id '.$id);
-//            return $this->redirectToRoute('user_list');
+//            return new Response('Updated user with id '.$id);
+            return $this->redirectToRoute('user_list');
         }
 
         return $this->render('user/user_edit.html.twig', [
@@ -115,8 +115,9 @@ class UserController extends AbstractController
     /**
      * @param int $id
      * @Route("/user/delete/{id}", name="user_delete", requirements={"id"="\d+"})
+     * @return Response
      */
-    public function userDelete($id): void
+    public function userDelete($id): Response
     {
         $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository(User::class)->find($id);
@@ -129,5 +130,7 @@ class UserController extends AbstractController
 
         $em->remove($user);
         $em->flush();
+
+        return $this->redirectToRoute('user_list');
     }
 }
