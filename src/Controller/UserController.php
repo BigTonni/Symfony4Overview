@@ -11,32 +11,36 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class UserController extends AbstractController
 {
-    public $users = [
-        ['id' => 1, 'fullName' => 'Test Author1', 'username' => 'Author1', 'email' => 'test@author1.com', 'password' => 'test1'],
-        ['id' => 2, 'fullName' => 'Test Author2', 'username' => 'Author2', 'email' => 'test@author2.com', 'password' => 'test2'],
-        ['id' => 3, 'fullName' => 'Test Author3', 'username' => 'Author3', 'email' => 'test@author3.com', 'password' => 'test3'],
-    ];
-
     /**
      * @Route("/user/list", name="user_list")
+     * @return Response
      */
     public function userList(): Response
     {
+        $users = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->findAll();
+
         return $this->render('user/user_list.html.twig', [
-            'users' => $this->users,
+            'users' => $users,
         ]);
     }
 
     /**
+     * @param int $id
      * @Route("/user/{id}", methods={"GET"}, name="user_show", requirements={"id"="\d+"}, defaults={"id"=1})
+     * @return Response
      */
     public function userShow($id): Response
     {
-        $user = [];
-        foreach ($this->users as $key => $user_val) {
-            if ($user_val['id'] == $id) {
-                $user = $this->users[$key];
-            }
+        $user = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->find($id);
+
+        if (!$user) {
+            throw $this->createNotFoundException(
+                'No user found for id '.$id
+            );
         }
 
         return $this->render('user/user_show.html.twig', [
@@ -45,7 +49,9 @@ class UserController extends AbstractController
     }
 
     /**
+     * @param Request $request
      * @Route("/user/new", name="user_new")
+     * @return Response
      */
     public function userNew(Request $request): Response
     {
@@ -57,9 +63,13 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $form->getData();
-            dump($user);
 
-            return $this->redirectToRoute('user_list');
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+
+            return new Response('Saved new user with id '.$user->getId());
+//            return $this->redirectToRoute('user_list');
         }
 
         return $this->render('user/user_new.html.twig', [
@@ -68,22 +78,21 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/user/{id}/edit", name="user_edit", requirements={"id"="\d+"}, defaults={"id"=1})
+     * @param Request $request
+     * @param int $id
+     * @Route("/user/edit/{id}/", name="user_edit", requirements={"id"="\d+"}, defaults={"id"=1})
+     * @return Response
      */
-    public function articleEdit(Request $request, $id): Response
+    public function userEdit(Request $request, $id): Response
     {
-        $user_arr = [];
-        foreach ($this->users as $key => $user_val) {
-            if ($user_val['id'] == $id) {
-                $user_arr[] = $this->users[$key];
-            }
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository(User::class)->find($id);
+
+        if (!$user) {
+            throw $this->createNotFoundException(
+                'No user found for id '.$id
+            );
         }
-        //Create a test object while temporarily the database does not exist
-        $user = new User();
-        $user->setFullName('authorTest');
-        $user->setUsername('authorTest');
-        $user->setEmail('author@test.com');
-        $user->setPassword('authorTest');
 
         $form = $this->createForm(UserType::class, $user);
 
@@ -91,12 +100,34 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $form->getData();
-            dump($user);
 
-            return $this->redirectToRoute('user_list');
+            $em->flush();
+
+            return new Response('Updated user with id '.$id);
+//            return $this->redirectToRoute('user_list');
         }
+
         return $this->render('user/user_edit.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @param int $id
+     * @Route("/user/delete/{id}", name="user_delete", requirements={"id"="\d+"})
+     */
+    public function userDelete($id): void
+    {
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository(User::class)->find($id);
+
+        if (!$user) {
+            throw $this->createNotFoundException(
+                'No user found for id '.$id
+            );
+        }
+
+        $em->remove($user);
+        $em->flush();
     }
 }
