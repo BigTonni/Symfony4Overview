@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -49,6 +51,24 @@ class Article
      * @ORM\JoinColumn(nullable=false)
      */
     private $category;
+
+    /**
+     * @var Comment[]|ArrayCollection
+     *
+     * @ORM\OneToMany(
+     *      targetEntity="Comment",
+     *      mappedBy="article",
+     *      orphanRemoval=true,
+     *      cascade={"persist"}
+     * )
+     * @ORM\OrderBy({"publishedAt": "DESC"})
+     */
+    private $comments;
+
+    public function __construct()
+    {
+        $this->comments = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -113,5 +133,25 @@ class Article
         $this->category = $category;
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Article[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+    public function addComment(?Comment $comment): void
+    {
+        $comment->setArticle($this);
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+        }
+    }
+    public function removeComment(Comment $comment): void
+    {
+        $comment->setArticle(null);
+        $this->comments->removeElement($comment);
     }
 }

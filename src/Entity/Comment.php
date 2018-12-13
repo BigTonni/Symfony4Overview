@@ -19,7 +19,8 @@ class Comment
     private $id;
 
     /**
-     * @ORM\Column(type="integer", name="article_id")
+     * @ORM\ManyToOne(targetEntity="Article", inversedBy="comments")
+     * @ORM\JoinColumn(nullable=false)
      * @Assert\NotBlank()
      */
     private $article;
@@ -45,12 +46,12 @@ class Comment
         return $this->id;
     }
 
-    public function getArticle(): ?int
+    public function getArticle(): ?Article
     {
         return $this->article;
     }
 
-    public function setArticle(int $article): self
+    public function setArticle(?Article $article): self
     {
         $this->article = $article;
 
