@@ -38,7 +38,7 @@ class Article
     private $body;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", name="published_at")
      * @Assert\DateTime
      */
     private $publishedAt;
