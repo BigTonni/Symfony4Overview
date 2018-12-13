@@ -19,6 +19,31 @@ class ArticleRepository extends ServiceEntityRepository
         parent::__construct($registry, Article::class);
     }
 
+    /**
+     * @return mixed
+     */
+    public function findLatest()
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.publishedAt <= :now')
+            ->setParameter('now', new \DateTime())
+            ->orderBy('a.publishedAt', 'Desc')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function findOneByIdJoinedToCategory($articleId)
+    {
+        return $this->createQueryBuilder('p')
+            ->innerJoin('p.category', 'c')
+            ->addSelect('c')
+            ->andWhere('p.id = :id')
+            ->setParameter('id', $articleId)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     // /**
     //  * @return Article[] Returns an array of Article objects
     //  */

@@ -5,5 +5,23 @@
 {% block body_id 'blog_index' %}
 
 {% block main %}
-    <section>Test text</section>
+    {% for article in articles %}
+        <article class="post">
+            <h2>
+                <a href="{{ path('article_show', {id: article.id}) }}">
+                    {{ article.title }}
+                </a>
+            </h2>
+
+            <p class="post-metadata">
+                <span class="metadata"><i class="fa fa-calendar"></i> {{ article.publishedAt|date("m/d/Y") }}</span>
+                {#<span class="metadata"><i class="fa fa-user"></i>by {{ article.author }}</span>#}
+            </p>
+
+            <div class="col-md-12 col-lg-12 col-xl-12">
+                {{ article.body }}
+            </div>
+
+        </article>
+    {% endfor %}
 {% endblock %}

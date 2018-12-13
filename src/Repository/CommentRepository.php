@@ -19,6 +19,23 @@ class CommentRepository extends ServiceEntityRepository
         parent::__construct($registry, Comment::class);
     }
 
+    /**
+     * @param int $count
+     * @return mixed
+     */
+    public function findOldest(int $count)
+    {
+        $count = $count ?:10;
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.publishedAt <= :now')
+            ->setParameter('now', new \DateTime())
+            ->orderBy('a.publishedAt', 'ASC')
+            ->setMaxResults($count)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     // /**
     //  * @return Comment[] Returns an array of Comment objects
     //  */
