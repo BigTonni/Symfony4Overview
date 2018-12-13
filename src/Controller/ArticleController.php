@@ -14,14 +14,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ArticleController extends AbstractController
 {
-    
-    public $articles = [
-            ['title' => 'First', 'slug' => 1, 'author' => 'Author1', 'body' => 'Desc1', 'publishedAt' => '04-12-2018'],
-            ['title' => 'Second', 'slug' => 2, 'author' => 'Author2', 'body' => 'Desc2', 'publishedAt' => '04-12-2018'],
-            ['title' => 'Third', 'slug' => 3, 'author' => 'Author3', 'body' => 'Desc3', 'publishedAt' => '04-12-2018'],
-        ];
     /**
      * @Route("/", name="article_index")
+     * @return Response
      */
     public function index(): Response
     {
@@ -30,33 +25,45 @@ class ArticleController extends AbstractController
     
     /**
      * @Route("/article/list", name="article_list")
+     * @return Response
      */
     public function articleList(): Response
     {
+        $articles = $this->getDoctrine()
+            ->getRepository(Article::class)
+            ->findAll();
+
         return $this->render('article/article_list.html.twig', [
-            'articles' => $this->articles,
+            'articles' => $articles,
         ]);
     }
 
     /**
-     * @Route("/article/{slug}", methods={"GET"}, name="article_show", requirements={"slug"="\d+"}, defaults={"slug"=1})
+     * @param int $id
+     * @Route("/article/{id}", methods={"GET"}, name="article_show", requirements={"id"="\d+"}, defaults={"id"=1})
+     * @return Response
      */
-    public function articleShow($slug): Response
+    public function articleShow($id): Response
     {
-        $article = [];
-        foreach ($this->articles as $key => $article_val) {
-            if ($article_val['slug'] == $slug) {
-                $article = $this->articles[$key];
-            }
+        $article = $this->getDoctrine()
+            ->getRepository(Article::class)
+            ->find($id);
+
+        if (!$article) {
+            throw $this->createNotFoundException(
+                'No article found for id '.$id
+            );
         }
         
         return $this->render('article/article_show.html.twig', [
             'article' => $article,
         ]);
     }
-    
+
     /**
+     * @param Request $request
      * @Route("/article/new", name="article_new")
+     * @return Response
      */
     public function articleNew(Request $request): Response
     {
@@ -68,41 +75,37 @@ class ArticleController extends AbstractController
         
         if ($form->isSubmitted() && $form->isValid()) {
             $article = $form->getData();
-            dump($article);
-            
-            return $this->redirectToRoute('article_list');
+            //dump($article);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($article);
+            $em->flush();
+
+            return new Response('Saved new article with id '.$article->getId());
+//            return $this->redirectToRoute('article_list');
         }
         
         return $this->render('article/article_new.html.twig', [
             'form' => $form->createView(),
         ]);
     }
-    
+
     /**
-     * @Route("/article/{slug}/edit", name="article_edit", requirements={"slug"="\d+"}, defaults={"slug"=1})
+     * @param Request $request
+     * @param int $id
+     * @Route("/article/edit/{id}", name="article_edit", requirements={"id"="\d+"}, defaults={"id"=1})
+     * @return Response
      */
-    public function articleEdit(Request $request, $slug): Response
-    {        
-        $article_arr = [];
-        foreach ($this->articles as $key => $article_val) {
-            if ($article_val['slug'] == $slug) {
-                $article_arr = $this->articles[$key];
-            }
+    public function articleEdit(Request $request, $id): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+        $article = $em->getRepository(Article::class)->find($id);
+
+        if (!$article) {
+            throw $this->createNotFoundException(
+                'No article found for id '.$id
+            );
         }
-        //Create a test object while temporarily the database does not exist
-        $article = new Article();
-        $article->setTitle($article_arr['title']);
-        $article->setSlug($article_arr['slug']);
-        $article->setBody($article_arr['body']);
-//        $article->setPublishedAt($article_arr['publishedAt']);
-        
-        $user = new User();
-        $user->setFullName('authorTest');
-        $user->setUsername('authorTest');
-        $user->setEmail('author@test.com');
-        $user->setPassword('authorTest');
-        
-        $article->setAuthor($user);
 
         $form = $this->createForm(ArticleType::class, $article);
 
@@ -110,12 +113,34 @@ class ArticleController extends AbstractController
         
         if ($form->isSubmitted() && $form->isValid()) {
             $article = $form->getData();
-            dump($article);
-            
-            return $this->redirectToRoute('article_list');
+            //dump($article);
+
+            $em->flush();
+
+            return new Response('Updated article with id '.$id);
+//            return $this->redirectToRoute('article_list');
         }
         return $this->render('article/article_edit.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @param int $id
+     * @Route("/article/delete/{id}", name="article_delete", requirements={"id"="\d+"})
+     */
+    public function articleDelete($id): void
+    {
+        $em = $this->getDoctrine()->getManager();
+        $article = $em->getRepository(Article::class)->find($id);
+
+        if (!$article) {
+            throw $this->createNotFoundException(
+                'No article found for id '.$id
+            );
+        }
+
+        $em->remove($article);
+        $em->flush();
     }
 }
