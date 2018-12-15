@@ -32,8 +32,11 @@ class AppFixtures extends Fixture
             $user->setUserName($userName);
             $user->setPassword($password);
             $user->setEmail($email);
+
             $manager->persist($user);
+            $this->addReference($userName, $user);
         }
+
         $manager->flush();
     }
 
@@ -42,12 +45,13 @@ class AppFixtures extends Fixture
      */
     private function loadArticles(ObjectManager $manager): void
     {
-        foreach ($this->getArticleData() as [$title, $slug, $body, $publishedAt]) {
+        foreach ($this->getArticleData() as [$title, $slug, $body, $publishedAt, $author]) {
             $article = new Article();
             $article->setTitle($title);
             $article->setSlug($slug);
             $article->setBody($body);
             $article->setPublishedAt($publishedAt);
+            $article->setAuthor($author);
 
             $category = new Category();
             $category->setTitle($this->getRandomCategory());
@@ -59,6 +63,8 @@ class AppFixtures extends Fixture
                 $comment = new Comment();
                 $comment->setContent($this->getRandomText());
                 $comment->setPublishedAt(new \DateTime('now + '.$i.'seconds'));
+                $comment->setAuthor($this->getReference('Author2'));
+
                 $article->addComment($comment);
             }
             $manager->persist($article);
@@ -83,9 +89,9 @@ class AppFixtures extends Fixture
     {
         return [
             // $userData = [$fullName, $userName, $email, $password];
-            ['fullName' => 'Test Author1', 'userName' => 'Author1', 'email' => 'test@author1.com', 'password' => 'test1'],
-            ['fullName' => 'Test Author2', 'userName' => 'Author2', 'email' => 'test@author2.com', 'password' => 'test2'],
-            ['fullName' => 'Test Author3', 'userName' => 'Author3', 'email' => 'test@author3.com', 'password' => 'test3'],
+            ['Test Author1', 'Author1', 'test@author1.com', 'test1'],
+            ['Test Author2', 'Author2', 'test@author2.com', 'test2'],
+            ['Test Author3', 'Author3', 'test@author3.com', 'test3'],
         ];
     }
 
@@ -102,6 +108,7 @@ class AppFixtures extends Fixture
                 'slug-'.$i,
                 $this->getRandomText(),
                 new \DateTime('now - '.$i.'days'),
+                $this->getReference(['Author1', 'Author3'][0 === $i ? 0 : random_int(0, 1)]),
             ];
         }
 

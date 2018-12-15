@@ -25,15 +25,14 @@ class User
     private $fullName;
 
     /**
-     * @ORM\Column(type="string", length=64, name="user_name")
+     * @ORM\Column(type="string", length=64, name="user_name", unique=true)
      * @Assert\NotBlank()
      * @Assert\Length(min=2, max=50)
      */
     private $userName;
 
     /**
-     * @ORM\Column(type="string", length=64)
-     * @Assert\NotBlank()
+     * @ORM\Column(type="string", length=64, unique=true)
      * @Assert\Email()
      */
     private $email;

@@ -53,6 +53,14 @@ class Article
     private $category;
 
     /**
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $author;
+
+    /**
      * @var Comment[]|ArrayCollection
      *
      * @ORM\OneToMany(
@@ -133,6 +141,16 @@ class Article
         $this->category = $category;
 
         return $this;
+    }
+
+    public function getAuthor(): User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): void
+    {
+        $this->author = $author;
     }
 
     /**
