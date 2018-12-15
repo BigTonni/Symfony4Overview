@@ -2,84 +2,98 @@
 
 namespace App\Entity;
 
-//use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @ORM\Table(name="users")
+ */
 class User
 {
     /**
-     * @var int
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
      */
     private $id;
-    
+
     /**
-     * @var string
-     * @Assert\Type("string")
+     * @ORM\Column(type="string", length=64, name="full_name")
      * @Assert\NotBlank()
      */
     private $fullName;
-    
+
     /**
-     * @var string
+     * @ORM\Column(type="string", length=64, name="user_name")
      * @Assert\NotBlank()
      * @Assert\Length(min=2, max=50)
      */
-    private $username;
-    
+    private $userName;
+
     /**
-     * @var string
+     * @ORM\Column(type="string", length=64)
+     * @Assert\NotBlank()
      * @Assert\Email()
      */
     private $email;
-    
+
     /**
-     * @var string
+     * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank()
      */
     private $password;
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
-    
-    public function setFullName(string $fullName): void
-    {
-        $this->fullName = $fullName;
-    }
-    
+
     public function getFullName(): ?string
     {
         return $this->fullName;
     }
-    
-    public function getUsername(): ?string
+
+    public function setFullName(string $fullName): self
     {
-        return $this->username;
+        $this->fullName = $fullName;
+
+        return $this;
     }
-    
-    public function setUsername(string $username): void
+
+    public function getUserName(): ?string
     {
-        $this->username = $username;
+        return $this->userName;
     }
-    
+
+    public function setUserName(string $userName): self
+    {
+        $this->userName = $userName;
+
+        return $this;
+    }
+
     public function getEmail(): ?string
     {
         return $this->email;
     }
-    
-    public function setEmail(string $email): void
+
+    public function setEmail(string $email): self
     {
         $this->email = $email;
+
+        return $this;
     }
-    
+
     public function getPassword(): ?string
     {
         return $this->password;
     }
-    
-    public function setPassword(string $password): void
+
+    public function setPassword(string $password): self
     {
         $this->password = $password;
+
+        return $this;
     }
 }

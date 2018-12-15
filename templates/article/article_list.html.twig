@@ -8,15 +8,16 @@
     {% for article in articles %}
         <article class="post">
             <h2>
-                <a href="{{ path('article_show', {slug: article.slug}) }}">
+                <a href="{{ path('article_show', {id: article.id}) }}">
                     {{ article.title }}
                 </a>
-                <div style="float: right;"><a href="{{ path('article_edit', {slug: article.slug}) }}" class="btn btn-xs btn-success">Edit</a></div>
+                <div style="float: right;"><a href="{{ path('article_edit', {id: article.id}) }}" class="btn btn-xs btn-warning">Edit</a></div>
+                <div style="float: right;"><a href="{{ path('article_delete', {id: article.id}) }}" class="btn btn-xs btn-danger">Delete</a></div>
             </h2>
 
             <p class="post-metadata">
-                <span class="metadata"><i class="fa fa-calendar"></i> {{ article.publishedAt }}</span>
-                <span class="metadata"><i class="fa fa-user"></i>by {{ article.author }}</span>
+                <span class="metadata"><i class="fa fa-calendar"></i> {{ article.publishedAt|date("m/d/Y") }}</span>
+                {#<span class="metadata"><i class="fa fa-user"></i>by {{ article.author }}</span>#}
             </p>
 
             <div class="col-md-12 col-lg-12 col-xl-12">
@@ -25,7 +26,7 @@
             
         </article>
     {% else %}
-        <div class="well">Posts not found</div>
+        <div class="well">Articles not found</div>
     {% endfor %}
     
 {% endblock %}

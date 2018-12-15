@@ -5,7 +5,10 @@
 {% block body_id 'article_show' %}
     
 {% block main %}
-    <h1>{{ article.title|upper }} <div style="float: right;"><a href="{{ path('article_edit', {slug: article.slug}) }}" class="btn btn-xs btn-success">Edit</a></div></h1>
+    <h1>{{ article.title|upper }}
+        <div style="float: right;"><a href="{{ path('article_edit', {slug: article.slug}) }}" class="btn btn-xs btn-warning">Edit</a></div>
+        <div style="float: right;"><a href="{{ path('article_delete', {id: article.id}) }}" class="btn btn-xs btn-danger">Delete</a></div>
+    </h1>
 
     <p class="post-metadata">
         <span class="metadata"><i class="fa fa-calendar"></i> {{ article.publishedAt }}</span>
