@@ -5,6 +5,7 @@
 {% block body_id 'blog_index' %}
 
 {% block main %}
+    <h2>New Articles:</h2>
     {% for article in articles %}
         <article class="post">
             <h2>
@@ -23,5 +24,23 @@
             </div>
 
         </article>
+    {% else %}
+        <div class="well">Articles not found</div>
     {% endfor %}
+
+    <h2>First comments:</h2>
+    {% for comment in comments %}
+        <article class="comment">
+            <p class="post-metadata">
+                <span class="metadata"><i class="fa fa-calendar"></i> {{ comment.publishedAt|date("m/d/Y") }}</span>
+            </p>
+
+            <div class="col-md-12 col-lg-12 col-xl-12">
+                {{ comment.content }}
+            </div>
+        </article>
+    {% else %}
+        <div class="well">Comments not found</div>
+    {% endfor %}
+
 {% endblock %}

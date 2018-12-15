@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Form\ArticleType;
 use App\Form\CommentType;
 use App\Repository\ArticleRepository;
+use App\Repository\CommentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,10 +21,12 @@ class ArticleController extends AbstractController
      * @Route("/", name="article_index")
      * @return Response
      */
-    public function index(ArticleRepository $articles): Response
+    public function index(ArticleRepository $articles, CommentRepository $comments): Response
     {
         $latestArticles = $articles->findLatest();
-        return $this->render('article/index.html.twig', ['articles' => $latestArticles]);
+        //Find 5 first comments
+        $oldestComments = $comments->findOldest(5);
+        return $this->render('article/index.html.twig', ['articles' => $latestArticles, 'comments' => $oldestComments]);
     }
     
     /**
