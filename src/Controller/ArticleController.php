@@ -45,21 +45,21 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @param int $id
-     * @Route("/article/{id}", methods={"GET"}, name="article_show", requirements={"id"="\d+"}, defaults={"id"=1})
+     * @param Article $article
+     * @Route("/article/{id}", methods={"GET", "POST"}, name="article_show", requirements={"id"="\d+"}, defaults={"id"=1})
      * @return Response
      */
-    public function articleShow($id): Response
+    public function articleShow(Article $article): Response
     {
-        $article = $this->getDoctrine()
-            ->getRepository(Article::class)
-            ->find($id);
-
-        if (!$article) {
-            throw $this->createNotFoundException(
-                'No article found for id '.$id
-            );
-        }
+//        $article = $this->getDoctrine()
+//            ->getRepository(Article::class)
+//            ->find($id);
+//
+//        if (!$article) {
+//            throw $this->createNotFoundException(
+//                'No article found for id '.$id
+//            );
+//        }
         
         return $this->render('article/article_show.html.twig', [
             'article' => $article,
@@ -84,6 +84,13 @@ class ArticleController extends AbstractController
             //dump($article);
 
             $em = $this->getDoctrine()->getManager();
+            $category = $this->getCategory();
+
+            $category->setTitle($category->getTitle());
+            $em->persist($category);
+
+            $article->setCategory($category);
+
             $em->persist($article);
             $em->flush();
 
@@ -151,5 +158,41 @@ class ArticleController extends AbstractController
         $em->flush();
 
         return $this->redirectToRoute('article_list');
+    }
+
+    /**
+     * @Route("article/{id}/comment/new", name="comment_new", methods={"POST"})
+     * @param Request $request
+     * @param Article $article
+     * @return Response
+     */
+    public function newComment(Request $request, Article $article): Response
+    {
+        $comment = new Comment();
+        $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $user = $this->getUser();
+            $article->addComment($comment);
+            $user->addComment($comment);
+            $em->persist($comment);
+            $em->flush();
+        }
+        return $this->redirectToRoute('article_show', ['id' => $article->getId()]);
+    }
+
+    /**
+     * @param Article $article
+     * @return Response
+     */
+    public function commentForm(Article $article): Response
+    {
+        $form = $this->createForm(CommentType::class);
+
+        return $this->render('article/_comment_form.html.twig', [
+            'form' => $form->createView(),
+            'article' => $article,
+        ]);
     }
 }

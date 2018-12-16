@@ -97,6 +97,7 @@ class AppFixtures extends Fixture
 
     /**
      * @return array
+     * @throws \Exception
      */
     private function getArticleData(): array
     {
