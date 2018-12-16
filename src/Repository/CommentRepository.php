@@ -23,9 +23,8 @@ class CommentRepository extends ServiceEntityRepository
      * @param int $count
      * @return mixed
      */
-    public function findOldest(int $count)
+    public function findOldest(int $count = 10)
     {
-        $count = $count ?:10;
         return $this->createQueryBuilder('a')
             ->andWhere('a.publishedAt <= :now')
             ->setParameter('now', new \DateTime())
@@ -35,33 +34,4 @@ class CommentRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
-
-    // /**
-    //  * @return Comment[] Returns an array of Comment objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Comment
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

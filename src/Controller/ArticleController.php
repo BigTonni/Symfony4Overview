@@ -26,6 +26,7 @@ class ArticleController extends AbstractController
         $latestArticles = $articles->findLatest();
         //Find 5 first comments
         $oldestComments = $comments->findOldest(5);
+
         return $this->render('article/index.html.twig', ['articles' => $latestArticles, 'comments' => $oldestComments]);
     }
     
@@ -66,17 +67,15 @@ class ArticleController extends AbstractController
         $article = new Article();
         
         $form = $this->createForm(ArticleType::class, $article);
-        
         $form->handleRequest($request);
         
         if ($form->isSubmitted() && $form->isValid()) {
-//            $article = $form->getData();
-
             $em = $this->getDoctrine()->getManager();
             $em->persist($article);
             $em->flush();
 
             $this->addFlash('success', 'Article create');
+
             return $this->redirectToRoute('article_list');
         }
         
@@ -97,11 +96,11 @@ class ArticleController extends AbstractController
         $form->handleRequest($request);
         
         if ($form->isSubmitted() && $form->isValid()) {
-//            $article = $form->getData();
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 
             $this->addFlash('success', 'Article edit');
+
             return $this->redirectToRoute('article_list');
         }
         return $this->render('article/article_edit.html.twig', [
