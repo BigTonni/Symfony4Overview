@@ -134,17 +134,25 @@ class ArticleController extends AbstractController
     public function newComment(Request $request, Article $article): Response
     {
         $comment = new Comment();
+        $comment->setAuthor($article->getAuthor());
+        $comment->setPublishedAt(new \DateTime());
+        $article->addComment($comment);
+
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $user = $this->getUser();
-            $article->addComment($comment);
-            $user->addComment($comment);
             $em->persist($comment);
             $em->flush();
+
+            return $this->redirectToRoute('article_show', ['id' => $article->getId()]);
         }
-        return $this->redirectToRoute('article_show', ['id' => $article->getId()]);
+
+        return $this->render('article/comment_form_error.html.twig', [
+            'article' => $article,
+            'form' => $form->createView(),
+        ]);
     }
 
     /**
