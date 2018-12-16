@@ -8,7 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use App\Form\CategoryType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -24,8 +24,9 @@ class ArticleType extends AbstractType
             ->add('slug', TextType::class)
             ->add('body', TextareaType::class,['attr' => ['rows' => 8]])
             ->add('publishedAt', DateTimeType::class)
-            ->add('category', CategoryType::class)
-            ->add('save', SubmitType::class, ['label' => 'Create Article', 'attr' => [ 'class' => 'btn btn-primary']]);
+            ->add('category', EntityType::class, ['class' => 'App:Category','choice_label' => 'title'])
+            ->add('author', EntityType::class, ['class' => 'App:User','choice_label' => 'userName'])
+            ->add('save', SubmitType::class, ['label' => 'Save', 'attr' => [ 'class' => 'btn btn-primary']]);
     }
     
     /**

@@ -7,7 +7,7 @@
 {% block main %}
     <h2>New Articles:</h2>
     {% for article in articles %}
-        <article class="post">
+        <article class="post" style="border-bottom:1px solid #ccc;">
             <h2>
                 <a href="{{ path('article_show', {id: article.id}) }}">
                     {{ article.title }}
@@ -16,7 +16,7 @@
 
             <p class="post-metadata">
                 <span class="metadata"><i class="fa fa-calendar"></i> {{ article.publishedAt|date("m/d/Y") }}</span>
-                {#<span class="metadata"><i class="fa fa-user"></i>by {{ article.author }}</span>#}
+                <span class="metadata"><i class="fa fa-user"></i> by {{ article.author.fullName }}</span>
             </p>
 
             <div class="col-md-12 col-lg-12 col-xl-12">
@@ -28,19 +28,25 @@
         <div class="well">Articles not found</div>
     {% endfor %}
 
-    <h2>First comments:</h2>
+
+
+{% endblock %}
+
+{% block sidebar %}
+    <h3>First comments:</h3>
     {% for comment in comments %}
-        <article class="comment">
+        <article class="comment" style="border-bottom:1px solid #ccc;">
             <p class="post-metadata">
                 <span class="metadata"><i class="fa fa-calendar"></i> {{ comment.publishedAt|date("m/d/Y") }}</span>
+                <span class="metadata"><i class="fa fa-user"></i> by {{ comment.author.fullName }}</span>
             </p>
 
             <div class="col-md-12 col-lg-12 col-xl-12">
                 {{ comment.content }}
             </div>
+            <p style="text-align: right;">For article - {{ comment.article.title }}</p>
         </article>
     {% else %}
         <div class="well">Comments not found</div>
     {% endfor %}
-
 {% endblock %}

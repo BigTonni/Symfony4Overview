@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Repository\ArticleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,23 +27,27 @@ class UserController extends AbstractController
         ]);
     }
 
-    /**
-     * @param int $id
-     * @Route("/user/{id}", methods={"GET"}, name="user_show", requirements={"id"="\d+"}, defaults={"id"=1})
+    /** @param int $id
+     * @Route("/user_articles/{id}/", name="user_articles", requirements={"id"="\d+"}, defaults={"id"=1})
+     * @param ArticleRepository $articles
      * @return Response
      */
-    public function userShow($id): Response
+    public function userArticlesList(ArticleRepository $articles, $id): Response
     {
-        $user = $this->getDoctrine()
-            ->getRepository(User::class)
-            ->find($id);
+        $authorArticles = $articles->findBy(['author' => $id], ['publishedAt' => 'DESC']);
 
-        if (!$user) {
-            throw $this->createNotFoundException(
-                'No user found for id '.$id
-            );
-        }
+        return $this->render('user/user_articles.html.twig', [
+            'articles' => $authorArticles
+        ]);
+    }
 
+    /**
+     * @param User $user
+     * @Route("/user/{id}", methods={"GET", "POST"}, name="user_show", requirements={"id"="\d+"}, defaults={"id"=1})
+     * @return Response
+     */
+    public function userShow(User $user): Response
+    {
         return $this->render('user/user_show.html.twig', [
             'user' => $user,
         ]);
@@ -58,17 +63,15 @@ class UserController extends AbstractController
         $user = new User();
 
         $form = $this->createForm(UserType::class, $user);
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user = $form->getData();
+//            $user = $form->getData();
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
 
-//            return new Response('Saved new user with id '.$user->getId());
             return $this->redirectToRoute('user_list');
         }
 
@@ -79,31 +82,20 @@ class UserController extends AbstractController
 
     /**
      * @param Request $request
-     * @param int $id
+     * @param User $user
      * @Route("/user/edit/{id}/", name="user_edit", requirements={"id"="\d+"}, defaults={"id"=1})
      * @return Response
      */
-    public function userEdit(Request $request, $id): Response
+    public function userEdit(Request $request, User $user): Response
     {
-        $em = $this->getDoctrine()->getManager();
-        $user = $em->getRepository(User::class)->find($id);
-
-        if (!$user) {
-            throw $this->createNotFoundException(
-                'No user found for id '.$id
-            );
-        }
-
         $form = $this->createForm(UserType::class, $user);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user = $form->getData();
-
+            $em = $this->getDoctrine()->getManager();
             $em->flush();
 
-//            return new Response('Updated user with id '.$id);
             return $this->redirectToRoute('user_list');
         }
 
@@ -113,21 +105,13 @@ class UserController extends AbstractController
     }
 
     /**
-     * @param int $id
+     * @param User $user
      * @Route("/user/delete/{id}", name="user_delete", requirements={"id"="\d+"})
      * @return Response
      */
-    public function userDelete($id): Response
+    public function userDelete(User $user): Response
     {
         $em = $this->getDoctrine()->getManager();
-        $user = $em->getRepository(User::class)->find($id);
-
-        if (!$user) {
-            throw $this->createNotFoundException(
-                'No user found for id '.$id
-            );
-        }
-
         $em->remove($user);
         $em->flush();
 

@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Category{% endblock %}
+
+{% block body_id 'category_show' %}
+    
+{% block main %}
+    <h1>{{ category.title|upper }}
+        <div style="float: right;"><a href="{{ path('category_edit', {id: category.id}) }}" class="btn btn-xs btn-warning">Edit</a></div>
+    </h1>
+    
+{% endblock %}

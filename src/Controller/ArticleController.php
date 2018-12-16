@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Article;
 use App\Entity\Comment;
-use App\Entity\User;
 use App\Form\ArticleType;
 use App\Form\CommentType;
 use App\Repository\ArticleRepository;
@@ -18,8 +17,9 @@ class ArticleController extends AbstractController
 {
     /**
      * @param ArticleRepository $articles
-     * @Route("/", name="article_index")
+     * @param CommentRepository $comments
      * @return Response
+     * @Route("/", name="article_index")
      */
     public function index(ArticleRepository $articles, CommentRepository $comments): Response
     {
@@ -51,16 +51,6 @@ class ArticleController extends AbstractController
      */
     public function articleShow(Article $article): Response
     {
-//        $article = $this->getDoctrine()
-//            ->getRepository(Article::class)
-//            ->find($id);
-//
-//        if (!$article) {
-//            throw $this->createNotFoundException(
-//                'No article found for id '.$id
-//            );
-//        }
-        
         return $this->render('article/article_show.html.twig', [
             'article' => $article,
         ]);
@@ -80,21 +70,13 @@ class ArticleController extends AbstractController
         $form->handleRequest($request);
         
         if ($form->isSubmitted() && $form->isValid()) {
-            $article = $form->getData();
-            //dump($article);
+//            $article = $form->getData();
 
             $em = $this->getDoctrine()->getManager();
-            $category = $this->getCategory();
-
-            $category->setTitle($category->getTitle());
-            $em->persist($category);
-
-            $article->setCategory($category);
-
             $em->persist($article);
             $em->flush();
 
-//            return new Response('Saved new article with id '.$article->getId());
+            $this->addFlash('success', 'Article create');
             return $this->redirectToRoute('article_list');
         }
         
@@ -105,32 +87,21 @@ class ArticleController extends AbstractController
 
     /**
      * @param Request $request
-     * @param int $id
+     * @param Article $article
      * @Route("/article/edit/{id}", name="article_edit", requirements={"id"="\d+"}, defaults={"id"=1})
      * @return Response
      */
-    public function articleEdit(Request $request, $id): Response
+    public function articleEdit(Request $request, Article $article): Response
     {
-        $em = $this->getDoctrine()->getManager();
-        $article = $em->getRepository(Article::class)->find($id);
-
-        if (!$article) {
-            throw $this->createNotFoundException(
-                'No article found for id '.$id
-            );
-        }
-
         $form = $this->createForm(ArticleType::class, $article);
-
         $form->handleRequest($request);
         
         if ($form->isSubmitted() && $form->isValid()) {
-            $article = $form->getData();
-            //dump($article);
-
+//            $article = $form->getData();
+            $em = $this->getDoctrine()->getManager();
             $em->flush();
 
-//            return new Response('Updated article with id '.$id);
+            $this->addFlash('success', 'Article edit');
             return $this->redirectToRoute('article_list');
         }
         return $this->render('article/article_edit.html.twig', [
@@ -139,23 +110,17 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @param int $id
+     * @param Article $article
      * @Route("/article/delete/{id}", name="article_delete", requirements={"id"="\d+"})
      * @return Response
      */
-    public function articleDelete($id): Response
+    public function articleDelete(Article $article): Response
     {
         $em = $this->getDoctrine()->getManager();
-        $article = $em->getRepository(Article::class)->find($id);
-
-        if (!$article) {
-            throw $this->createNotFoundException(
-                'No article found for id '.$id
-            );
-        }
-
         $em->remove($article);
         $em->flush();
+
+        $this->addFlash('success', 'Article delete');
 
         return $this->redirectToRoute('article_list');
     }
