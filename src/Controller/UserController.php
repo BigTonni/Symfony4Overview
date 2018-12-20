@@ -66,7 +66,6 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-//            $user = $form->getData();
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);

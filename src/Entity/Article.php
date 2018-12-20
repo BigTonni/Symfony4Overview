@@ -61,10 +61,8 @@ class Article
     private $author;
 
     /**
-     * @var Comment[]|ArrayCollection
-     *
      * @ORM\OneToMany(
-     *      targetEntity="Comment",
+     *      targetEntity="App\Entity\Comment",
      *      mappedBy="article",
      *      orphanRemoval=true,
      *      cascade={"persist"}
@@ -73,9 +71,15 @@ class Article
      */
     private $comments;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Tag", cascade={"persist"})
+     */
+    private $tags;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        $this->tags = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -156,7 +160,7 @@ class Article
     /**
      * @return Collection|Article[]
      */
-    public function getComments(): Collection
+    public function getComments(): ?Collection
     {
         return $this->comments;
     }
@@ -171,5 +175,27 @@ class Article
     {
         $comment->setArticle(null);
         $this->comments->removeElement($comment);
+    }
+
+    /**
+     * @param Tag ...$tags
+     */
+    public function addTag(Tag ...$tags): void
+    {
+        foreach ($tags as $tag) {
+            if (!$this->tags->contains($tag)) {
+                $this->tags->add($tag);
+            }
+        }
+    }
+
+    public function getTags(): ?Collection
+    {
+        return $this->tags;
+    }
+
+    public function removeTag(Tag $tag): void
+    {
+        $this->tags->removeElement($tag);
     }
 }
