@@ -28,5 +28,9 @@
     {% else %}
         <div class="well">Articles not found</div>
     {% endfor %}
+
+    <div class="navigation">
+        {{ knp_pagination_render(articles) }}
+    </div>
     
 {% endblock %}

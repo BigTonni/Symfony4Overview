@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Knp\Component\Pager\PaginatorInterface;
 
 class ArticleController extends AbstractController
 {
@@ -29,16 +30,18 @@ class ArticleController extends AbstractController
 
         return $this->render('article/index.html.twig', ['articles' => $latestArticles, 'comments' => $oldestComments]);
     }
-    
+
     /**
      * @Route("/article/list", name="article_list")
+     * @param Request $request
+     * @param PaginatorInterface $paginator
      * @return Response
      */
-    public function articleList(): Response
+    public function articleList(Request $request, PaginatorInterface $paginator): Response
     {
-        $articles = $this->getDoctrine()
-            ->getRepository(Article::class)
-            ->findAll();
+        $em = $this->getDoctrine()->getManager();
+        $query = $em->getRepository(Article::class)->createQueryBuilder('a')->getQuery();
+        $articles = $paginator->paginate($query, $request->query->getInt('page', 1));
 
         return $this->render('article/article_list.html.twig', [
             'articles' => $articles,
