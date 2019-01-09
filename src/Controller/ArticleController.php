@@ -120,6 +120,8 @@ class ArticleController extends AbstractController
     public function articleDelete(Article $article): Response
     {
         $em = $this->getDoctrine()->getManager();
+        $article->getTags()->clear();
+        $article->getComments()->clear();
         $em->remove($article);
         $em->flush();
 

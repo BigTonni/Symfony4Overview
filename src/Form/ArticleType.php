@@ -26,6 +26,7 @@ class ArticleType extends AbstractType
             ->add('publishedAt', DateTimeType::class)
             ->add('category', EntityType::class, ['class' => 'App:Category', 'choice_label' => 'title'])
             ->add('author', EntityType::class, ['class' => 'App:User', 'choice_label' => 'userName'])
+            ->add('tags', EntityType::class, ['class' => 'App:Tag', 'choice_label' => 'name', 'multiple' => true])
             ->add('save', SubmitType::class, ['label' => 'Save', 'attr' => ['class' => 'btn btn-primary']]);
     }
 

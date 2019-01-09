@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New tag{% endblock %}
+
+{% block body_id 'tag_new' %}
+
+{% block main %}
+
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class':'tag-form'}}) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+
+{% endblock %}
