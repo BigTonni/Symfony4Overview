@@ -8,11 +8,11 @@ use App\Form\ArticleType;
 use App\Form\CommentType;
 use App\Repository\ArticleRepository;
 use App\Repository\CommentRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Knp\Component\Pager\PaginatorInterface;
 
 class ArticleController extends AbstractController
 {
@@ -50,7 +50,7 @@ class ArticleController extends AbstractController
 
     /**
      * @param Article $article
-     * @Route("/article/{id}", methods={"GET", "POST"}, name="article_show", requirements={"id"="\d+"}, defaults={"id"=1})
+     * @Route("/article/{id}", methods={"GET", "POST"}, name="article_show", requirements={"id" = "\d+"}, defaults={"id" = 1})
      * @return Response
      */
     public function articleShow(Article $article): Response
@@ -68,10 +68,10 @@ class ArticleController extends AbstractController
     public function articleNew(Request $request): Response
     {
         $article = new Article();
-        
+
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
-        
+
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($article);
@@ -81,7 +81,7 @@ class ArticleController extends AbstractController
 
             return $this->redirectToRoute('article_list');
         }
-        
+
         return $this->render('article/article_new.html.twig', [
             'form' => $form->createView(),
         ]);
@@ -90,14 +90,14 @@ class ArticleController extends AbstractController
     /**
      * @param Request $request
      * @param Article $article
-     * @Route("/article/edit/{id}", name="article_edit", requirements={"id"="\d+"}, defaults={"id"=1})
+     * @Route("/article/edit/{id}", name="article_edit", requirements={"id" = "\d+"}, defaults={"id" = 1})
      * @return Response
      */
     public function articleEdit(Request $request, Article $article): Response
     {
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
-        
+
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->flush();
@@ -106,6 +106,7 @@ class ArticleController extends AbstractController
 
             return $this->redirectToRoute('article_list');
         }
+
         return $this->render('article/article_edit.html.twig', [
             'form' => $form->createView(),
         ]);
@@ -113,7 +114,7 @@ class ArticleController extends AbstractController
 
     /**
      * @param Article $article
-     * @Route("/article/delete/{id}", name="article_delete", requirements={"id"="\d+"})
+     * @Route("/article/delete/{id}", name="article_delete", requirements={"id" = "\d+"})
      * @return Response
      */
     public function articleDelete(Article $article): Response

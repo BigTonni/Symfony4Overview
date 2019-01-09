@@ -27,7 +27,7 @@ class Comment
 
     /**
      * @ORM\Column(type="text")
-     * @Assert\NotNull
+     * @Assert\NotNull()
      * @Assert\Length(
      *     min=5,
      *     max=100
@@ -37,7 +37,7 @@ class Comment
 
     /**
      * @ORM\Column(type="datetime", name="published_at")
-     * @Assert\DateTime
+     * @Assert\DateTime()
      */
     private $publishedAt;
 

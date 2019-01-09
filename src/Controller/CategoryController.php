@@ -28,7 +28,7 @@ class CategoryController extends AbstractController
 
     /**
      * @param Category $category
-     * @Route("/category/{id}", methods={"GET", "POST"}, name="category_show", requirements={"id"="\d+"}, defaults={"id"=1})
+     * @Route("/category/{id}", methods={"GET", "POST"}, name="category_show", requirements={"id" = "\d+"}, defaults={"id" = 1})
      * @return Response
      */
     public function categoryShow(Category $category): Response
@@ -41,7 +41,7 @@ class CategoryController extends AbstractController
     /**
      * @param Request $request
      * @param Category $category
-     * @Route("/category/edit/{id}", name="category_edit", requirements={"id"="\d+"}, defaults={"id"=1})
+     * @Route("/category/edit/{id}", name="category_edit", requirements={"id" = "\d+"}, defaults={"id" = 1})
      * @return Response
      */
     public function categoryEdit(Request $request, Category $category): Response
@@ -55,6 +55,7 @@ class CategoryController extends AbstractController
 
             return $this->redirectToRoute('category_list');
         }
+
         return $this->render('category/edit.html.twig', [
             'form' => $form->createView(),
         ]);

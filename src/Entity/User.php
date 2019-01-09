@@ -46,7 +46,6 @@ class User
     private $password;
 
     /**
-     *
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="user", cascade={"persist", "remove"})
      */
     private $comments;
@@ -123,6 +122,7 @@ class User
             $this->comments[] = $comment;
             $comment->setUser($this);
         }
+
         return $this;
     }
 
@@ -135,6 +135,7 @@ class User
                 $comment->setUser(null);
             }
         }
+
         return $this;
     }
 }

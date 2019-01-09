@@ -22,27 +22,27 @@ class Article
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
+     * @Assert\NotBlank()
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
+     * @Assert\NotBlank()
      * @Assert\Type("string")
      */
     private $slug;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Assert\NotBlank
+     * @Assert\NotBlank()
      * @Assert\Length(min=10)
      */
     private $body;
 
     /**
      * @ORM\Column(type="datetime", name="published_at")
-     * @Assert\DateTime
+     * @Assert\DateTime()
      */
     private $publishedAt;
 
@@ -62,17 +62,17 @@ class Article
 
     /**
      * @ORM\OneToMany(
-     *      targetEntity="App\Entity\Comment",
-     *      mappedBy="article",
-     *      orphanRemoval=true,
-     *      cascade={"persist"}
+     *     targetEntity="App\Entity\Comment",
+     *     mappedBy="article",
+     *     orphanRemoval=true,
+     *     cascade={"persist"}
      * )
-     * @ORM\OrderBy({"publishedAt": "DESC"})
+     * @ORM\OrderBy({"publishedAt" : "DESC"})
      */
     private $comments;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Tag", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="App\Entity\Tag", inversedBy="articles", cascade={"persist", "remove"})
      */
     private $tags;
 
@@ -158,12 +158,13 @@ class Article
     }
 
     /**
-     * @return Collection|Article[]
+     * @return Article[]|Collection
      */
     public function getComments(): ?Collection
     {
         return $this->comments;
     }
+
     public function addComment(?Comment $comment): void
     {
         $comment->setArticle($this);
@@ -171,6 +172,7 @@ class Article
             $this->comments->add($comment);
         }
     }
+
     public function removeComment(Comment $comment): void
     {
         $comment->setArticle(null);
