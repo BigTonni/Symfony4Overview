@@ -4,8 +4,8 @@ namespace App\Form;
 
 use App\Entity\Comment;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-//use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 //use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -20,7 +20,7 @@ class CommentType extends AbstractType
     {
         $builder
             ->add('content', TextareaType::class)
-//            ->add('publishedAt', DateTimeType::class)
+            ->add('publishedAt', DateTimeType::class)
 //            ->add('author', EntityType::class, ['class' => 'App:User','choice_label' => 'userName'])
             ->add('save', SubmitType::class, ['label' => 'Create Comment', 'attr' => ['class' => 'btn btn-primary']]);
     }

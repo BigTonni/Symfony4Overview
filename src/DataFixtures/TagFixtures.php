@@ -17,7 +17,7 @@ class TagFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create();
-        for ($i = 0; $i < 5; $i++) {
+        for ($i = 0; $i < 5; ++$i) {
             $tag = new Tag();
             $tag->setName($faker->word);
             $manager->persist($tag);

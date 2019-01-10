@@ -4,17 +4,18 @@ namespace App\Controller;
 
 use App\Entity\Tag;
 use App\Form\TagType;
-use App\Repository\TagRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Knp\Component\Pager\PaginatorInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 class TagController extends AbstractController
 {
     /**
      * @Route("/tag/list", name="tag_list")
+     * @param Request $request
+     * @param PaginatorInterface $paginator
      */
     public function index(Request $request, PaginatorInterface $paginator): Response
     {

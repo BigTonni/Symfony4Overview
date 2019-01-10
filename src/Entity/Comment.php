@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -36,7 +38,8 @@ class Comment
     private $content;
 
     /**
-     * @ORM\Column(type="datetime", name="published_at")
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime")
      * @Assert\DateTime()
      */
     private $publishedAt;
@@ -78,12 +81,20 @@ class Comment
         return $this;
     }
 
-    public function getPublishedAt(): ?\DateTimeInterface
+    /**
+     * @return DateTime
+     */
+    public function getPublishedAt(): ?DateTime
     {
         return $this->publishedAt;
     }
 
-    public function setPublishedAt(\DateTimeInterface $publishedAt): self
+    /**
+     * @param DateTime $publishedAt
+     *
+     * @return Comment
+     */
+    public function setPublishedAt(DateTime $publishedAt): self
     {
         $this->publishedAt = $publishedAt;
 
