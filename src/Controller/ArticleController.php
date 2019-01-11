@@ -9,7 +9,6 @@ use App\Form\CommentType;
 use App\Repository\ArticleRepository;
 use App\Repository\CommentRepository;
 use Knp\Component\Pager\PaginatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,7 +41,7 @@ class ArticleController extends AbstractController
     {
         $em = $this->getDoctrine()->getManager();
         $query = $em->getRepository(Article::class)->createQueryBuilder('a')->getQuery();
-        $articles = $paginator->paginate($query, $request->query->getInt('page', 1));
+        $articles = $paginator->paginate($query, $request->query->getInt('page', 1), 5);
 
         return $this->render('article/article_list.html.twig', [
             'articles' => $articles,
@@ -51,7 +50,6 @@ class ArticleController extends AbstractController
 
     /**
      * @param Article $article
-*	@ParamConverter("article", class="App:Article")
      * @Route("/article/{id}", methods={"GET", "POST"}, name="article_show", requirements={"id" = "\d+"}, defaults={"id" = 1})
      * @return Response
      */
@@ -92,7 +90,6 @@ class ArticleController extends AbstractController
     /**
      * @param Request $request
      * @param Article $article
-*	@ParamConverter("article", class="App:Article")
      * @Route("/article/edit/{id}", name="article_edit", requirements={"id" = "\d+"}, defaults={"id" = 1})
      * @return Response
      */
@@ -117,7 +114,6 @@ class ArticleController extends AbstractController
 
     /**
      * @param Article $article
-*	@ParamConverter("article", class="App:Article")
      * @Route("/article/delete/{id}", name="article_delete", requirements={"id" = "\d+"})
      * @return Response
      */
@@ -138,10 +134,9 @@ class ArticleController extends AbstractController
      * @Route("article/{id}/comment/new", name="comment_new", methods={"POST"})
      * @param Request $request
      * @param Article $article
-*	@ParamConverter("article", class="App:Article")
      * @return Response
      */
-    public function newComment(Request $request, Article $article): Response
+    public function commentNew(Request $request, Article $article): Response
     {
         $comment = new Comment();
         $comment->setAuthor($article->getAuthor());

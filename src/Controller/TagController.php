@@ -13,15 +13,16 @@ use Symfony\Component\Routing\Annotation\Route;
 class TagController extends AbstractController
 {
     /**
-     * @Route("/tag/list", name="tag_list")
      * @param Request $request
      * @param PaginatorInterface $paginator
+     * @Route("/tag/list", name="tag_list")
+     * @return Response
      */
     public function index(Request $request, PaginatorInterface $paginator): Response
     {
         $em = $this->getDoctrine()->getManager();
         $query = $em->getRepository(Tag::class)->createQueryBuilder('a')->getQuery();
-        $tags = $paginator->paginate($query, $request->query->getInt('page', 1));
+        $tags = $paginator->paginate($query, $request->query->getInt('page', 1), 5);
 
         return $this->render('tag/index.html.twig', [
             'tags' => $tags,
