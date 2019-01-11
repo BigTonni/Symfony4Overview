@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -22,27 +23,29 @@ class Article
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
+     * @Assert\NotBlank()
      */
     private $title;
 
     /**
+     * @Gedmo\Slug(fields={"title"})
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
+     * @Assert\NotBlank()
      * @Assert\Type("string")
      */
     private $slug;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Assert\NotBlank
+     * @Assert\NotBlank()
      * @Assert\Length(min=10)
      */
     private $body;
 
     /**
-     * @ORM\Column(type="datetime", name="published_at")
-     * @Assert\DateTime
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime")
+     * @Assert\DateTime()
      */
     private $publishedAt;
 
@@ -55,27 +58,32 @@ class Article
     /**
      * @var User
      *
+     * @Gedmo\Blameable(on="change", field={"title", "body"})
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
      * @ORM\JoinColumn(nullable=false)
      */
     private $author;
 
     /**
-     * @var Comment[]|ArrayCollection
-     *
      * @ORM\OneToMany(
-     *      targetEntity="Comment",
-     *      mappedBy="article",
-     *      orphanRemoval=true,
-     *      cascade={"persist"}
+     *     targetEntity="App\Entity\Comment",
+     *     mappedBy="article",
+     *     orphanRemoval=true,
+     *     cascade={"persist"}
      * )
-     * @ORM\OrderBy({"publishedAt": "DESC"})
+     * @ORM\OrderBy({"publishedAt" : "DESC"})
      */
     private $comments;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Tag", inversedBy="articles", cascade={"persist", "remove"})
+     */
+    private $tags;
 
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        $this->tags = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -154,12 +162,13 @@ class Article
     }
 
     /**
-     * @return Collection|Article[]
+     * @return Article[]|Collection
      */
-    public function getComments(): Collection
+    public function getComments(): ?Collection
     {
         return $this->comments;
     }
+
     public function addComment(?Comment $comment): void
     {
         $comment->setArticle($this);
@@ -167,9 +176,32 @@ class Article
             $this->comments->add($comment);
         }
     }
+
     public function removeComment(Comment $comment): void
     {
         $comment->setArticle(null);
         $this->comments->removeElement($comment);
+    }
+
+    /**
+     * @param Tag ...$tags
+     */
+    public function addTag(Tag ...$tags): void
+    {
+        foreach ($tags as $tag) {
+            if (!$this->tags->contains($tag)) {
+                $this->tags->add($tag);
+            }
+        }
+    }
+
+    public function getTags(): ?Collection
+    {
+        return $this->tags;
+    }
+
+    public function removeTag(Tag $tag): void
+    {
+        $this->tags->removeElement($tag);
     }
 }

@@ -28,7 +28,7 @@ class UserController extends AbstractController
     }
 
     /** @param int $id
-     * @Route("/user_articles/{id}/", name="user_articles", requirements={"id"="\d+"}, defaults={"id"=1})
+     * @Route("/user_articles/{id}/", name="user_articles", requirements={"id" = "\d+"}, defaults={"id" = 1})
      * @param ArticleRepository $articles
      * @return Response
      */
@@ -37,13 +37,13 @@ class UserController extends AbstractController
         $authorArticles = $articles->findBy(['author' => $id], ['publishedAt' => 'DESC']);
 
         return $this->render('user/user_articles.html.twig', [
-            'articles' => $authorArticles
+            'articles' => $authorArticles,
         ]);
     }
 
     /**
      * @param User $user
-     * @Route("/user/{id}", methods={"GET", "POST"}, name="user_show", requirements={"id"="\d+"}, defaults={"id"=1})
+     * @Route("/user/{id}", methods={"GET", "POST"}, name="user_show", requirements={"id" = "\d+"}, defaults={"id" = 1})
      * @return Response
      */
     public function userShow(User $user): Response
@@ -66,8 +66,6 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-//            $user = $form->getData();
-
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
@@ -83,7 +81,7 @@ class UserController extends AbstractController
     /**
      * @param Request $request
      * @param User $user
-     * @Route("/user/edit/{id}/", name="user_edit", requirements={"id"="\d+"}, defaults={"id"=1})
+     * @Route("/user/edit/{id}/", name="user_edit", requirements={"id" = "\d+"}, defaults={"id" = 1})
      * @return Response
      */
     public function userEdit(Request $request, User $user): Response
@@ -106,7 +104,7 @@ class UserController extends AbstractController
 
     /**
      * @param User $user
-     * @Route("/user/delete/{id}", name="user_delete", requirements={"id"="\d+"})
+     * @Route("/user/delete/{id}", name="user_delete", requirements={"id" = "\d+"})
      * @return Response
      */
     public function userDelete(User $user): Response

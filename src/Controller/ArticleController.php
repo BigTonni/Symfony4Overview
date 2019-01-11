@@ -8,6 +8,7 @@ use App\Form\ArticleType;
 use App\Form\CommentType;
 use App\Repository\ArticleRepository;
 use App\Repository\CommentRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,16 +30,18 @@ class ArticleController extends AbstractController
 
         return $this->render('article/index.html.twig', ['articles' => $latestArticles, 'comments' => $oldestComments]);
     }
-    
+
     /**
      * @Route("/article/list", name="article_list")
+     * @param Request $request
+     * @param PaginatorInterface $paginator
      * @return Response
      */
-    public function articleList(): Response
+    public function articleList(Request $request, PaginatorInterface $paginator): Response
     {
-        $articles = $this->getDoctrine()
-            ->getRepository(Article::class)
-            ->findAll();
+        $em = $this->getDoctrine()->getManager();
+        $query = $em->getRepository(Article::class)->createQueryBuilder('a')->getQuery();
+        $articles = $paginator->paginate($query, $request->query->getInt('page', 1), 5);
 
         return $this->render('article/article_list.html.twig', [
             'articles' => $articles,
@@ -47,7 +50,7 @@ class ArticleController extends AbstractController
 
     /**
      * @param Article $article
-     * @Route("/article/{id}", methods={"GET", "POST"}, name="article_show", requirements={"id"="\d+"}, defaults={"id"=1})
+     * @Route("/article/{id}", methods={"GET", "POST"}, name="article_show", requirements={"id" = "\d+"}, defaults={"id" = 1})
      * @return Response
      */
     public function articleShow(Article $article): Response
@@ -65,10 +68,10 @@ class ArticleController extends AbstractController
     public function articleNew(Request $request): Response
     {
         $article = new Article();
-        
+
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
-        
+
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($article);
@@ -78,7 +81,7 @@ class ArticleController extends AbstractController
 
             return $this->redirectToRoute('article_list');
         }
-        
+
         return $this->render('article/article_new.html.twig', [
             'form' => $form->createView(),
         ]);
@@ -87,14 +90,14 @@ class ArticleController extends AbstractController
     /**
      * @param Request $request
      * @param Article $article
-     * @Route("/article/edit/{id}", name="article_edit", requirements={"id"="\d+"}, defaults={"id"=1})
+     * @Route("/article/edit/{id}", name="article_edit", requirements={"id" = "\d+"}, defaults={"id" = 1})
      * @return Response
      */
     public function articleEdit(Request $request, Article $article): Response
     {
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
-        
+
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->flush();
@@ -103,6 +106,7 @@ class ArticleController extends AbstractController
 
             return $this->redirectToRoute('article_list');
         }
+
         return $this->render('article/article_edit.html.twig', [
             'form' => $form->createView(),
         ]);
@@ -110,12 +114,14 @@ class ArticleController extends AbstractController
 
     /**
      * @param Article $article
-     * @Route("/article/delete/{id}", name="article_delete", requirements={"id"="\d+"})
+     * @Route("/article/delete/{id}", name="article_delete", requirements={"id" = "\d+"})
      * @return Response
      */
     public function articleDelete(Article $article): Response
     {
         $em = $this->getDoctrine()->getManager();
+        $article->getTags()->clear();
+        $article->getComments()->clear();
         $em->remove($article);
         $em->flush();
 
@@ -130,7 +136,7 @@ class ArticleController extends AbstractController
      * @param Article $article
      * @return Response
      */
-    public function newComment(Request $request, Article $article): Response
+    public function commentNew(Request $request, Article $article): Response
     {
         $comment = new Comment();
         $comment->setAuthor($article->getAuthor());
