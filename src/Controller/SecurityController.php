@@ -15,7 +15,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class SecurityController extends AbstractController
 {
     /**
-     * @Route("/{_locale}/login", name="app_login", requirements={"_locale": "en|ru"})
+     * @Route("/{_locale}/login", name="app_login", requirements={"_locale" : "en|ru"})
      * @param AuthenticationUtils $authenticationUtils
      * @return Response
      */
@@ -33,7 +33,7 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/register", name="app_register", requirements={"_locale": "en|ru"})
+     * @Route("/{_locale}/register", name="app_register", requirements={"_locale" : "en|ru"})
      * @param Request                      $request
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @param GuardAuthenticatorHandler    $guardHandler
@@ -69,7 +69,7 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/logout", name="app_logout", requirements={"_locale": "en|ru"})
+     * @Route("/{_locale}/logout", name="app_logout", requirements={"_locale" : "en|ru"})
      */
     public function logout()
     {

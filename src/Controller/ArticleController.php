@@ -36,7 +36,7 @@ class ArticleController extends AbstractController
      * @param ArticleRepository $articles
      * @param CommentRepository $comments
      * @return Response
-     * @Route("/{_locale}", name="article_index", requirements={"_locale": "en|ru"})
+     * @Route("/{_locale}", name="article_index", requirements={"_locale" : "en|ru"})
      */
     public function index(ArticleRepository $articles, CommentRepository $comments): Response
     {
@@ -49,7 +49,7 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/article/list", name="article_list", requirements={"_locale": "en|ru"})
+     * @Route("/{_locale}/article/list", name="article_list", requirements={"_locale" : "en|ru"})
      * @param Request $request
      * @param PaginatorInterface $paginator
      * @return Response
@@ -67,7 +67,7 @@ class ArticleController extends AbstractController
 
     /**
      * @param Article $article
-     * @Route("/{_locale}/article/{id}", methods={"GET", "POST"}, name="article_show", requirements={"id": "\d+", "_locale": "en|ru"}, defaults={"id" = 1})
+     * @Route("/{_locale}/article/{id}", methods={"GET", "POST"}, name="article_show", requirements={"id" : "\d+", "_locale" : "en|ru"}, defaults={"id" = 1})
      * @return Response
      */
     public function articleShow(Article $article): Response
@@ -82,7 +82,7 @@ class ArticleController extends AbstractController
 
     /**
      * @param Request $request
-     * @Route("/{_locale}/article/new", name="article_new", requirements={"_locale": "en|ru"})
+     * @Route("/{_locale}/article/new", name="article_new", requirements={"_locale" : "en|ru"})
      * @return Response
      */
     public function articleNew(Request $request): Response
@@ -117,7 +117,7 @@ class ArticleController extends AbstractController
     /**
      * @param Request $request
      * @param Article $article
-     * @Route("/{_locale}/article/edit/{id}", name="article_edit", requirements={"id": "\d+", "_locale": "en|ru"}, defaults={"id" = 1})
+     * @Route("/{_locale}/article/edit/{id}", name="article_edit", requirements={"id" : "\d+", "_locale" : "en|ru"}, defaults={"id" = 1})
      * @return Response
      */
     public function articleEdit(Request $request, Article $article): Response
@@ -148,7 +148,7 @@ class ArticleController extends AbstractController
 
     /**
      * @param Article $article
-     * @Route("/{_locale}/article/delete/{id}", name="article_delete", requirements={"id": "\d+", "_locale": "en|ru"})
+     * @Route("/{_locale}/article/delete/{id}", name="article_delete", requirements={"id" : "\d+", "_locale" : "en|ru"})
      * @return Response
      */
     public function articleDelete(Article $article): Response
@@ -172,7 +172,7 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}article/{id}/comment/new", name="comment_new", methods={"POST"}, requirements={"_locale": "en|ru"})
+     * @Route("/{_locale}article/{id}/comment/new", name="comment_new", methods={"POST"}, requirements={"_locale" : "en|ru"})
      * @param Request $request
      * @param Article $article
      * @return Response

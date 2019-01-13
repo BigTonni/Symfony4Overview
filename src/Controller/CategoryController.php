@@ -23,7 +23,7 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/category/list", name="category_list", requirements={"_locale": "en|ru"})
+     * @Route("/{_locale}/category/list", name="category_list", requirements={"_locale" : "en|ru"})
      * @return Response
      */
     public function categoryList(): Response
@@ -39,7 +39,7 @@ class CategoryController extends AbstractController
 
     /**
      * @param Category $category
-     * @Route("/{_locale}/category/{id}", methods={"GET", "POST"}, name="category_show", requirements={"id": "\d+", "_locale": "en|ru"}, defaults={"id" = 1})
+     * @Route("/{_locale}/category/{id}", methods={"GET", "POST"}, name="category_show", requirements={"id" : "\d+", "_locale" : "en|ru"}, defaults={"id" = 1})
      * @return Response
      */
     public function categoryShow(Category $category): Response
@@ -52,7 +52,7 @@ class CategoryController extends AbstractController
     /**
      * @param Request $request
      * @param Category $category
-     * @Route("/{_locale}/category/edit/{id}", name="category_edit", requirements={"id": "\d+", "_locale": "en|ru"}, defaults={"id" = 1})
+     * @Route("/{_locale}/category/edit/{id}", name="category_edit", requirements={"id" : "\d+", "_locale" : "en|ru"}, defaults={"id" = 1})
      * @return Response
      */
     public function categoryEdit(Request $request, Category $category): Response
