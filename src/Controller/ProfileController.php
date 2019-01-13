@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProfileController extends AbstractController
 {
     /**
-     * @Route("/profile", name="app_profile")
+     * @Route("/{_locale}/profile", name="app_profile", requirements={"_locale": "en|ru"})
      * @return Response
      */
     public function index(): Response

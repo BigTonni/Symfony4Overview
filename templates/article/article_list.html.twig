@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}List articles{% endblock %}
+{% block title %}{{ 'List articles'|trans }}{% endblock %}
 
 {% block body_id 'article_list' %}
 
@@ -32,7 +32,7 @@
             
         </article>
     {% else %}
-        <div class="well">Articles not found</div>
+        <div class="well">{{ 'Articles not found'|trans }}</div>
     {% endfor %}
 
     <div class="navigation">

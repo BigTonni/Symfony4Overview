@@ -9,11 +9,22 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UserController extends AbstractController
 {
+    private $translator;
+
     /**
-     * @Route("/user/list", name="user_list")
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
+    /**
+     * @Route("/{_locale}/user/list", name="user_list", requirements={"_locale": "en|ru"})
      * @return Response
      */
     public function userList(): Response
@@ -28,7 +39,7 @@ class UserController extends AbstractController
     }
 
     /** @param int $id
-     * @Route("/user_articles/{id}/", name="user_articles", requirements={"id" = "\d+"}, defaults={"id" = 1})
+     * @Route("/{_locale}/user_articles/{id}/", name="user_articles", requirements={"id": "\d+", "_locale": "en|ru"}, defaults={"id" = 1})
      * @param ArticleRepository $articles
      * @return Response
      */
@@ -43,7 +54,7 @@ class UserController extends AbstractController
 
     /**
      * @param User $user
-     * @Route("/user/{id}", methods={"GET", "POST"}, name="user_show", requirements={"id" = "\d+"}, defaults={"id" = 1})
+     * @Route("/{_locale}/user/{id}", methods={"GET", "POST"}, name="user_show", requirements={"id": "\d+", "_locale": "en|ru"}, defaults={"id" = 1})
      * @return Response
      */
     public function userShow(User $user): Response
@@ -55,7 +66,7 @@ class UserController extends AbstractController
 
     /**
      * @param Request $request
-     * @Route("/user/new", name="user_new")
+     * @Route("/{_locale}/user/new", name="user_new", requirements={"_locale": "en|ru"})
      * @return Response
      */
     public function userNew(Request $request): Response
@@ -83,7 +94,7 @@ class UserController extends AbstractController
     /**
      * @param Request $request
      * @param User $user
-     * @Route("/user/edit/{id}/", name="user_edit", requirements={"id" = "\d+"}, defaults={"id" = 1})
+     * @Route("/{_locale}/user/edit/{id}/", name="user_edit", requirements={"id": "\d+", "_locale": "en|ru"}, defaults={"id" = 1})
      * @return Response
      */
     public function userEdit(Request $request, User $user): Response
@@ -108,7 +119,7 @@ class UserController extends AbstractController
 
     /**
      * @param User $user
-     * @Route("/user/delete/{id}", name="user_delete", requirements={"id" = "\d+"})
+     * @Route("/{_locale}/user/delete/{id}", name="user_delete", requirements={"id": "\d+", "_locale": "en|ru"})
      * @return Response
      */
     public function userDelete(User $user): Response

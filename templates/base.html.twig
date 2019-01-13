@@ -23,24 +23,27 @@
                 <nav class="nav d-flex justify-content-between">
                     {% block header_navigation_links %}
                         {% if is_granted('ROLE_USER') %}
-                            <a class="p-2 text-primary" href="{{ path('homepage') }}">Home</a>
-                            <a class="p-2 text-primary" href="{{ path('article_list') }}">Blog</a>
+                            <a class="p-2 text-primary" href="{{ path('homepage') }}">{{ 'Home'|trans }}</a>
+                            <a class="p-2 text-primary" href="{{ path('article_list') }}">{{ 'Blog'|trans }}</a>
 
                             {% if is_granted('ROLE_ADMIN') %}
-                                <a class="p-2 text-primary" href="{{ path('article_new') }}">New article</a>
-                                <a class="p-2 text-primary" href="{{ path('user_new') }}">New user</a>
-                                <a class="p-2 text-primary" href="{{ path('tag_new') }}">New tag</a>
+                                <a class="p-2 text-primary" href="{{ path('article_new') }}">{{ 'New article'|trans }}</a>
+                                <a class="p-2 text-primary" href="{{ path('user_new') }}">{{ 'New user'|trans }}</a>
+                                <a class="p-2 text-primary" href="{{ path('tag_new') }}">{{ 'New tag'|trans }}</a>
                             {% endif %}
 
-                            <a class="p-2 text-primary" href="{{ path('user_list') }}">Users</a>
-                            <a class="p-2 text-primary" href="{{ path('category_list') }}">Categories</a>
-                            <a class="p-2 text-primary" href="{{ path('tag_list') }}">Tags</a>
-                            <a class="p-2 text-primary" href="{{ path('app_profile') }}">Profile</a>
-                            <a class="p-2 text-primary" href="{{ path('app_logout') }}">Logout</a>
+                            <a class="p-2 text-primary" href="{{ path('user_list') }}">{{ 'Users'|trans }}</a>
+                            <a class="p-2 text-primary" href="{{ path('category_list') }}">{{ 'Categories'|trans }}</a>
+                            <a class="p-2 text-primary" href="{{ path('tag_list') }}">{{ 'Tags'|trans }}</a>
+                            <a class="p-2 text-primary" href="{{ path('app_profile') }}">{{ 'Profile'|trans }}</a>
+                            <a class="p-2 text-primary" href="{{ path('app_logout') }}">{{ 'Logout'|trans }}</a>
+
                         {% else %}
-                            <a class="p-2 text-primary" href="{{ path('app_login') }}">Login</a>
-                            <a class="p-2 text-primary" href="{{ path('app_register') }}">Register</a>
+                            <a class="p-2 text-primary" href="{{ path('app_login') }}">{{ 'Login'|trans }}</a>
+                            <a class="p-2 text-primary" href="{{ path('app_register') }}">{{  'Register'|trans }}</a>
                         {% endif %}
+                        <a href="{{ path('homepage', {'_locale':'en'}) }}" class="btn" style="text-align: right;">EN</a>
+                        <a href="{{ path('homepage', {'_locale':'ru'}) }}" class="btn" style="text-align: right;">RU</a>
                     {% endblock %}
                 </nav>
             </div>

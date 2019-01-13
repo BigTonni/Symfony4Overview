@@ -26,3 +26,10 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    security.access.post_voter:
+        class:      App\Security\PostVoter
+        public:     false
+        tags:
+        - { name: security.voter }
+

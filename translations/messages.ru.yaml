@@ -1,0 +1,22 @@
+notification.article_created: 'Статья "%title%" создана.'
+notification.article_edited: 'Статья "%title%" отредактирована.'
+notification.article_deleted: 'Статья "%title%" удалена.'
+notification.tag_created: 'Тег "%name%" создан.'
+notification.tag_edited: 'Тег "%name%" отредактирован.'
+
+Login: Вход
+Register: Регистрация
+Logout: Выход
+Home: Главная
+Blog: Блог
+New article: Новая статья
+New user: Новый юзер
+New tag: Новый тег
+Users: Юзеры
+Categories: Категории
+Tags: Теги
+Profile: Профиль
+
+Edit article: Отредактировать статью
+List articles: Список статей
+Articles not found: Нет статей

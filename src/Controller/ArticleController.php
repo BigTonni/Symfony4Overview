@@ -13,17 +13,34 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 class ArticleController extends AbstractController
 {
+    private $translator;
+
+    private $breadcrumbs;
+
+    /**
+     * @param TranslatorInterface $translator
+     * @param Breadcrumbs $breadcrumbs
+     */
+    public function __construct(TranslatorInterface $translator, Breadcrumbs $breadcrumbs)
+    {
+        $this->translator = $translator;
+        $this->breadcrumbs = $breadcrumbs;
+    }
+
     /**
      * @param ArticleRepository $articles
      * @param CommentRepository $comments
      * @return Response
-     * @Route("/", name="article_index")
+     * @Route("/{_locale}", name="article_index", requirements={"_locale": "en|ru"})
      */
     public function index(ArticleRepository $articles, CommentRepository $comments): Response
     {
+        $this->breadcrumbs->addRouteItem('Article', 'article_index');
         $latestArticles = $articles->findLatest();
         //Find 5 first comments
         $oldestComments = $comments->findOldest(5);
@@ -32,7 +49,7 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/article/list", name="article_list")
+     * @Route("/{_locale}/article/list", name="article_list", requirements={"_locale": "en|ru"})
      * @param Request $request
      * @param PaginatorInterface $paginator
      * @return Response
@@ -50,11 +67,14 @@ class ArticleController extends AbstractController
 
     /**
      * @param Article $article
-     * @Route("/article/{id}", methods={"GET", "POST"}, name="article_show", requirements={"id" = "\d+"}, defaults={"id" = 1})
+     * @Route("/{_locale}/article/{id}", methods={"GET", "POST"}, name="article_show", requirements={"id": "\d+", "_locale": "en|ru"}, defaults={"id" = 1})
      * @return Response
      */
     public function articleShow(Article $article): Response
     {
+//        $this->breadcrumbs->addItem('Home', $this->get('router')->generate('index'));
+        $this->breadcrumbs->addItem($article->getTitle());
+
         return $this->render('article/article_show.html.twig', [
             'article' => $article,
         ]);
@@ -62,7 +82,7 @@ class ArticleController extends AbstractController
 
     /**
      * @param Request $request
-     * @Route("/article/new", name="article_new")
+     * @Route("/{_locale}/article/new", name="article_new", requirements={"_locale": "en|ru"})
      * @return Response
      */
     public function articleNew(Request $request): Response
@@ -79,7 +99,12 @@ class ArticleController extends AbstractController
             $em->persist($article);
             $em->flush();
 
-            $this->addFlash('success', 'Article create');
+            $this->addFlash(
+                'notice',
+                $this->translator->trans('notification.article_created', [
+                    '%title%' => $article->getTitle(),
+                ])
+            );
 
             return $this->redirectToRoute('article_list');
         }
@@ -92,7 +117,7 @@ class ArticleController extends AbstractController
     /**
      * @param Request $request
      * @param Article $article
-     * @Route("/article/edit/{id}", name="article_edit", requirements={"id" = "\d+"}, defaults={"id" = 1})
+     * @Route("/{_locale}/article/edit/{id}", name="article_edit", requirements={"id": "\d+", "_locale": "en|ru"}, defaults={"id" = 1})
      * @return Response
      */
     public function articleEdit(Request $request, Article $article): Response
@@ -106,7 +131,12 @@ class ArticleController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 
-            $this->addFlash('success', 'Article edit');
+            $this->addFlash(
+                'notice',
+                $this->translator->trans('notification.article_edited', [
+                    '%title%' => $article->getTitle(),
+                ])
+            );
 
             return $this->redirectToRoute('article_list');
         }
@@ -118,7 +148,7 @@ class ArticleController extends AbstractController
 
     /**
      * @param Article $article
-     * @Route("/article/delete/{id}", name="article_delete", requirements={"id" = "\d+"})
+     * @Route("/{_locale}/article/delete/{id}", name="article_delete", requirements={"id": "\d+", "_locale": "en|ru"})
      * @return Response
      */
     public function articleDelete(Article $article): Response
@@ -131,13 +161,18 @@ class ArticleController extends AbstractController
         $em->remove($article);
         $em->flush();
 
-        $this->addFlash('success', 'Article delete');
+        $this->addFlash(
+            'notice',
+            $this->translator->trans('notification.article_deleted', [
+                '%title%' => $article->getTitle(),
+            ])
+        );
 
         return $this->redirectToRoute('article_list');
     }
 
     /**
-     * @Route("article/{id}/comment/new", name="comment_new", methods={"POST"})
+     * @Route("/{_locale}article/{id}/comment/new", name="comment_new", methods={"POST"}, requirements={"_locale": "en|ru"})
      * @param Request $request
      * @param Article $article
      * @return Response

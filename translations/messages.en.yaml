@@ -1,0 +1,22 @@
+notification.article_created: 'Article "%title%" created.'
+notification.article_edited: 'Article "%title%" edited.'
+notification.article_deleted: 'Article "%title%" deleted.'
+notification.tag_created: 'Tag "%name%" created.'
+notification.tag_edited: 'Tag "%name%" edited.'
+
+Login: Login
+Register: Register
+Logout: Logout
+Home: Home
+Blog: Blog
+New article: New article
+New user: New user
+New tag: New tag
+Users: Users
+Categories: Categories
+Tags: Tags
+Profile: Profile
+
+Edit article: Edit article
+List articles: List articles
+Articles not found: Articles not found
