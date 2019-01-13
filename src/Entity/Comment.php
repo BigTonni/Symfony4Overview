@@ -22,8 +22,6 @@ class Comment
 
     /**
      * @ORM\ManyToOne(targetEntity="Article", inversedBy="comments")
-     * @ORM\JoinColumn(nullable=false)
-     * @Assert\NotBlank()
      */
     private $article;
 

@@ -23,7 +23,8 @@ class ArticleFixtures extends Fixture implements DependentFixtureInterface
         $article->setPublishedAt(new \DateTime('now'));
         $article->setAuthor($this->getReference(UserFixtures::USER_REFERENCE));
         $article->setCategory($this->getReference(CategoryFixtures::CATEGORY_REFERENCE));
-        $article->addComment($this->getReference(CommentFixtures::COMMENT_REFERENCE));
+        $article->addTag($this->getReference(TagFixtures::TAG_REFERENCE));
+//        $article->addComment($this->getReference(CommentFixtures::COMMENT_REFERENCE));
 
         $manager->persist($article);
         $manager->flush();
@@ -34,6 +35,6 @@ class ArticleFixtures extends Fixture implements DependentFixtureInterface
      */
     public function getDependencies()
     {
-        return [UserFixtures::class, CategoryFixtures::class];
+        return [UserFixtures::class, CategoryFixtures::class, TagFixtures::class];
     }
 }

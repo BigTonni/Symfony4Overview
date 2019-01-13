@@ -48,6 +48,7 @@ class TagController extends AbstractController
      */
     public function tagNew(Request $request): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $tag = new Tag();
 
         $form = $this->createForm(TagType::class, $tag);
@@ -76,6 +77,8 @@ class TagController extends AbstractController
      */
     public function tagEdit(Request $request, Tag $tag): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $form = $this->createForm(TagType::class, $tag);
         $form->handleRequest($request);
 

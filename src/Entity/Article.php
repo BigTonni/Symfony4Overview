@@ -171,16 +171,23 @@ class Article
 
     public function addComment(?Comment $comment): void
     {
-        $comment->setArticle($this);
+//        $comment->setArticle($this);
+//        if (!$this->comments->contains($comment)) {
+//            $this->comments->add($comment);
+//        }
         if (!$this->comments->contains($comment)) {
-            $this->comments->add($comment);
+            $this->comments[] = $comment;
+            $comment->setArticle($this);
         }
     }
 
     public function removeComment(Comment $comment): void
     {
-        $comment->setArticle(null);
-        $this->comments->removeElement($comment);
+//        $comment->setArticle(null);
+//        $this->comments->removeElement($comment);
+        if ($this->comments->contains($comment)) {
+            $this->comments->removeElement($comment);
+        }
     }
 
     /**

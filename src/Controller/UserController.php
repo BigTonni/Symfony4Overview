@@ -60,6 +60,8 @@ class UserController extends AbstractController
      */
     public function userNew(Request $request): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $user = new User();
 
         $form = $this->createForm(UserType::class, $user);
@@ -86,6 +88,8 @@ class UserController extends AbstractController
      */
     public function userEdit(Request $request, User $user): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $form = $this->createForm(UserType::class, $user);
 
         $form->handleRequest($request);
@@ -109,6 +113,10 @@ class UserController extends AbstractController
      */
     public function userDelete(User $user): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $user->getComments()->clear();
+
         $em = $this->getDoctrine()->getManager();
         $em->remove($user);
         $em->flush();

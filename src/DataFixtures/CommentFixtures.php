@@ -20,8 +20,10 @@ class CommentFixtures extends Fixture implements DependentFixtureInterface
         $comment->setContent('Random quote.');
         $comment->setPublishedAt(new \DateTime('now'));
         $comment->setAuthor($this->getReference(UserFixtures::USER_REFERENCE));
-        $comment->setArticle($this->getReference(ArticleFixtures::ARTICLE_REFERENCE));
 
+        $comment->setArticle($this->getReference(ArticleFixtures::ARTICLE_REFERENCE));
+        dd($comment);
+        die;
         $manager->persist($comment);
         $manager->flush();
 

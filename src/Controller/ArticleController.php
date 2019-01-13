@@ -67,6 +67,8 @@ class ArticleController extends AbstractController
      */
     public function articleNew(Request $request): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $article = new Article();
 
         $form = $this->createForm(ArticleType::class, $article);
@@ -95,6 +97,8 @@ class ArticleController extends AbstractController
      */
     public function articleEdit(Request $request, Article $article): Response
     {
+        $this->denyAccessUnlessGranted('edit', $article);
+
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
 
@@ -119,6 +123,8 @@ class ArticleController extends AbstractController
      */
     public function articleDelete(Article $article): Response
     {
+        $this->denyAccessUnlessGranted('delete', $article);
+
         $em = $this->getDoctrine()->getManager();
         $article->getTags()->clear();
         $article->getComments()->clear();

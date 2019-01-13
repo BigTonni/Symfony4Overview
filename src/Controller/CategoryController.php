@@ -46,6 +46,8 @@ class CategoryController extends AbstractController
      */
     public function categoryEdit(Request $request, Category $category): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
 

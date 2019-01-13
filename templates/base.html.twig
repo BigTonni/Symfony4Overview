@@ -22,14 +22,25 @@
             <div class="nav-scroller py-1 mb-2">
                 <nav class="nav d-flex justify-content-between">
                     {% block header_navigation_links %}
-                        <a class="p-2 text-primary" href="{{ path('homepage') }}">Home</a>
-                        <a class="p-2 text-primary" href="{{ path('article_list') }}">Blog</a>
-                        <a class="p-2 text-primary" href="{{ path('article_new') }}">New article</a>
-                        <a class="p-2 text-primary" href="{{ path('user_list') }}">Users</a>
-                        <a class="p-2 text-primary" href="{{ path('user_new') }}">New user</a>
-                        <a class="p-2 text-primary" href="{{ path('category_list') }}">Categories</a>
-                        <a class="p-2 text-primary" href="{{ path('tag_list') }}">Tags</a>
-                        <a class="p-2 text-primary" href="{{ path('tag_new') }}">New tag</a>
+                        {% if is_granted('ROLE_USER') %}
+                            <a class="p-2 text-primary" href="{{ path('homepage') }}">Home</a>
+                            <a class="p-2 text-primary" href="{{ path('article_list') }}">Blog</a>
+
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <a class="p-2 text-primary" href="{{ path('article_new') }}">New article</a>
+                                <a class="p-2 text-primary" href="{{ path('user_new') }}">New user</a>
+                                <a class="p-2 text-primary" href="{{ path('tag_new') }}">New tag</a>
+                            {% endif %}
+
+                            <a class="p-2 text-primary" href="{{ path('user_list') }}">Users</a>
+                            <a class="p-2 text-primary" href="{{ path('category_list') }}">Categories</a>
+                            <a class="p-2 text-primary" href="{{ path('tag_list') }}">Tags</a>
+                            <a class="p-2 text-primary" href="{{ path('app_profile') }}">Profile</a>
+                            <a class="p-2 text-primary" href="{{ path('app_logout') }}">Logout</a>
+                        {% else %}
+                            <a class="p-2 text-primary" href="{{ path('app_login') }}">Login</a>
+                            <a class="p-2 text-primary" href="{{ path('app_register') }}">Register</a>
+                        {% endif %}
                     {% endblock %}
                 </nav>
             </div>
