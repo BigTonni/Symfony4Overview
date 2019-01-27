@@ -1,0 +1,40 @@
+article.created_successfully: 'Article created successfully.'
+article.edited_successfully: 'Article "%title%" edited successfully.'
+article.deleted_successfully: 'Article deleted.'
+notification.tag_created: 'Tag "%name%" created.'
+notification.tag_edited: 'Tag "%name%" edited.'
+user.updated_successfully: 'User updated'
+
+menu.article_list: Article list
+menu.back_to_blog: Back to blog
+title.article_list: Article list
+action.show: Show
+action.edit: Edit
+action.create_article: Create
+
+menu.home: Home
+menu.blog: Blog
+menu.login: Login
+menu.register: Register
+menu.logout: Logout
+menu.new_article: New article
+menu.my_articles: My Articles
+New user: New user
+New tag: New tag
+Users: Users
+Categories: Categories
+Tags: Tags
+Profile: Profile
+
+Edit article: Edit article
+List articles: List articles
+article.no_posts_found: Articles not found
+
+http_error.name: Error {status_code, number}
+http_error_403.description: You don't have permission to access to this resource.
+http_error_403.suggestion: Ask your manager or system administrator to grant you access to this resource.
+
+title.login:  'Please sign in'
+label.useremail: 'Email address'
+label.password: 'Password'
+action.sign_in: 'Sign in'

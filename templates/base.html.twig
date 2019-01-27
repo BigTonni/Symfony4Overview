@@ -1,55 +1,76 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <title>{% block title %}Symfony Demo-Blog{% endblock %}</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
-        <title>{% block title %}Symfony Demo-Blog{% endblock %}</title>
         
         {% block stylesheets %}
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+            <link rel="stylesheet" href="{{ asset('css/font-awesome.css') }}">
+            <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
         {% endblock %}        
         
     </head>
     
     <body id="{% block body_id %}{% endblock %}">
+
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-bg mb-5">
+            <a style="margin-left: 75px;" class="navbar-brand space-brand" href="{{ path('homepage') }}">{{ 'menu.home'|trans }}</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                {{ knp_menu_render('main', {'currentClass': 'active'}) }}
+
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-info my-2 my-sm-0" type="submit">Search</button>
+                </form>
+                {% if is_granted('ROLE_USER') %}
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item dropdown" style="margin-right: 75px;">
+                            <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img class="nav-profile-img rounded-circle" src="{{ asset('images/placeholder-man.png') }}">
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="{{ path('app_profile') }}">Profile</a>
+                                <a class="dropdown-item" href="{{ path('admin_article_new') }}">{{ 'menu.new_article'|trans }}</a>
+                                <a class="dropdown-item" href="{{ path('app_logout') }}">{{ 'menu.logout'|trans }}</a>
+                            </div>
+                        </li>
+                    </ul>
+                {% endif %}
+            </div>
+        </nav>
+
         <div class="container">
-            
-            <header class="blog-header py-3">
-                {% block header %}{% endblock %}
-            </header>                                  
-            
-            
-            <div class="nav-scroller py-1 mb-2">
-                <nav class="nav d-flex justify-content-between">
-                    {% block header_navigation_links %}
-                        <a class="p-2 text-primary" href="{{ path('homepage') }}">Home</a>
-                        <a class="p-2 text-primary" href="{{ path('article_list') }}">Blog</a>
-                        <a class="p-2 text-primary" href="{{ path('article_new') }}">New article</a>
-                        <a class="p-2 text-primary" href="{{ path('user_list') }}">Users</a>
-                        <a class="p-2 text-primary" href="{{ path('user_new') }}">New user</a>
-                        <a class="p-2 text-primary" href="{{ path('category_list') }}">Categories</a>
-                        <a class="p-2 text-primary" href="{{ path('tag_list') }}">Tags</a>
-                        <a class="p-2 text-primary" href="{{ path('tag_new') }}">New tag</a>
-                    {% endblock %}
-                </nav>
+            <div class="row">
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success">
+                    {{ message }}
+                </div>
+            {% endfor %}
             </div>
         </div>
-        <main role="main" class="container">
-            {% block body %}
+
+        {% block body %}
+            <div class="container">
                 <div class="row">
-                    <div class="col-md-8 blog-main">
+                    <div class="col-sm-12 col-md-8">
                         {% block main %}{% endblock %}
                     </div>
-                    <aside class="col-md-4 blog-sidebar">
+
+                    <div class="col-sm-12 col-md-4 text-center">
                         {% block sidebar %}{% endblock %}
-                    </aside>
+                    </div>
                 </div>
-            {% endblock %}
-        </main>
+            </div>
+        {% endblock %}
 
         {% block footer %}
-            <footer class="blog-footer" style="background-color: #f9f9f9;padding: 2.5rem 0;">
-                <div class="container">
+            <footer class="footer">
+                <div class="container text-center">
                     <div class="row">
                         <div id="footer-copyright" class="col-md-12">
                             <p>My Symfony Blog - &copy; {{ 'now'|date('Y') }}</p>

@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Login{% endblock %}
+
+{% block main %}
+    
+
+    <div class="row">
+        <div class="col-sm-5">
+            <div class="well">
+                <form class="form-signin" method="post">
+                    {% if error %}
+                        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                    {% endif %}
+
+                    <h1 class="h3 mb-3 font-weight-normal">{{ 'title.login'|trans }}</h1>
+
+                    <label for="inputEmail" class="sr-only">{{ 'label.useremail'|trans }}</label>
+                    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" placeholder="{{ 'label.useremail'|trans }}" required autofocus>
+                    <label for="inputPassword" class="sr-only">{{ 'label.password'|trans }}</label>
+                    <input type="password" name="password" id="inputPassword" class="form-control" placeholder="{{ 'label.password'|trans }}" required>
+
+                    <input type="hidden" name="_csrf_token"
+                           value="{{ csrf_token('authenticate') }}">
+
+                    <div class="checkbox mb-3">
+                        <label>
+                            <input type="checkbox" value="remember-me"> Remember me
+                        </label>
+                    </div>
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">
+                        {{ 'action.sign_in'|trans }}
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block sidebar %}
+    {{ parent() }}
+{% endblock %}

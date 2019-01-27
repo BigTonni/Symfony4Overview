@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
+
+{% block header_navigation_links %}
+    <li>
+        <a href="{{ path('admin_article_index') }}">
+            <i class="fa fa-list-alt" aria-hidden="true"></i> {{ 'menu.article_list'|trans }}
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('article_index') }}">
+            <i class="fa fa-home" aria-hidden="true"></i> {{ 'menu.back_to_blog'|trans }}
+        </a>
+    </li>
+{% endblock %}

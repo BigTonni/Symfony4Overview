@@ -1,15 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Blog index{% endblock %}
+{% block title %}{{ 'List articles'|trans }}{% endblock %}
 
-{% block body_id 'blog_index' %}
+{% block body_id 'article_list' %}
 
 {% block main %}
-    <h2>New Articles:</h2>
+
     {% for article in articles %}
-        <article class="post" style="border-bottom:1px solid #ccc;">
+        <article class="post">
             <h2>
-                <a href="{{ path('article_show', {id: article.id}) }}">
+                <a href="{{ path('article_show', {slug: article.slug}) }}">
                     {{ article.title }}
                 </a>
             </h2>
@@ -19,34 +19,23 @@
                 <span class="metadata"><i class="fa fa-user"></i> by {{ article.author.fullName }}</span>
             </p>
 
+            <p>Tags:<br/>
+                {% for tag in article.tags %}
+                    <a href="{{- path('tag_show', {id: tag.id}) -}}" class="btn btn-outline-primary btn-sm">{{ tag.name }}</a>
+                {% endfor %}
+            </p>
+
             <div class="col-md-12 col-lg-12 col-xl-12">
                 {{ article.body }}
             </div>
 
         </article>
     {% else %}
-        <div class="well">Articles not found</div>
+        <div class="well">{{ 'article.no_posts_found'|trans }}</div>
     {% endfor %}
 
+    <div class="navigation">
+        {{ knp_pagination_render(articles) }}
+    </div>
 
-
-{% endblock %}
-
-{% block sidebar %}
-    <h3>First comments:</h3>
-    {% for comment in comments %}
-        <article class="comment" style="border-bottom:1px solid #ccc;">
-            <p class="post-metadata">
-                <span class="metadata"><i class="fa fa-calendar"></i> {{ comment.publishedAt|date("m/d/Y") }}</span>
-                <span class="metadata"><i class="fa fa-user"></i> by {{ comment.author.fullName }}</span>
-            </p>
-
-            <div class="col-md-12 col-lg-12 col-xl-12">
-                {{ comment.content }}
-            </div>
-            <p style="text-align: right;">For article - {{ comment.article.title }}</p>
-        </article>
-    {% else %}
-        <div class="well">Comments not found</div>
-    {% endfor %}
 {% endblock %}

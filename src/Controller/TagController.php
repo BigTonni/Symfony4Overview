@@ -9,9 +9,20 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class TagController extends AbstractController
 {
+    private $translator;
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * @param Request $request
      * @param PaginatorInterface $paginator
@@ -31,7 +42,7 @@ class TagController extends AbstractController
 
     /**
      * @param Tag $tag
-     * @Route("/tag/{id}", methods={"GET", "POST"}, name="tag_show", requirements={"id" = "\d+"}, defaults={"id" = 1})
+     * @Route("/tag/{id}", methods={"GET", "POST"}, name="tag_show", requirements={"id" : "\d+"}, defaults={"id" = 1})
      * @return Response
      */
     public function tagShow(Tag $tag): Response
@@ -48,6 +59,7 @@ class TagController extends AbstractController
      */
     public function tagNew(Request $request): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $tag = new Tag();
 
         $form = $this->createForm(TagType::class, $tag);
@@ -58,7 +70,12 @@ class TagController extends AbstractController
             $em->persist($tag);
             $em->flush();
 
-            $this->addFlash('notice', 'Tag create');
+            $this->addFlash(
+                'notice',
+                $this->translator->trans('notification.tag_created', [
+                    '%name%' => $tag->getName(),
+                ])
+            );
 
             return $this->redirectToRoute('tag_list');
         }
@@ -71,11 +88,13 @@ class TagController extends AbstractController
     /**
      * @param Request $request
      * @param Tag $tag
-     * @Route("/tag/edit/{id}", name="tag_edit", requirements={"id" = "\d+"}, defaults={"id" = 1})
+     * @Route("/tag/edit/{id}", name="tag_edit", requirements={"id" : "\d+"}, defaults={"id" = 1})
      * @return Response
      */
     public function tagEdit(Request $request, Tag $tag): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $form = $this->createForm(TagType::class, $tag);
         $form->handleRequest($request);
 
@@ -83,7 +102,12 @@ class TagController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 
-            $this->addFlash('notice', 'Tag edit');
+            $this->addFlash(
+                'notice',
+                $this->translator->trans('notification.tag_edited', [
+                    '%name%' => $tag->getName(),
+                ])
+            );
 
             return $this->redirectToRoute('tag_list');
         }

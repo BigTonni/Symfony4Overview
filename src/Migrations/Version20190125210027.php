@@ -10,16 +10,15 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20181213220000 extends AbstractMigration
+final class Version20190125210027 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE articles ADD category_id INT NOT NULL');
-        $this->addSql('ALTER TABLE articles ADD CONSTRAINT FK_BFDD316812469DE2 FOREIGN KEY (category_id) REFERENCES categories (id)');
-        $this->addSql('CREATE INDEX IDX_BFDD316812469DE2 ON articles (category_id)');
+        $this->addSql('ALTER TABLE categories CHANGE created_at created_at DATETIME NOT NULL, CHANGE updated_at updated_at DATETIME NOT NULL');
+        $this->addSql('ALTER TABLE tags CHANGE created_at created_at DATETIME NOT NULL, CHANGE updated_at updated_at DATETIME NOT NULL');
     }
 
     public function down(Schema $schema): void
@@ -27,8 +26,7 @@ final class Version20181213220000 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE articles DROP FOREIGN KEY FK_BFDD316812469DE2');
-        $this->addSql('DROP INDEX IDX_BFDD316812469DE2 ON articles');
-        $this->addSql('ALTER TABLE articles DROP category_id');
+        $this->addSql('ALTER TABLE categories CHANGE created_at created_at DATETIME DEFAULT NULL, CHANGE updated_at updated_at DATETIME DEFAULT NULL');
+        $this->addSql('ALTER TABLE tags CHANGE created_at created_at DATETIME DEFAULT NULL, CHANGE updated_at updated_at DATETIME DEFAULT NULL');
     }
 }

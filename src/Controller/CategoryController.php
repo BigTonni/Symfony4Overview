@@ -8,9 +8,20 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CategoryController extends AbstractController
 {
+    private $translator;
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * @Route("/category/list", name="category_list")
      * @return Response
@@ -28,7 +39,7 @@ class CategoryController extends AbstractController
 
     /**
      * @param Category $category
-     * @Route("/category/{id}", methods={"GET", "POST"}, name="category_show", requirements={"id" = "\d+"}, defaults={"id" = 1})
+     * @Route("/category/{id}", methods={"GET", "POST"}, name="category_show", requirements={"id" : "\d+"}, defaults={"id" = 1})
      * @return Response
      */
     public function categoryShow(Category $category): Response
@@ -41,11 +52,13 @@ class CategoryController extends AbstractController
     /**
      * @param Request $request
      * @param Category $category
-     * @Route("/category/edit/{id}", name="category_edit", requirements={"id" = "\d+"}, defaults={"id" = 1})
+     * @Route("/category/edit/{id}", name="category_edit", requirements={"id" : "\d+"}, defaults={"id" = 1})
      * @return Response
      */
     public function categoryEdit(Request $request, Category $category): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
 
