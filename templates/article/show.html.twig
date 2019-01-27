@@ -1,0 +1,138 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Read: {{ article.title }}{% endblock %}
+
+{% block body %}
+
+    {{ wo_render_breadcrumbs() }}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="show-article-container p-3 mt-4">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <img class="show-article-img" src="{{ asset('images/default-image.png') }}">
+                            <div class="show-article-title-container d-inline-block pl-3 align-middle">
+                                <span class="show-article-title ">{{ article.title|upper }} </span>
+                                <br>
+                                <span class="align-left article-details"><img class="article-author-img rounded-circle" src="{{ asset('images/placeholder.png') }}"> {{ article.author.fullName }}</span>
+                                <span class="pl-2 article-details"> {{ article.publishedAt|date("m/d/Y") }}</span>
+                                <span class="pl-2 article-details">
+                                <span class="js-like-article-count">5</span>
+                                <a href="#" class="fa fa-heart-o like-article js-like-article"></a>
+                            </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="article-text">
+                                {{ article.body }}
+                            </div>
+                        </div>
+                    </div>
+                    <p>Category: {{ article.category.title }}</p>
+
+                    <p>Tags:<br/>
+                        {% for tag in article.tags %}
+                            <a href="{{- path('tag_show', {id: tag.id}) -}}" class="btn btn-outline-primary btn-sm">{{ tag.name }}</a>
+                        {% endfor %}
+                    </p>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h3><i class="pr-3 fa fa-comment"></i>{{ article.comments|length }} Comments</h3>
+                            <hr>
+
+                            <div class="row mb-5">
+                                <div class="col-sm-12">
+                                    {{ render(controller('App\\Controller\\ArticleController::commentForm', {'id': article.id})) }}
+
+                                    {#<img class="comment-img rounded-circle" src="{{ asset('images/placeholder.png') }}">#}
+                                    {#<div class="comment-container d-inline-block pl-3 align-top">#}
+                                        {#<span class="commenter-name">Amy Oort</span>#}
+                                        {#<div class="form-group">#}
+                                            {#<textarea class="form-control comment-form" id="articleText" rows="1"></textarea>#}
+                                        {#</div>#}
+                                        {#<button type="submit" class="btn btn-info">Comment</button>#}
+                                    {#</div>#}
+                                </div>
+                            </div>
+
+                            {% for comment in article.comments %}
+                                {#<a name="comment_{{ comment.id }}"></a>#}
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <img class="comment-img rounded-circle" src="{{ asset('images/placeholder.png') }}">
+                                        <div class="comment-container d-inline-block pl-3 align-top">
+                                            <span class="commenter-name">{{ comment.author.fullName }}</span>
+                                            <br>
+                                            <span class="comment"> {{ comment.content }}</span> (<i>{{ comment.publishedAt|date("m/d/Y") }}</i>)
+                                            <p><a href="#">Reply</a></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{ asset('js/article_show.js') }}"></script>
+{% endblock %}
+
+
+{#{% block main %}#}
+    {#{{ wo_render_breadcrumbs() }}#}
+
+    {#<h1>{{ article.title|upper }}        #}
+    {#</h1>#}
+
+    {#<p class="post-metadata">#}
+        {#<span class="metadata"><i class="fa fa-calendar"></i> {{ article.publishedAt|date("m/d/Y") }}</span>#}
+        {#<span class="metadata"><i class="fa fa-user"></i> by {{ article.author.fullName }}</span>#}
+    {#</p>#}
+
+    {#<p>Category: {{ article.category.title }}</p>#}
+
+    {#<p>Tags:<br/>#}
+        {#{% for tag in article.tags %}#}
+            {#<a href="{{- path('tag_show', {id: tag.id}) -}}" class="btn btn-outline-primary btn-sm">{{ tag.name }}</a>#}
+        {#{% endfor %}#}
+    {#</p>#}
+
+    {#<p>{{ article.body }}</p>#}
+
+    {#<div id="article-add-comment" class="well">#}
+        {#<h3>Add Comment</h3>#}
+        {#{{ render(controller('App\\Controller\\ArticleController::commentForm', {'id': article.id})) }}#}
+    {#</div>#}
+
+    {#<h3>#}
+        {#Total comments: {{ article.comments|length }}#}
+    {#</h3>#}
+    {#{% for comment in article.comments %}#}
+        {#<div class="row article-comment">#}
+            {#<a name="comment_{{ comment.id }}"></a>#}
+            {#<div class="col-sm-4">#}
+                {#<h4>{{ comment.author.fullName }}</h4> (<i>{{ comment.publishedAt|date("m/d/Y") }}</i>)#}
+            {#</div>#}
+            {#<div class="col-sm-8">#}
+                {#{{ comment.content }}#}
+            {#</div>#}
+        {#</div>#}
+    {#{% else %}#}
+        {#<div class="article-comment">#}
+            {#<p>Not comments</p>#}
+        {#</div>#}
+    {#{% endfor %}#}
+    
+{#{% endblock %}#}

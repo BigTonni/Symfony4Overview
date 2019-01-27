@@ -15,7 +15,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class SecurityController extends AbstractController
 {
     /**
-     * @Route("/{_locale}/login", name="app_login", requirements={"_locale" : "en|ru"})
+     * @Route("/login", name="app_login")
      * @param AuthenticationUtils $authenticationUtils
      * @return Response
      */
@@ -23,6 +23,7 @@ class SecurityController extends AbstractController
     {
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
+
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
@@ -33,7 +34,7 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/register", name="app_register", requirements={"_locale" : "en|ru"})
+     * @Route("/register", name="app_register")
      * @param Request                      $request
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @param GuardAuthenticatorHandler    $guardHandler
@@ -69,7 +70,7 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/logout", name="app_logout", requirements={"_locale" : "en|ru"})
+     * @Route("/logout", name="app_logout")
      */
     public function logout()
     {

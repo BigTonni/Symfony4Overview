@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -14,6 +15,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Article
 {
+    use TimestampableEntity;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -43,7 +46,6 @@ class Article
     private $body;
 
     /**
-     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      * @Assert\DateTime()
      */
@@ -76,7 +78,7 @@ class Article
     private $comments;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Tag", inversedBy="articles", cascade={"persist", "remove"})
+     * @ORM\ManyToMany(targetEntity="App\Entity\Tag", inversedBy="articles")
      */
     private $tags;
 
@@ -156,9 +158,11 @@ class Article
         return $this->author;
     }
 
-    public function setAuthor(?User $author): void
+    public function setAuthor(?User $author): self
     {
         $this->author = $author;
+
+        return $this;
     }
 
     /**
@@ -169,37 +173,39 @@ class Article
         return $this->comments;
     }
 
-    public function addComment(?Comment $comment): void
+    public function addComment(Comment $comment): self
     {
-//        $comment->setArticle($this);
-//        if (!$this->comments->contains($comment)) {
-//            $this->comments->add($comment);
-//        }
         if (!$this->comments->contains($comment)) {
             $this->comments[] = $comment;
             $comment->setArticle($this);
         }
+
+        return $this;
     }
 
-    public function removeComment(Comment $comment): void
+    public function removeComment(Comment $comment): self
     {
-//        $comment->setArticle(null);
-//        $this->comments->removeElement($comment);
         if ($this->comments->contains($comment)) {
             $this->comments->removeElement($comment);
+            // set the owning side to null (unless already changed)
+            if ($comment->getArticle() === $this) {
+                $comment->setArticle(null);
+            }
         }
+
+        return $this;
     }
 
     /**
-     * @param Tag ...$tags
+     * @param Tag $tag
      */
-    public function addTag(Tag ...$tags): void
+    public function addTag(Tag $tag): self
     {
-        foreach ($tags as $tag) {
-            if (!$this->tags->contains($tag)) {
-                $this->tags->add($tag);
-            }
+        if (!$this->tags->contains($tag)) {
+            $this->tags[] = $tag;
         }
+
+        return $this;
     }
 
     public function getTags(): ?Collection
@@ -207,8 +213,12 @@ class Article
         return $this->tags;
     }
 
-    public function removeTag(Tag $tag): void
+    public function removeTag(Tag $tag): self
     {
-        $this->tags->removeElement($tag);
+        if ($this->tags->contains($tag)) {
+            $this->tags->removeElement($tag);
+        }
+
+        return $this;
     }
 }

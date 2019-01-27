@@ -26,7 +26,7 @@ class TagController extends AbstractController
     /**
      * @param Request $request
      * @param PaginatorInterface $paginator
-     * @Route("/{_locale}/tag/list", name="tag_list", requirements={"_locale" : "en|ru"})
+     * @Route("/tag/list", name="tag_list")
      * @return Response
      */
     public function index(Request $request, PaginatorInterface $paginator): Response
@@ -42,7 +42,7 @@ class TagController extends AbstractController
 
     /**
      * @param Tag $tag
-     * @Route("/{_locale}/tag/{id}", methods={"GET", "POST"}, name="tag_show", requirements={"id" : "\d+", "_locale" : "en|ru"}, defaults={"id" = 1})
+     * @Route("/tag/{id}", methods={"GET", "POST"}, name="tag_show", requirements={"id" : "\d+"}, defaults={"id" = 1})
      * @return Response
      */
     public function tagShow(Tag $tag): Response
@@ -54,7 +54,7 @@ class TagController extends AbstractController
 
     /**
      * @param Request $request
-     * @Route("/{_locale}/tag/new", name="tag_new", requirements={"_locale" : "en|ru"})
+     * @Route("/tag/new", name="tag_new")
      * @return Response
      */
     public function tagNew(Request $request): Response
@@ -88,7 +88,7 @@ class TagController extends AbstractController
     /**
      * @param Request $request
      * @param Tag $tag
-     * @Route("/{_locale}/tag/edit/{id}", name="tag_edit", requirements={"id" : "\d+", "_locale" : "en|ru"}, defaults={"id" = 1})
+     * @Route("/tag/edit/{id}", name="tag_edit", requirements={"id" : "\d+"}, defaults={"id" = 1})
      * @return Response
      */
     public function tagEdit(Request $request, Tag $tag): Response

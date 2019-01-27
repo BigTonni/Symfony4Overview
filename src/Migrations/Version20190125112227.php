@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20190111192947 extends AbstractMigration
+final class Version20190125112227 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
@@ -19,8 +19,8 @@ final class Version20190111192947 extends AbstractMigration
 
         $this->addSql('DROP TABLE article');
         $this->addSql('DROP TABLE comment');
-        $this->addSql('DROP TABLE user');
-        $this->addSql('ALTER TABLE users ADD created_at DATETIME NOT NULL');
+        $this->addSql('ALTER TABLE tags ADD slug VARCHAR(255) NOT NULL');
+        $this->addSql('ALTER TABLE categories ADD slug VARCHAR(255) NOT NULL');
     }
 
     public function down(Schema $schema): void
@@ -30,7 +30,7 @@ final class Version20190111192947 extends AbstractMigration
 
         $this->addSql('CREATE TABLE article (id INT AUTO_INCREMENT NOT NULL, title VARCHAR(255) NOT NULL COLLATE utf8mb4_unicode_ci, slug VARCHAR(255) NOT NULL COLLATE utf8mb4_unicode_ci, body LONGTEXT DEFAULT NULL COLLATE utf8mb4_unicode_ci, published_at DATETIME NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE comment (id INT AUTO_INCREMENT NOT NULL, article_id INT NOT NULL, content LONGTEXT NOT NULL COLLATE utf8mb4_unicode_ci, published_at DATETIME NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE user (id INT AUTO_INCREMENT NOT NULL, full_name VARCHAR(64) NOT NULL COLLATE utf8mb4_unicode_ci, user_name VARCHAR(64) NOT NULL COLLATE utf8mb4_unicode_ci, email VARCHAR(64) NOT NULL COLLATE utf8mb4_unicode_ci, password VARCHAR(255) NOT NULL COLLATE utf8mb4_unicode_ci, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
-        $this->addSql('ALTER TABLE users DROP created_at');
+        $this->addSql('ALTER TABLE categories DROP slug');
+        $this->addSql('ALTER TABLE tags DROP slug');
     }
 }

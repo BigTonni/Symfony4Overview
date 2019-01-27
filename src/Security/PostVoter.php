@@ -10,6 +10,7 @@ use Symfony\Component\Security\Core\Security;
 
 class PostVoter extends Voter
 {
+    public const SHOW = 'show';
     public const EDIT = 'edit';
     public const DELETE = 'delete';
     private $security;
@@ -21,7 +22,7 @@ class PostVoter extends Voter
 
     protected function supports($attribute, $subject)
     {
-        if (!\in_array($attribute, [self::EDIT, self::DELETE], true)) {
+        if (!\in_array($attribute, [self::SHOW, self::EDIT, self::DELETE], true)) {
             return false;
         }
         // only vote on Article objects inside this voter
@@ -54,21 +55,18 @@ class PostVoter extends Voter
         $article = $subject;
 
         switch ($attribute) {
+            case self::SHOW:
+                return $this->canAction($article, $user);
             case self::EDIT:
-                return $this->canEdit($article, $user);
+                return $this->canAction($article, $user);
             case self::DELETE:
-                return $this->canDelete($article, $user);
+                return $this->canAction($article, $user);
         }
 
         throw new \LogicException('This code should not be reached!');
     }
 
-    private function canEdit(Article $article, User $user): bool
-    {
-        return $user === $article->getAuthor();
-    }
-
-    private function canDelete(Article $article, User $user): bool
+    private function canAction(Article $article, User $user): bool
     {
         return $user === $article->getAuthor();
     }

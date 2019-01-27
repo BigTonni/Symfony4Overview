@@ -4,8 +4,9 @@
 
 homepage:
     path: /{_locale}
-    controller: App\Controller\ArticleController::index
-    defaults:   { _locale: en }
+    controller: App\Controller\HomeController::index
     requirements:
-        _locale:  en|ru
-
+        _locale:  '%app_locales%'
+    defaults:
+        template: home/index.html.twig
+        _locale: '%locale%'
