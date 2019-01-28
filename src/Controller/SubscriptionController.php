@@ -38,28 +38,38 @@ class SubscriptionController extends AbstractController
         }
         $em->flush();
 
+        $this->addFlash(
+            'notice', 'Subscription created successfully'
+        );
+
         return $this->redirectToRoute('category_list');
     }
 
     /**
      * @Route("/unsubscribe/{slug}", name="category_unsubscribe")
      * @param Category $category
-     * @throws \Doctrine\ORM\NonUniqueResultException
      * @return Response
      */
     public function unsubscribe(Category $category): Response
     {
         $em = $this->getDoctrine()->getManager();
-        $isSubscription = $em->getRepository(Subscription::class)->findBy(
+        $arrSubscription = $em->getRepository(Subscription::class)->findBy(
             [
                 'user' => $this->getUser(),
                 'category' => $category,
             ]
         );
-        if ($isSubscription) {
-            $em->getRepository(Subscription::class)->deleteByCatagoryAndUser($category, $this->getUser());
+
+        if ($arrSubscription) {
+            foreach ($arrSubscription as $subscription) {
+                $em->remove($subscription);
+            }
+            $em->flush();
+
+            $this->addFlash(
+                'notice', 'Subscription deleted successfully'
+            );
         }
-        $em->flush();
 
         return $this->redirectToRoute('category_list');
     }
