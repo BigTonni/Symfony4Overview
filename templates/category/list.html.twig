@@ -13,7 +13,12 @@
                 </a>
                 <div style="float: right;"><a href="{{ path('category_edit', {id: category.id}) }}" class="btn btn-xs btn-warning">Edit</a></div>
             </h2>
-            
+
+            {% if is_granted('ROLE_USER') %}
+                <a href="{{ path('category_subscribe', {slug: category.slug}) }}" class="">Subscribe</a>
+                <a href="{{ path('category_unsubscribe', {slug: category.slug}) }}" class="">Unsubscribe</a>
+            {% endif %}
+
         </article>
     {% else %}
         <div class="well">Categories not found</div>

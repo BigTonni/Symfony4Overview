@@ -16,6 +16,7 @@ class LikeController extends AbstractController
     /**
      * @Route("/{slug}/like", name="article_toggle_like", methods={"POST"})
      * @param Article $article
+     * @throws \Doctrine\ORM\NonUniqueResultException
      * @return JsonResponse
      */
     public function toggleArticleLike(Article $article): JsonResponse

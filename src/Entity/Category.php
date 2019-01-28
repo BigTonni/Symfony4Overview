@@ -42,9 +42,15 @@ class Category
      */
     private $articles;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Subscription", mappedBy="category", orphanRemoval=true)
+     */
+    private $subscribers;
+
     public function __construct()
     {
         $this->articles = new ArrayCollection();
+        $this->subscribers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -102,6 +108,28 @@ class Category
             if ($article->getCategory() === $this) {
                 $article->setCategory(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getSubscriber(): Collection
+    {
+        return $this->subscribers;
+    }
+
+    /**
+     * @param Subscription $subscribers
+     * @return Category
+     */
+    public function addSubscriber(Subscription $subscribers): self
+    {
+        if (!$this->subscribers->contains($subscribers)) {
+            $this->subscribers[] = $subscribers;
+            $subscribers->setCategory($this);
         }
 
         return $this;
