@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
+use App\Service\MessageGenerator;
 
 /**
  * @Route("/article")
@@ -41,11 +42,14 @@ class ArticleController extends AbstractController
      * @return Response
      * @Route("/", methods={"GET"}, name="article_index", requirements={"countItemsPerPage" = "\d+"}, defaults={"countItemsPerPage" : "5"})
      */
-    public function index(Request $request, PaginatorInterface $paginator, $countItemsPerPage): Response
+    public function index(Request $request, PaginatorInterface $paginator, $countItemsPerPage,MessageGenerator $messageGenerator): Response
     {
         $em = $this->getDoctrine()->getManager();
         $query = $em->getRepository(Article::class)->createQueryBuilder('a')->getQuery();
         $articles = $paginator->paginate($query, $request->query->getInt('page', 1), $countItemsPerPage);
+
+//        $message = $messageGenerator->getHappyMessage();
+//        $this->addFlash('success', $message);
 
         return $this->render('article/index.html.twig', [
             'articles' => $articles,
