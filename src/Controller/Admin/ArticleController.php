@@ -41,7 +41,7 @@ class ArticleController extends AbstractController
      */
     public function index(ArticleRepository $articles): Response
     {
-        $authorArticles = $articles->findBy(['author' => $this->getUser()], ['publishedAt' => 'DESC']);
+        $authorArticles = $articles->findBy(['author' => $this->getUser()]);
 
         return $this->render('admin/article/index.html.twig', ['articles' => $authorArticles]);
     }
@@ -127,7 +127,7 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/delete", methods={"POST"}, name="admin_article_delete")
+     * @Route("/{id<\d+>}/delete", methods={"POST"}, name="admin_article_delete")
      * @IsGranted("delete", subject="article")
      * @param Request $request
      * @param Article $article

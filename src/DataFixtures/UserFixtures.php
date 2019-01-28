@@ -63,7 +63,6 @@ class UserFixtures extends Fixture
             $user,
             $testPassword
         ));
-        //$user->setPassword('test1');
         $user->setEmail('test@author1.com');
         $user->setRoles(['ROLE_USER']);
         $manager->persist($user);
