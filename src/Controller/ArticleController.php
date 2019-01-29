@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Article;
 use App\Entity\Comment;
+use App\Entity\Like;
 use App\Form\CommentType;
+use App\Service\MessageGenerator;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -16,6 +18,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 /**
+ * @IsGranted("ROLE_USER")
  * @Route("/article")
  */
 class ArticleController extends AbstractController
@@ -38,14 +41,18 @@ class ArticleController extends AbstractController
      * @param Request $request
      * @param PaginatorInterface $paginator
      * @param int $countItemsPerPage
+     * @param MessageGenerator $messageGenerator
      * @return Response
      * @Route("/", methods={"GET"}, name="article_index", requirements={"countItemsPerPage" = "\d+"}, defaults={"countItemsPerPage" : "5"})
      */
-    public function index(Request $request, PaginatorInterface $paginator, $countItemsPerPage): Response
+    public function index(Request $request, PaginatorInterface $paginator, $countItemsPerPage, MessageGenerator $messageGenerator): Response
     {
         $em = $this->getDoctrine()->getManager();
         $query = $em->getRepository(Article::class)->createQueryBuilder('a')->getQuery();
         $articles = $paginator->paginate($query, $request->query->getInt('page', 1), $countItemsPerPage);
+
+//        $message = $messageGenerator->getHappyMessage();
+//        $this->addFlash('success', $message);
 
         return $this->render('article/index.html.twig', [
             'articles' => $articles,
@@ -53,7 +60,7 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/article/list", name="article_list")
+     * @Route("/list", name="article_list")
      * @return Response
      */
     public function articleList(): Response
@@ -63,7 +70,8 @@ class ArticleController extends AbstractController
 
     /**
      * @param Article $article
-     * @Route("/article/{slug}", methods={"GET"}, name="article_show")
+     * @Route("/{slug}", methods={"GET"}, name="article_show")
+     * @throws \Doctrine\ORM\NonUniqueResultException
      * @return Response
      */
     public function articleShow(Article $article): Response
@@ -71,8 +79,12 @@ class ArticleController extends AbstractController
         $this->breadcrumbs->prependRouteItem('menu.home', 'homepage');
 //        $this->breadcrumbs->addRouteItem($article->getTitle(), 'article_show');
 
+        $em = $this->getDoctrine()->getManager();
+        $countLikes = $em->getRepository(Like::class)->getCountLikesForArticle($article->getId());
+
         return $this->render('article/show.html.twig', [
             'article' => $article,
+            'like' => $countLikes,
         ]);
     }
 

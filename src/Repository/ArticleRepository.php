@@ -25,8 +25,8 @@ class ArticleRepository extends ServiceEntityRepository
     public function findLatest()
     {
         return $this->createQueryBuilder('a')
-            ->andWhere('a.publishedAt <= :now')
-            ->setParameter('now', new \DateTime())
+            ->andWhere('a.status <= :now')
+            ->setParameter('now', 2)
             ->orderBy('a.publishedAt', 'Desc')
             ->getQuery()
             ->getResult()

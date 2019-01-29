@@ -17,6 +17,10 @@ class Article
 {
     use TimestampableEntity;
 
+    public const STATUS_DRAFT = 0;
+    public const STATUS_PENDING = 1;
+    public const STATUS_PUBLISH = 2;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -46,10 +50,9 @@ class Article
     private $body;
 
     /**
-     * @ORM\Column(type="datetime")
-     * @Assert\DateTime()
+     * @ORM\Column(type="smallint")
      */
-    private $publishedAt;
+    private $status;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="articles")
@@ -73,7 +76,6 @@ class Article
      *     orphanRemoval=true,
      *     cascade={"persist"}
      * )
-     * @ORM\OrderBy({"publishedAt" : "DESC"})
      */
     private $comments;
 
@@ -82,10 +84,16 @@ class Article
      */
     private $tags;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Like", mappedBy="article", orphanRemoval=true, cascade={"persist"})
+     */
+    private $likes;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
         $this->tags = new ArrayCollection();
+        $this->likes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -129,14 +137,21 @@ class Article
         return $this;
     }
 
-    public function getPublishedAt(): ?\DateTimeInterface
+    /**
+     * @return int
+     */
+    public function getStatus(): ?int
     {
-        return $this->publishedAt;
+        return $this->status;
     }
 
-    public function setPublishedAt(\DateTimeInterface $publishedAt): self
+    /**
+     * @param int $status
+     * @return Article
+     */
+    public function setStatus(int $status): self
     {
-        $this->publishedAt = $publishedAt;
+        $this->status = $status;
 
         return $this;
     }
@@ -198,6 +213,7 @@ class Article
 
     /**
      * @param Tag $tag
+     * @return Article
      */
     public function addTag(Tag $tag): self
     {
@@ -218,6 +234,40 @@ class Article
         if ($this->tags->contains($tag)) {
             $this->tags->removeElement($tag);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getLikes(): Collection
+    {
+        return $this->likes;
+    }
+
+    /**
+     * @param Like $like
+     * @return Article
+     */
+    public function addLike(?Like $like): self
+    {
+        $like->setArticle($this);
+        if (!$this->likes->contains($like)) {
+            $this->likes->add($like);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Like $like
+     * @return Article
+     */
+    public function removeLike(?Like $like): self
+    {
+        $like->setArticle(null);
+        $this->likes->removeElement($like);
 
         return $this;
     }

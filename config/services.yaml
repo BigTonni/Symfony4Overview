@@ -45,3 +45,7 @@ services:
         arguments: ["@request_stack"]
         tags:
         - { name: knp_menu.menu, alias: main } # The alias is what is used to retrieve the menu
+
+    app.notification_sender:
+        class: App\Service\NotificationSender
+        arguments: ['@doctrine.orm.entity_manager', '@templating', ' @mailer']

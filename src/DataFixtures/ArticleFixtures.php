@@ -22,7 +22,7 @@ class ArticleFixtures extends Fixture implements DependentFixtureInterface
             $article = new Article();
             $article->setTitle($faker->sentence($nbWords = 3, $variableNbWords = true));
             $article->setBody($faker->realText($maxNbChars = 200, $indexSize = 2));
-            $article->setPublishedAt(new \DateTime('now'));
+            $article->setStatus(Article::STATUS_PUBLISH);
             $article->setAuthor($this->getReference(UserFixtures::USER_REFERENCE));
             $article->setCategory($this->getReference(CategoryFixtures::CATEGORY_REFERENCE));
             $article->addTag($this->getReference(TagFixtures::TAG_REFERENCE));

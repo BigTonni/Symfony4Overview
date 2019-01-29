@@ -9,7 +9,8 @@ $(document).ready(function() {
             method: 'POST',
             url: $link.attr('href')
         }).done(function(data) {
-            $('.js-like-article-count').html(data.hearts);
+            console.log(data);
+            $('.js-like-article-count').html(data.like.countLikes);
         })
     });
 });

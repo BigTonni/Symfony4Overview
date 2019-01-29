@@ -13,7 +13,24 @@
                 </a>
                 <div style="float: right;"><a href="{{ path('category_edit', {id: category.id}) }}" class="btn btn-xs btn-warning">Edit</a></div>
             </h2>
-            
+
+            {% if is_granted('ROLE_USER') %}
+
+                {% set isSubscribe = false %}
+                {% for subscriber in category.subscriber.values %}
+                    {% if  subscriber.user == app.user%}
+                        {% set isSubscribe = true %}
+                    {% endif %}
+                {% endfor %}
+
+                {% if isSubscribe == true %}
+                    <a href="{{ path('category_unsubscribe', {slug: category.slug}) }}" class="">Unsubscribe</a>
+                {% else %}
+                    <a href="{{ path('category_subscribe', {slug: category.slug}) }}" class="">Subscribe</a>
+                {% endif %}
+
+            {% endif %}
+
         </article>
     {% else %}
         <div class="well">Categories not found</div>
