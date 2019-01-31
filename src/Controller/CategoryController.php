@@ -10,6 +10,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+/**
+ * @Route("/{_locale}/category", requirements={"_locale" : "en|ru"}, defaults={"_locale" : "en"})
+ */
 class CategoryController extends AbstractController
 {
     private $translator;
@@ -23,7 +26,7 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @Route("/category/list", name="category_list")
+     * @Route("/list", name="category_list")
      * @return Response
      */
     public function categoryList(): Response
@@ -39,10 +42,10 @@ class CategoryController extends AbstractController
 
     /**
      * @param Category $category
-     * @Route("/category/{id}", methods={"GET", "POST"}, name="category_show", requirements={"id" : "\d+"}, defaults={"id" = 1})
+     * @Route("/{slug}", methods={"GET", "POST"}, name="category_show")
      * @return Response
      */
-    public function categoryShow(Category $category): Response
+    public function show(Category $category): Response
     {
         return $this->render('category/show.html.twig', [
             'category' => $category,
@@ -52,10 +55,10 @@ class CategoryController extends AbstractController
     /**
      * @param Request $request
      * @param Category $category
-     * @Route("/category/edit/{id}", name="category_edit", requirements={"id" : "\d+"}, defaults={"id" = 1})
+     * @Route("/edit/{slug}", name="category_edit")
      * @return Response
      */
-    public function categoryEdit(Request $request, Category $category): Response
+    public function edit(Request $request, Category $category): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 

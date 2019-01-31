@@ -8,10 +8,10 @@
     {% for category in categories %}
         <article class="category">
             <h2>
-                <a href="{{ path('category_show', {id: category.id}) }}">
+                <a href="{{ path('category_show', {slug: category.slug}) }}">
                     {{ category.title }}
                 </a>
-                <div style="float: right;"><a href="{{ path('category_edit', {id: category.id}) }}" class="btn btn-xs btn-warning">Edit</a></div>
+                <div style="float: right;"><a href="{{ path('category_edit', {slug: category.slug}) }}" class="btn btn-xs btn-warning">Edit</a></div>
             </h2>
 
             {% if is_granted('ROLE_USER') %}

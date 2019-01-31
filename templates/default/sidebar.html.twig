@@ -1,0 +1,30 @@
+<div class="ad-sidebar-blog mx-auto mt-1 pb-2 pt-2">
+    <img class="sidebar-img" src="{{ asset('images/rocket.png') }}">
+    <p><span class="sidebar-text">New:</span> Coming Soon</p>
+    <button class="btn btn-info">Go!</button>
+</div>
+
+<div class="quote-space pb-2 pt-2 px-5">
+    <h3 class="text-center pb-3">New Comments</h3>
+    {% for comment in comments %}
+        <p>
+            <i class="fa fa-comment"></i> {{ comment.content }}<br>— <a href="{{ path('article_show', {slug: comment.article.slug}) }}">{{ comment.author.fullName }}, {{ comment.publishedAt|date("j F Y, H:i:s") }}</a>
+        </p>
+    {% else %}
+        <div class="well">Comments not found</div>
+    {% endfor %}
+</div>
+
+<div class="list-categories pb-2 pt-2 px-5">
+    <h3 class="text-center pb-3">Categories</h3>
+    <ul class="list-group">
+        {% for category in categories %}
+            <li class="list-group-item">
+                <a href="{{ path('category_show', {slug: category.slug}) }}">
+                    {{ category.title }}
+                </a></li>
+        {% else %}
+            <li class="list-group-item">Categories not found</li>
+        {% endfor %}
+    </ul>
+</div>

@@ -12,19 +12,23 @@ action.show: Show
 action.edit: Edit
 action.create_article: Create
 
-menu.home: Home
-menu.blog: Blog
+menu.home: 'Home'
+menu.blog: 'Blog'
 menu.login: Login
 menu.register: Register
 menu.logout: Logout
 menu.new_article: New article
 menu.my_articles: My Articles
-New user: New user
-New tag: New tag
-Users: Users
-Categories: Categories
-Tags: Tags
-Profile: Profile
+menu.profile: 'Profile'
+menu.profile_change_password: 'Change password'
+menu.new_user: New user
+menu.new_tag: New tag
+users: Users
+categories: Categories
+tags: Tags
+profile: Profile
+search: Search
+search.search_title: Search for
 
 Edit article: Edit article
 List articles: List articles

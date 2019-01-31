@@ -20,16 +20,15 @@ class CommentRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param int $count
      * @return mixed
      */
-    public function findOldest(int $count = 10)
+    public function findLatest()
     {
         return $this->createQueryBuilder('a')
             ->andWhere('a.publishedAt <= :now')
             ->setParameter('now', new \DateTime())
-            ->orderBy('a.publishedAt', 'ASC')
-            ->setMaxResults($count)
+            ->orderBy('a.publishedAt', 'DESC')
+            ->setMaxResults(Comment::NUM_ITEMS)
             ->getQuery()
             ->getResult()
             ;

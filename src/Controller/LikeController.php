@@ -9,12 +9,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/article")
+ * @Route("/{_locale}/article", requirements={"_locale" : "en|ru"}, defaults={"_locale" : "en"})
  */
 class LikeController extends AbstractController
 {
     /**
-     * @Route("/{slug}/like", name="article_toggle_like", methods={"POST"})
+     * @Route("/like/{slug}", name="article_toggle_like", methods={"POST"})
      * @param Article $article
      * @throws \Doctrine\ORM\NonUniqueResultException
      * @return JsonResponse

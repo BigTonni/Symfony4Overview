@@ -8,7 +8,7 @@
         <article class="post" style="border-bottom:1px solid #ccc;">
             <h2>{{ article.title }}</h2>
             <p>
-                <a href="{{ path('admin_article_show', {id: article.id}) }}" class="btn btn-sm btn-default">
+                <a href="{{ path('admin_article_show', {slug: article.slug}) }}" class="btn btn-sm btn-default">
                     <i class="fa fa-eye" aria-hidden="true"></i> {{ 'action.show'|trans }}
                 </a>
             </p>

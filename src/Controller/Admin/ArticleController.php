@@ -14,7 +14,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 /**
- * @Route("/admin/article")
+ * @Route("/{_locale}/admin/article", requirements={"_locale" : "en|ru"}, defaults={"_locale" : "en"})
  * @IsGranted("ROLE_ADMIN")
  */
 class ArticleController extends AbstractController
@@ -51,7 +51,7 @@ class ArticleController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function articleNew(Request $request): Response
+    public function new(Request $request): Response
     {
         $article = new Article();
         $article->setAuthor($this->getUser());
@@ -80,7 +80,7 @@ class ArticleController extends AbstractController
 
     /**
      * @param Article $article
-     * @Route("/{id<\d+>}", methods={"GET"}, name="admin_article_show")
+     * @Route("/{slug}", methods={"GET"}, name="admin_article_show")
      * @return Response
      */
     public function show(Article $article): Response
@@ -95,7 +95,7 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/{id<\d+>}/edit", methods={"GET", "POST"}, name="admin_article_edit")
+     * @Route("/edit/{id<\d+>}", methods={"GET", "POST"}, name="admin_article_edit")
      * @IsGranted("edit", subject="article", message="Articles can only be edited by their authors.")
      * @param Request $request
      * @param Article $article
@@ -127,7 +127,7 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/{id<\d+>}/delete", methods={"POST"}, name="admin_article_delete")
+     * @Route("/delete/{id<\d+>}", methods={"POST"}, name="admin_article_delete")
      * @IsGranted("delete", subject="article")
      * @param Request $request
      * @param Article $article

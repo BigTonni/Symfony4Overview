@@ -25,6 +25,7 @@ class NotificationSender
         $this->templating = $templating;
         $this->mailer = $mailer;
     }
+
     /**
      * @param Article $article
      * @param User $currentUser
@@ -33,7 +34,7 @@ class NotificationSender
     {
         $users = $this->em->getRepository(Subscription::class)->findBy(
             [
-                'isSend' => false
+                'isSend' => false,
             ]
         );
         foreach ($users as $user) {
@@ -42,6 +43,7 @@ class NotificationSender
             }
         }
     }
+
     /**
      * @param User $user
      * @param Article $article

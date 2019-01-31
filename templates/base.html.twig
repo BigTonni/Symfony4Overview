@@ -23,9 +23,9 @@
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 {{ knp_menu_render('main', {'currentClass': 'active'}) }}
 
-                <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-info my-2 my-sm-0" type="submit">Search</button>
+                <form class="form-inline my-2 my-lg-0" method="get" action="{{ path('article_search') }}">
+                    <input class="form-control mr-sm-2" type="search" name="search_field" placeholder="{{ 'search'|trans }}" aria-label="Search">
+                    <button class="btn btn-info my-2 my-sm-0" type="submit">{{ 'search'|trans }}</button>
                 </form>
                 {% if is_granted('ROLE_USER') %}
                     <ul class="navbar-nav ml-auto">
@@ -34,23 +34,24 @@
                                 <img class="nav-profile-img rounded-circle" src="{{ asset('images/placeholder-man.png') }}">
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" href="{{ path('app_profile') }}">Profile</a>
+                                <a class="dropdown-item" href="{{ path('app_profile') }}">{{ 'menu.profile'|trans }}</a>
+                                <a class="dropdown-item" href="{{ path('profile_change_password') }}">{{ 'menu.profile_change_password'|trans }}</a>
                                 <a class="dropdown-item" href="{{ path('admin_article_new') }}">{{ 'menu.new_article'|trans }}</a>
                                 <a class="dropdown-item" href="{{ path('app_logout') }}">{{ 'menu.logout'|trans }}</a>
                             </div>
                         </li>
                     </ul>
                 {% endif %}
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="{{ path('homepage', {'_locale':'en'}) }}" class="btn">EN</a></li>
+                    <li><a href="{{ path('homepage', {'_locale':'ru'}) }}" class="btn">RU</a></li>
+                </ul>
             </div>
         </nav>
 
         <div class="container">
             <div class="row">
-            {% for message in app.flashes('success') %}
-                <div class="alert alert-success">
-                    {{ message }}
-                </div>
-            {% endfor %}
+                {{ include('default/_flash_messages.html.twig') }}
             </div>
         </div>
 

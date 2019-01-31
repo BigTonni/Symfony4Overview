@@ -27,9 +27,75 @@ class ArticleRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('a')
             ->andWhere('a.status <= :now')
             ->setParameter('now', 2)
-            ->orderBy('a.publishedAt', 'Desc')
+            ->orderBy('a.createdAt', 'Desc')
+            ->setMaxResults(Article::NUM_ITEMS)
             ->getQuery()
             ->getResult()
             ;
+    }
+
+    public function findArticlesByCategoryId($id)
+    {
+        return $this->createQueryBuilder('a')
+            ->innerJoin('a.category', 'c')
+            ->where('c.id IN (:id)')
+            ->setParameter(':id', $id)
+            ->orderBy('c.title', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @param string $rawQuery
+     * @param int $limit
+     * @return Article[]
+     */
+    public function findBySearchQuery(string $rawQuery, int $limit = Article::NUM_ITEMS): array
+    {
+        $query = $this->sanitizeSearchQuery($rawQuery);
+        $searchTerms = $this->extractSearchTerms($query);
+
+        if (0 === \count($searchTerms)) {
+            return [];
+        }
+
+        $queryBuilder = $this->createQueryBuilder('a');
+
+        foreach ($searchTerms as $key => $term) {
+            $queryBuilder
+                ->orWhere('a.title LIKE :t_' . $key)
+                ->setParameter('t_' . $key, '%' . $term . '%')
+            ;
+        }
+
+        return $queryBuilder
+            ->orderBy('a.createdAt', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Removes all non-alphanumeric characters except whitespaces.
+     * @param string $query
+     * @return string
+     */
+    private function sanitizeSearchQuery(string $query): string
+    {
+        return trim(preg_replace('/[[:space:]]+/', ' ', $query));
+    }
+
+    /**
+     * Splits the search query into terms and removes the ones which are irrelevant.
+     * @param string $searchQuery
+     * @return array
+     */
+    private function extractSearchTerms(string $searchQuery): array
+    {
+        $terms = array_unique(explode(' ', $searchQuery));
+
+        return array_filter($terms, function ($term) {
+            return 2 <= mb_strlen($term);
+        });
     }
 }

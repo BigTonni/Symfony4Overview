@@ -2,33 +2,37 @@
 
 namespace App\Controller;
 
-use App\Entity\Article;
+use App\Entity\Category;
 use App\Repository\ArticleRepository;
 use App\Repository\CommentRepository;
-use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class HomeController extends AbstractController
 {
     /**
      * @param ArticleRepository $articles
-     * @param CommentRepository $comments
-     * @param Request $request
-     * @param PaginatorInterface $paginator
      * @return Response
      */
-    public function index(ArticleRepository $articles, CommentRepository $comments, Request $request, PaginatorInterface $paginator): Response
+    public function index(ArticleRepository $articles): Response
     {
-        //$latestArticles = $articles->findLatest();
-        //Find 5 first comments
-        $oldestComments = $comments->findOldest(5);
+        $articles = $articles->findLatest();
 
-        $em = $this->getDoctrine()->getManager();
-        $query = $em->getRepository(Article::class)->createQueryBuilder('a')->getQuery();
-        $articles = $paginator->paginate($query, $request->query->getInt('page', 1), 5);
+        return $this->render('default/homepage.html.twig', ['pagination' => $articles]);
+    }
 
-        return $this->render('home/index.html.twig', ['pagination' => $articles, 'comments' => $oldestComments]);
+    /**
+     * @param CommentRepository $comments
+     * @return Response
+     */
+    public function sidebar(CommentRepository $comments): Response
+    {
+        $categories = $this->getDoctrine()
+            ->getRepository(Category::class)
+            ->findAll();
+
+        $comments = $comments->findLatest();
+
+        return $this->render('default/sidebar.html.twig', ['comments' => $comments, 'categories' => $categories]);
     }
 }

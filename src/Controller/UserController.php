@@ -11,6 +11,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+/**
+ * @Route("/{_locale}/user", requirements={"_locale" : "en|ru"}, defaults={"_locale" : "en"})
+ */
 class UserController extends AbstractController
 {
     private $translator;
@@ -24,7 +27,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/user/list", name="user_list")
+     * @Route("/list", name="user_list")
      * @return Response
      */
     public function userList(): Response
@@ -39,11 +42,11 @@ class UserController extends AbstractController
     }
 
     /** @param int $id
-     * @Route("/user_articles/{id}/", name="user_articles", requirements={"id" : "\d+"}, defaults={"id" = 1})
+     * @Route("/articles/{id}", name="user_articles", requirements={"id" : "\d+"}, defaults={"id" = 1})
      * @param ArticleRepository $articles
      * @return Response
      */
-    public function userArticlesList(ArticleRepository $articles, $id): Response
+    public function articlesList(ArticleRepository $articles, $id): Response
     {
         $authorArticles = $articles->findBy(['author' => $id], ['publishedAt' => 'DESC']);
 
@@ -54,7 +57,7 @@ class UserController extends AbstractController
 
     /**
      * @param User $user
-     * @Route("/user/{id}", methods={"GET", "POST"}, name="user_show", requirements={"id" : "\d+"}, defaults={"id" = 1})
+     * @Route("/{id}", methods={"GET", "POST"}, name="user_show", requirements={"id" : "\d+"}, defaults={"id" = 1})
      * @return Response
      */
     public function userShow(User $user): Response
@@ -66,10 +69,10 @@ class UserController extends AbstractController
 
     /**
      * @param Request $request
-     * @Route("/user/new", name="user_new")
+     * @Route("/new", name="user_new")
      * @return Response
      */
-    public function userNew(Request $request): Response
+    public function new(Request $request): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
@@ -94,10 +97,10 @@ class UserController extends AbstractController
     /**
      * @param Request $request
      * @param User $user
-     * @Route("/user/edit/{id}/", name="user_edit", requirements={"id" : "\d+"}, defaults={"id" = 1})
+     * @Route("/edit/{id}", name="user_edit", requirements={"id" : "\d+"}, defaults={"id" = 1})
      * @return Response
      */
-    public function userEdit(Request $request, User $user): Response
+    public function edit(Request $request, User $user): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
@@ -119,10 +122,10 @@ class UserController extends AbstractController
 
     /**
      * @param User $user
-     * @Route("/user/delete/{id}", name="user_delete", requirements={"id" : "\d+"})
+     * @Route("/delete/{id}", name="user_delete", requirements={"id" : "\d+"})
      * @return Response
      */
-    public function userDelete(User $user): Response
+    public function delete(User $user): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 

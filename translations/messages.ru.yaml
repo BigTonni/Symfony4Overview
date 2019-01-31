@@ -19,12 +19,16 @@ menu.register: Регистрация
 menu.logout: Выход
 menu.new_article: Новая статья
 menu.my_articles: Мои статьи
-New user: Новый юзер
-New tag: Новый тег
-Users: Юзеры
-Categories: Категории
-Tags: Теги
-Profile: Профиль
+menu.profile: Профиль
+menu.profile_change_password: Поменять пароль
+menu.new_user: Новый юзер
+menu.new_tag: Новый тег
+users: Юзеры
+categories: Категории
+tags: Теги
+profile: Профиль
+search: Поиск
+search.search_title: Поиск для
 
 Edit article: Отредактировать статью
 List articles: Список статей

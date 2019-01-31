@@ -17,6 +17,8 @@ class Article
 {
     use TimestampableEntity;
 
+    public const NUM_ITEMS = 5;
+
     public const STATUS_DRAFT = 0;
     public const STATUS_PENDING = 1;
     public const STATUS_PUBLISH = 2;

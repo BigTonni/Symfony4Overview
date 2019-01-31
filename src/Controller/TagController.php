@@ -11,6 +11,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+/**
+ * @Route("/{_locale}/tag", requirements={"_locale" : "en|ru"}, defaults={"_locale" : "en"})
+ */
 class TagController extends AbstractController
 {
     private $translator;
@@ -26,7 +29,7 @@ class TagController extends AbstractController
     /**
      * @param Request $request
      * @param PaginatorInterface $paginator
-     * @Route("/tag/list", name="tag_list")
+     * @Route("/list", name="tag_list")
      * @return Response
      */
     public function index(Request $request, PaginatorInterface $paginator): Response
@@ -42,7 +45,7 @@ class TagController extends AbstractController
 
     /**
      * @param Tag $tag
-     * @Route("/tag/{id}", methods={"GET", "POST"}, name="tag_show", requirements={"id" : "\d+"}, defaults={"id" = 1})
+     * @Route("/{id}", methods={"GET", "POST"}, name="tag_show", requirements={"id" : "\d+"}, defaults={"id" = 1})
      * @return Response
      */
     public function tagShow(Tag $tag): Response
@@ -54,7 +57,7 @@ class TagController extends AbstractController
 
     /**
      * @param Request $request
-     * @Route("/tag/new", name="tag_new")
+     * @Route("/new", name="tag_new")
      * @return Response
      */
     public function tagNew(Request $request): Response
@@ -88,7 +91,7 @@ class TagController extends AbstractController
     /**
      * @param Request $request
      * @param Tag $tag
-     * @Route("/tag/edit/{id}", name="tag_edit", requirements={"id" : "\d+"}, defaults={"id" = 1})
+     * @Route("/edit/{id}", name="tag_edit", requirements={"id" : "\d+"}, defaults={"id" = 1})
      * @return Response
      */
     public function tagEdit(Request $request, Tag $tag): Response

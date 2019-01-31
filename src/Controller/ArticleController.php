@@ -3,10 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Entity\Category;
 use App\Entity\Comment;
 use App\Entity\Like;
 use App\Form\CommentType;
-use App\Service\MessageGenerator;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -19,10 +19,12 @@ use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 /**
  * @IsGranted("ROLE_USER")
- * @Route("/article")
+ * @Route("/{_locale}/article", requirements={"_locale" : "en|ru"}, defaults={"_locale" : "en"})
  */
 class ArticleController extends AbstractController
 {
+    public const ARTICLES_PER_PAGE = 3;
+
     private $translator;
 
     private $breadcrumbs;
@@ -40,19 +42,14 @@ class ArticleController extends AbstractController
     /**
      * @param Request $request
      * @param PaginatorInterface $paginator
-     * @param int $countItemsPerPage
-     * @param MessageGenerator $messageGenerator
      * @return Response
-     * @Route("/", methods={"GET"}, name="article_index", requirements={"countItemsPerPage" = "\d+"}, defaults={"countItemsPerPage" : "5"})
+     * @Route("/", methods={"GET"}, name="article_index")
      */
-    public function index(Request $request, PaginatorInterface $paginator, $countItemsPerPage, MessageGenerator $messageGenerator): Response
+    public function index(Request $request, PaginatorInterface $paginator): Response
     {
         $em = $this->getDoctrine()->getManager();
         $query = $em->getRepository(Article::class)->createQueryBuilder('a')->getQuery();
-        $articles = $paginator->paginate($query, $request->query->getInt('page', 1), $countItemsPerPage);
-
-//        $message = $messageGenerator->getHappyMessage();
-//        $this->addFlash('success', $message);
+        $articles = $paginator->paginate($query, $request->query->getInt('page', 1), self::ARTICLES_PER_PAGE);
 
         return $this->render('article/index.html.twig', [
             'articles' => $articles,
@@ -60,24 +57,41 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/list", name="article_list")
+     * @Route("/search", methods={"GET"}, name="article_search")
+     * @param Request $request
+     * @param PaginatorInterface $paginator
      * @return Response
      */
-    public function articleList(): Response
+    public function search(Request $request, PaginatorInterface $paginator): Response
     {
-        return $this->render('article/list.html.twig');
+        $em = $this->getDoctrine()->getManager();
+        $query = $em->getRepository(Article::class)->findBySearchQuery(
+            $request->query->get('search_field', '')
+        );
+
+        $articles = $paginator->paginate($query, $request->query->getInt('page', 1), self::ARTICLES_PER_PAGE);
+
+        return $this->render('article/search.html.twig', [
+            'articles' => $articles,
+            'title' => $this->translator->trans('search.search_title') . ' ' . $request->query->get('search_field'),
+        ]);
     }
 
     /**
      * @param Article $article
-     * @Route("/{slug}", methods={"GET"}, name="article_show")
      * @throws \Doctrine\ORM\NonUniqueResultException
      * @return Response
+     * @Route("/{slug}", methods={"GET"}, name="article_show")
      */
-    public function articleShow(Article $article): Response
+    public function show(Article $article): Response
     {
         $this->breadcrumbs->prependRouteItem('menu.home', 'homepage');
-//        $this->breadcrumbs->addRouteItem($article->getTitle(), 'article_show');
+        $this->breadcrumbs->addRouteItem($article->getCategory()->getTitle(), 'category_articles', [
+            'slug' => $article->getCategory()->getSlug(),
+        ]);
+        $this->breadcrumbs->addRouteItem($article->getTitle(), 'article_show', [
+            'slug' => $article->getSlug(),
+        ]);
 
         $em = $this->getDoctrine()->getManager();
         $countLikes = $em->getRepository(Like::class)->getCountLikesForArticle($article->getId());
@@ -85,6 +99,24 @@ class ArticleController extends AbstractController
         return $this->render('article/show.html.twig', [
             'article' => $article,
             'like' => $countLikes,
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param PaginatorInterface $paginator
+     * @param Category $category
+     * @return Response
+     * @Route("/list_in_category/{slug}", name="category_articles")
+     */
+    public function showCategoryArticles(Request $request, PaginatorInterface $paginator, Category $category): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+        $query = $em->getRepository(Article::class)->findArticlesByCategoryId($category->getId());
+        $articles = $paginator->paginate($query, $request->query->getInt('page', 1), self::ARTICLES_PER_PAGE);
+
+        return $this->render('article/category_articles.html.twig', [
+            'articles' => $articles,
         ]);
     }
 
@@ -132,15 +164,5 @@ class ArticleController extends AbstractController
             'article' => $article,
             'form' => $form->createView(),
         ]);
-    }
-
-    /**
-     * @Route("/search", methods={"GET"}, name="article_search")
-     * @param Request $request
-     * @return Response
-     */
-    public function search(Request $request): Response
-    {
-        return $this->render('article/search.html.twig');
     }
 }
