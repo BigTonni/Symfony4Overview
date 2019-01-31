@@ -42,5 +42,5 @@
 {% endblock %}
 
 {% block sidebar %}
-    {{ parent() }}
+    {{ render(controller('App\\Controller\\HomeController::sidebar')) }}
 {% endblock %}
