@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}List categories{% endblock %}
+{% block title %}{{ 'category.list' }}{% endblock %}
 
 {% block body_id 'category_list' %}
 
@@ -33,7 +33,7 @@
 
         </article>
     {% else %}
-        <div class="well">Categories not found</div>
+        <div class="well">{{ 'category.no_found'|trans }}</div>
     {% endfor %}
     
 {% endblock %}

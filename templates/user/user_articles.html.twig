@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}List users{% endblock %}
+{% block title %}{{ 'user.list'|trans }}{% endblock %}
 
 {% block body_id 'user_articles' %}
 
@@ -11,12 +11,12 @@
                 <a href="{{ path('article_show', {id: article.id}) }}">
                     {{ article.title }}
                 </a>
-                <div style="float: right;"><a href="{{ path('article_edit', {id: article.id}) }}" class="btn btn-xs btn-warning">Edit</a></div>
-                <div style="float: right;"><a href="{{ path('article_delete', {id: article.id}) }}" class="btn btn-xs btn-danger">Delete</a></div>
+                <div style="float: right;"><a href="{{ path('article_edit', {id: article.id}) }}" class="btn btn-xs btn-warning">{{ 'action.edit' }}</a></div>
+                <div style="float: right;"><a href="{{ path('article_delete', {id: article.id}) }}" class="btn btn-xs btn-danger">{{ 'action.delete' }}</a></div>
             </h2>
 
             <p class="post-metadata">
-                <span class="metadata"><i class="fa fa-calendar"></i> {{ article.publishedAt|date("m/d/Y") }}</span>
+                <span class="metadata"><i class="fa fa-calendar"></i> {{ article.createdAt|date("j F Y, H:i:s") }}</span>
             </p>
 
             <div class="col-md-12 col-lg-12 col-xl-12">
@@ -25,7 +25,7 @@
 
         </article>
     {% else %}
-        <div class="well">Articles not found</div>
+        <div class="well">{{ 'article.no_found'|trans }}</div>
     {% endfor %}
 
 {% endblock %}

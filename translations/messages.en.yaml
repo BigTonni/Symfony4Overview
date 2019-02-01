@@ -35,9 +35,9 @@ profile: Profile
 search: Search
 search.search_title: Search for
 
-Edit article: Edit article
+article.edit: Edit article
 List articles: List articles
-article.no_posts_found: Articles not found
+article.no_found: Articles not found
 
 http_error.name: Error {status_code, number}
 http_error_403.description: You don't have permission to access to this resource.

@@ -6,7 +6,7 @@
     <h1>{{ article.title|upper }}</h1>
 
     <p class="post-metadata">
-        {#<span class="metadata"><i class="fa fa-calendar"></i> {{ article.publishedAt|date("m/d/Y") }}</span>#}
+        <span class="metadata"><i class="fa fa-calendar"></i> {{ article.createdAt|date("j F Y, H:i:s") }}</span>
         <span class="metadata"><i class="fa fa-user"></i> by {{ article.author.fullName }}</span>
     </p>
 
@@ -21,18 +21,18 @@
     <p>{{ article.body }}</p>
 
     <div id="article-add-comment" class="well">
-        <h3>Add Comment</h3>
+        <h3>{{ 'comment.add' }}</h3>
         {{ render(controller('App\\Controller\\ArticleController::commentForm', {'id': article.id})) }}
     </div>
 
     <h3>
-        Total comments: {{ article.comments|length }}
+        {{ 'comment.total'|trans }}: {{ article.comments|length }}
     </h3>
     {% for comment in article.comments %}
         <div class="row article-comment">
             <a name="comment_{{ comment.id }}"></a>
             <div class="col-sm-4">
-                <h4>{{ comment.author.fullName }}</h4> (<i>{{ comment.publishedAt|date("m/d/Y") }}</i>)
+                <h4>{{ comment.author.fullName }}</h4> (<i>{{ comment.publishedAt|date("j F Y, H:i:s") }}</i>)
             </div>
             <div class="col-sm-8">
                 {{ comment.content }}
@@ -40,7 +40,7 @@
         </div>
     {% else %}
         <div class="article-comment">
-            <p>Not comments</p>
+            <p>{{ 'comment.no_found'|trans }}</p>
         </div>
     {% endfor %}
     

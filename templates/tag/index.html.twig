@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Tag index{% endblock %}
+{% block title %}{{ 'menu.tag_list'|trans }}{% endblock %}
 
 {% block body_id 'tag_index' %}
 
@@ -9,11 +9,11 @@
         <article class="post">
             <h2>
                 {{ tag.name }}
-                <div style="float: right;"><a href="{{ path('tag_edit', {id: tag.id}) }}" class="btn btn-xs btn-warning">Edit</a></div>
+                <div style="float: right;"><a href="{{ path('tag_edit', {id: tag.id}) }}" class="btn btn-xs btn-warning">{{ 'action.edit'|trans }}</a></div>
             </h2>
         </article>
     {% else %}
-        <div class="well">Tags not found</div>
+        <div class="well">{{ 'tag.no_found'|trans }}</div>
     {% endfor %}
 
     <div class="navigation">

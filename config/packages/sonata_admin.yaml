@@ -5,6 +5,9 @@ sonata_admin:
             - { type: sonata.admin.block.admin_list, class: col-lg-3 col-xs-6, position: left }
             - { type: sonata.block.service.text, class: col-lg-9 col-xs-6, position: right }
 
+    templates:
+        edit: admin/edit.html.twig
+
 sonata_block:
     blocks:
         sonata.admin.block.admin_list:

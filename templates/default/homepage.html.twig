@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Home{% endblock %}
+{% block title %}{{ 'menu.home'|trans }}{% endblock %}
 
 {% block body_id 'homepage' %}
 
 {% block main %}
-    <h2>New articles</h2>
+    <h2>{{ 'articles.new'|trans }}</h2>
     {% for article in pagination %}
         <div class="article-container my-1">
             <a href="{{ path('article_show', {slug: article.slug}) }}">
@@ -19,7 +19,7 @@
             </a>
         </div>
     {% else %}
-        <div class="well">{{ 'article.no_posts_found'|trans }}</div>
+        <div class="well">{{ 'article.no_found'|trans }}</div>
     {% endfor %}
 {% endblock %}
 

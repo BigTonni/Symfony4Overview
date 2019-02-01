@@ -1,9 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Login{% endblock %}
+{% block title %}{{ 'menu.login'|trans }}{% endblock %}
 
 {% block main %}
-    
 
     <div class="row">
         <div class="col-sm-5">
@@ -25,7 +24,7 @@
 
                     <div class="checkbox mb-3">
                         <label>
-                            <input type="checkbox" value="remember-me"> Remember me
+                            <input type="checkbox" value="remember-me"> {{ 'label.remember_me'|trans }}
                         </label>
                     </div>
                     <button class="btn btn-lg btn-primary btn-block" type="submit">

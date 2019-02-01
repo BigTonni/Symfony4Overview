@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @IsGranted("ROLE_USER")
@@ -15,6 +16,16 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class SubscriptionController extends AbstractController
 {
+    private $translator;
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * @Route("/subscribe/{slug}", name="category_subscribe")
      * @param Category $category
@@ -38,8 +49,12 @@ class SubscriptionController extends AbstractController
         }
         $em->flush();
 
+//        $this->addFlash(
+//            'notice', 'Subscription created successfully'
+//        );
         $this->addFlash(
-            'notice', 'Subscription created successfully'
+            'notice',
+            $this->translator->trans('subscription.created_successfully')
         );
 
         return $this->redirectToRoute('category_list');
@@ -66,8 +81,12 @@ class SubscriptionController extends AbstractController
             }
             $em->flush();
 
+//            $this->addFlash(
+//                'notice', 'Subscription deleted successfully'
+//            );
             $this->addFlash(
-                'notice', 'Subscription deleted successfully'
+                'notice',
+                $this->translator->trans('subscription.deleted_successfully')
             );
         }
 

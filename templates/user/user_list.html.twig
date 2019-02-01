@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}List users{% endblock %}
+{% block title %}{{ 'user.list'|trans }}{% endblock %}
 
 {% block body_id 'user_list' %}
 
@@ -11,9 +11,9 @@
                 <a href="{{ path('user_show', {id: user.id}) }}">
                     {{ user.fullName }}
                 </a>
-                <div style="float: right;"><a href="{{ path('user_edit', {id: user.id}) }}" class="btn btn-xs btn-warning">Edit</a></div>
-                <div style="float: right;"><a href="{{ path('user_delete', {id: user.id}) }}" class="btn btn-xs btn-danger">Delete</a></div>
-                <div style="float: right;"><a href="{{ path('user_articles', {id: user.id}) }}" class="btn btn-xs btn-success">Articles</a></div>
+                <div style="float: right;"><a href="{{ path('user_edit', {id: user.id}) }}" class="btn btn-xs btn-warning">{{ 'action.edit'|trans }}</a></div>
+                <div style="float: right;"><a href="{{ path('user_delete', {id: user.id}) }}" class="btn btn-xs btn-danger">{{ 'action.delete'|trans }}</a></div>
+                <div style="float: right;"><a href="{{ path('user_articles', {id: user.id}) }}" class="btn btn-xs btn-success">{{ 'action.user_articles'|trans }}</a></div>
             </h2>
 
             <p class="post-metadata">
@@ -23,7 +23,7 @@
 
         </article>
     {% else %}
-        <div class="well">Users not found</div>
+        <div class="well">{{ 'user.no_found'|trans }}</div>
     {% endfor %}
 
 {% endblock %}

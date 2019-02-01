@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% block title %}Manage Account!{% endblock %}
+{% block title %}{{ 'profile.manage' }}{% endblock %}
 
 {% block body %}
     <div class="container">
@@ -13,27 +13,27 @@
                     </div>
                     <div class="col-md-10 no-pad">
                         <div class="user-pad">
-                            <h3>Welcome back, {{ app.user.fullName }}</h3>
+                            <h3>{{ 'profile.wellcome_back'|trans }} {{ app.user.fullName }}</h3>
                             <a class="btn btn-labeled btn-info" href="#">
-                                <span class="btn-label"><i class="fa fa-pencil"></i></span>Update
+                                <span class="btn-label"><i class="fa fa-pencil"></i></span>{{ 'button.update'|trans }}
                             </a>
                         </div>
                     </div>
                 </div>
-                <div class="row overview">
-                    <div class="col-md-4 user-pad text-center">
-                        <h3>COMMENTS</h3>
-                        <h4>184</h4>
-                    </div>
-                    <div class="col-md-4 user-pad text-center">
-                        <h3>ARTICLES READ</h3>
-                        <h4>1,910</h4>
-                    </div>
-                    <div class="col-md-4 user-pad text-center">
-                        <h3>LIKES</h3>
-                        <h4>3,892</h4>
-                    </div>
-                </div>
+                {#<div class="row overview">#}
+                    {#<div class="col-md-4 user-pad text-center">#}
+                        {#<h3>COMMENTS</h3>#}
+                        {#<h4>184</h4>#}
+                    {#</div>#}
+                    {#<div class="col-md-4 user-pad text-center">#}
+                        {#<h3>ARTICLES READ</h3>#}
+                        {#<h4>1,910</h4>#}
+                    {#</div>#}
+                    {#<div class="col-md-4 user-pad text-center">#}
+                        {#<h3>LIKES</h3>#}
+                        {#<h4>3,892</h4>#}
+                    {#</div>#}
+                {#</div>#}
             </div>
         </div>
     </div>

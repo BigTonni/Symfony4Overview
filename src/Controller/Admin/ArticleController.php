@@ -87,7 +87,7 @@ class ArticleController extends AbstractController
     {
         // This security check can also be performed
         // using an annotation: @IsGranted("show", subject="article", message="Articles can only be shown to their authors.")
-        $this->denyAccessUnlessGranted('show', $article, 'Articles can only be shown to their authors.');
+        $this->denyAccessUnlessGranted('show', $article, 'article.can_shown_their_authors.');
 
         return $this->render('admin/article/show.html.twig', [
             'article' => $article,

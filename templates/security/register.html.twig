@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% block title %}Register!{% endblock %}
+{% block title %}{{ 'menu.register'|trans }}{% endblock %}
 
 {% block main %}
     <div class="container">
@@ -17,7 +17,7 @@
                             <input type="checkbox" name="_remember_me" required> Agree to terms I for sure read
                         </label>
                     </div>
-                    <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">{{ 'button.register'|trans }}</button>
                 </form>
             </div>
         </div>

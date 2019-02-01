@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Category{% endblock %}
+{% block title %}{{ 'category'|trans }}{% endblock %}
 
 {% block body_id 'category_show' %}
     
 {% block main %}
     <h1>{{ category.title|upper }}
-        <div style="float: right;"><a href="{{ path('category_edit', {slug: category.slug}) }}" class="btn btn-xs btn-warning">Edit</a></div>
+        <div style="float: right;"><a href="{{ path('category_edit', {slug: category.slug}) }}" class="btn btn-xs btn-warning">{{ 'action.edit'|trans }}</a></div>
     </h1>
     
 {% endblock %}
