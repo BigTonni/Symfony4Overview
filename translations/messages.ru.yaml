@@ -26,6 +26,11 @@ menu.new_tag: Новый тег
 users: Юзеры
 categories: Категории
 tags: Теги
+admin.article: Статья
+admin.category: Категория
+admin.user: Юзер
+admin.tags: Теги
+admin.pages: Страницы
 profile: Профиль
 search: Поиск
 search.search_title: Поиск для

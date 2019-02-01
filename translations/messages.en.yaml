@@ -26,6 +26,11 @@ menu.new_tag: New tag
 users: Users
 categories: Categories
 tags: Tags
+admin.article: Article
+admin.category: Category
+admin.user: User
+admin.tags: Tags
+admin.pages: Pages
 profile: Profile
 search: Search
 search.search_title: Search for

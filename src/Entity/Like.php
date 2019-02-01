@@ -27,6 +27,11 @@ class Like
      */
     private $user;
 
+    public function __toString()
+    {
+        return (string) $this->getArticle()->getLikes();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
