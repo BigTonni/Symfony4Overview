@@ -32,11 +32,16 @@ class NotificationSender
      */
     public function sendNotification(Article $article, User $currentUser): void
     {
+        //Need fix - Without args: user and articles.
+
         $users = $this->em->getRepository(Subscription::class)->findBy(
             [
                 'isSend' => false,
             ]
         );
+
+        //Need fix - Get all category and return articles
+
         foreach ($users as $user) {
             if ($currentUser->getId() !== $user->getId()) {
                 $this->sendMail($user, $article);
