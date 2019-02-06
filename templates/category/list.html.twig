@@ -37,3 +37,7 @@
     {% endfor %}
     
 {% endblock %}
+
+{% block sidebar %}
+    {{ render(controller('App\\Controller\\HomeController::sidebar')) }}
+{% endblock %}

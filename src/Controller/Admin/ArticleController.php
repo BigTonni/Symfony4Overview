@@ -79,23 +79,7 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @param Article $article
-     * @Route("/{slug}", methods={"GET"}, name="admin_article_show")
-     * @return Response
-     */
-    public function show(Article $article): Response
-    {
-        // This security check can also be performed
-        // using an annotation: @IsGranted("show", subject="article", message="Articles can only be shown to their authors.")
-        $this->denyAccessUnlessGranted('show', $article, 'article.can_shown_their_authors.');
-
-        return $this->render('admin/article/show.html.twig', [
-            'article' => $article,
-        ]);
-    }
-
-    /**
-     * @Route("/edit/{id<\d+>}", methods={"GET", "POST"}, name="admin_article_edit")
+     * @Route("/edit/{slug}", methods={"GET", "POST"}, name="admin_article_edit")
      * @IsGranted("edit", subject="article", message="Articles can only be edited by their authors.")
      * @param Request $request
      * @param Article $article
@@ -117,7 +101,7 @@ class ArticleController extends AbstractController
                 ])
             );
 
-            return $this->redirectToRoute('admin_article_edit', ['id' => $article->getId()]);
+            return $this->redirectToRoute('admin_article_edit', ['slug' => $article->getSlug()]);
         }
 
         return $this->render('admin/article/edit.html.twig', [
@@ -127,7 +111,23 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/delete/{id<\d+>}", methods={"POST"}, name="admin_article_delete")
+     * @param Article $article
+     * @Route("/{slug}", methods={"GET"}, name="admin_article_show")
+     * @return Response
+     */
+    public function show(Article $article): Response
+    {
+        // This security check can also be performed
+        // using an annotation: @IsGranted("show", subject="article", message="Articles can only be shown to their authors.")
+        $this->denyAccessUnlessGranted('show', $article, 'article.can_shown_their_authors.');
+
+        return $this->render('admin/article/show.html.twig', [
+            'article' => $article,
+        ]);
+    }
+
+    /**
+     * @Route("/delete/{slug}", methods={"POST"}, name="admin_article_delete")
      * @IsGranted("delete", subject="article")
      * @param Request $request
      * @param Article $article

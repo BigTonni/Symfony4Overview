@@ -64,19 +64,19 @@ class MenuBuilder
                 ->setLinkAttribute('class', 'nav-link');
         } else {
             if ($this->checker->isGranted('ROLE_SUPER_ADMIN')) {
-                $menu->addChild('New user', ['route' => 'user_new'])
+                $menu->addChild('menu.new_user', ['route' => 'user_new'])
                     ->setAttributes([
                             'class' => 'nav-item', ]
                     )
                     ->setLinkAttribute('class', 'nav-link');
             }
             if ($this->checker->isGranted('ROLE_ADMIN')) {
-                $menu->addChild('Tags', ['route' => 'tag_list'])
+                $menu->addChild('tags', ['route' => 'tag_list'])
                     ->setAttributes([
                             'class' => 'nav-item', ]
                     )
                     ->setLinkAttribute('class', 'nav-link');
-                $menu->addChild('Categories', ['route' => 'category_list'])
+                $menu->addChild('categories', ['route' => 'category_list'])
                     ->setAttributes([
                             'class' => 'nav-item', ]
                     )
@@ -86,7 +86,12 @@ class MenuBuilder
                             'class' => 'nav-item', ]
                     )
                     ->setLinkAttribute('class', 'nav-link');
-                $menu->addChild('New tag', ['route' => 'tag_new'])
+                $menu->addChild('menu.new_category', ['route' => 'category_new'])
+                    ->setAttributes([
+                            'class' => 'nav-item', ]
+                    )
+                    ->setLinkAttribute('class', 'nav-link');
+                $menu->addChild('menu.new_tag', ['route' => 'tag_new'])
                     ->setAttributes([
                             'class' => 'nav-item', ]
                     )

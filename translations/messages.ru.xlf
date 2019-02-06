@@ -357,6 +357,10 @@
         <source>comments.new</source>
         <target>__comments.new</target>
       </trans-unit>
+      <trans-unit id="AT4wfK_" resname="category.new">
+        <source>category.new</source>
+        <target>__category.new</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

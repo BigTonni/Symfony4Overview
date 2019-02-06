@@ -40,10 +40,10 @@ class ArticleController extends AbstractController
     }
 
     /**
+     * @Route("/", methods={"GET"}, name="article_index")
      * @param Request $request
      * @param PaginatorInterface $paginator
      * @return Response
-     * @Route("/", methods={"GET"}, name="article_index")
      */
     public function index(Request $request, PaginatorInterface $paginator): Response
     {
@@ -78,10 +78,10 @@ class ArticleController extends AbstractController
     }
 
     /**
+     * @Route("/{slug}", methods={"GET"}, name="article_show")
      * @param Article $article
      * @throws \Doctrine\ORM\NonUniqueResultException
      * @return Response
-     * @Route("/{slug}", methods={"GET"}, name="article_show")
      */
     public function show(Article $article): Response
     {
@@ -103,11 +103,11 @@ class ArticleController extends AbstractController
     }
 
     /**
+     * @Route("/list_in_category/{slug}", name="category_articles")
      * @param Request $request
      * @param PaginatorInterface $paginator
      * @param Category $category
      * @return Response
-     * @Route("/list_in_category/{slug}", name="category_articles")
      */
     public function showCategoryArticles(Request $request, PaginatorInterface $paginator, Category $category): Response
     {

@@ -1,2 +1,6 @@
 <h2>Hi {{ username }}!</h2>
-<p>For you new article: {{ articleTitle }}</p>
+<h3>For you new articles:</h3>
+
+{% for article in articles %}
+    <p><a href="{{ article.slug }}">{{ article.title }}</a></p>
+{% endfor %}

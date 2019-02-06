@@ -25,8 +25,8 @@ class ArticleRepository extends ServiceEntityRepository
     public function findLatest()
     {
         return $this->createQueryBuilder('a')
-            ->andWhere('a.status <= :now')
-            ->setParameter('now', 2)
+            ->where('a.status = :status')
+            ->setParameter('status', 2)
             ->orderBy('a.createdAt', 'Desc')
             ->setMaxResults(Article::NUM_ITEMS)
             ->getQuery()
@@ -38,9 +38,23 @@ class ArticleRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('a')
             ->innerJoin('a.category', 'c')
-            ->where('c.id IN (:id)')
+            ->where('c.id = :id')
             ->setParameter(':id', $id)
             ->orderBy('c.title', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findTodayArticlesByCategoryId($id)
+    {
+        return $this->createQueryBuilder('a')
+            ->innerJoin('a.category', 'c')
+            ->where('c.id = :id')
+            ->andWhere('a.createdAt <= :now')
+            ->setParameter(':id', $id)
+            ->setParameter(':now', new \DateTime())
+            ->orderBy('a.createdAt', 'Desc')
+            ->setMaxResults(Article::NUM_ITEMS)
             ->getQuery()
             ->getResult();
     }
