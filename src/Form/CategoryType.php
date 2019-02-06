@@ -19,6 +19,7 @@ class CategoryType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, ['required' => true])
+            ->add('slug', TextType::class)
             ->add('save', SubmitType::class, ['label' => 'Save', 'attr' => ['class' => 'btn btn-primary']]);
     }
 

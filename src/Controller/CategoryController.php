@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use App\Form\CategoryType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,6 +13,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @Route("/{_locale}/category", requirements={"_locale" : "en|ru"}, defaults={"_locale" : "en"})
+ * @IsGranted("ROLE_ADMIN")
  */
 class CategoryController extends AbstractController
 {
@@ -41,14 +43,36 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @param Category $category
-     * @Route("/{slug}", methods={"GET", "POST"}, name="category_show")
+     * @param Request $request
+     * @Route("/new", name="category_new")
      * @return Response
      */
-    public function show(Category $category): Response
+    public function new(Request $request): Response
     {
-        return $this->render('category/show.html.twig', [
+//        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $category = new Category();
+
+        $form = $this->createForm(CategoryType::class, $category);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($category);
+            $em->flush();
+
+            $this->addFlash(
+                'notice',
+                $this->translator->trans('notification.category_created', [
+                    '%name%' => $category->getTitle(),
+                ])
+            );
+
+            return $this->redirectToRoute('category_list');
+        }
+
+        return $this->render('category/new.html.twig', [
             'category' => $category,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -74,6 +98,18 @@ class CategoryController extends AbstractController
 
         return $this->render('category/edit.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @param Category $category
+     * @Route("/{slug}", methods={"GET"}, name="category_show")
+     * @return Response
+     */
+    public function show(Category $category): Response
+    {
+        return $this->render('category/show.html.twig', [
+            'category' => $category,
         ]);
     }
 }

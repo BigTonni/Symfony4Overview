@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Tag;
 use App\Form\TagType;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,6 +14,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @Route("/{_locale}/tag", requirements={"_locale" : "en|ru"}, defaults={"_locale" : "en"})
+ * @IsGranted("ROLE_ADMIN")
  */
 class TagController extends AbstractController
 {
@@ -32,7 +34,7 @@ class TagController extends AbstractController
      * @Route("/list", name="tag_list")
      * @return Response
      */
-    public function index(Request $request, PaginatorInterface $paginator): Response
+    public function tagList(Request $request, PaginatorInterface $paginator): Response
     {
         $em = $this->getDoctrine()->getManager();
         $query = $em->getRepository(Tag::class)->createQueryBuilder('a')->getQuery();
@@ -44,23 +46,11 @@ class TagController extends AbstractController
     }
 
     /**
-     * @param Tag $tag
-     * @Route("/{id}", methods={"GET", "POST"}, name="tag_show", requirements={"id" : "\d+"}, defaults={"id" = 1})
-     * @return Response
-     */
-    public function tagShow(Tag $tag): Response
-    {
-        return $this->render('tag/show.html.twig', [
-            'tag' => $tag,
-        ]);
-    }
-
-    /**
      * @param Request $request
      * @Route("/new", name="tag_new")
      * @return Response
      */
-    public function tagNew(Request $request): Response
+    public function new(Request $request): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $tag = new Tag();
@@ -91,10 +81,10 @@ class TagController extends AbstractController
     /**
      * @param Request $request
      * @param Tag $tag
-     * @Route("/edit/{id}", name="tag_edit", requirements={"id" : "\d+"}, defaults={"id" = 1})
+     * @Route("/edit/{slug}", name="tag_edit")
      * @return Response
      */
-    public function tagEdit(Request $request, Tag $tag): Response
+    public function edit(Request $request, Tag $tag): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
@@ -117,6 +107,18 @@ class TagController extends AbstractController
 
         return $this->render('tag/edit.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @param Tag $tag
+     * @Route("/{slug}", methods={"GET"}, name="tag_show")
+     * @return Response
+     */
+    public function show(Tag $tag): Response
+    {
+        return $this->render('tag/show.html.twig', [
+            'tag' => $tag,
         ]);
     }
 }

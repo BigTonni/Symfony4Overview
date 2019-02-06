@@ -21,11 +21,13 @@ class SendNotificationCommand extends Command
         $this->mailer = $mailer;
         parent::__construct();
     }
+
     protected function configure(): void
     {
         $this->setDescription('Send notifications')
             ->setHelp('This command allows you to send notifications to the user by email.');
     }
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('Send Notifications');

@@ -335,7 +335,7 @@
       </trans-unit>
       <trans-unit id="d73OxmD" resname="tag.new">
         <source>tag.new</source>
-        <target>__tag.new</target>
+        <target>New tag</target>
       </trans-unit>
       <trans-unit id="ju.x8dg" resname="tag.edit">
         <source>tag.edit</source>
@@ -356,6 +356,10 @@
       <trans-unit id="18e6VBc" resname="comments.new">
         <source>comments.new</source>
         <target>New comments</target>
+      </trans-unit>
+      <trans-unit id="AT4wfK_" resname="category.new">
+        <source>category.new</source>
+        <target>New category</target>
       </trans-unit>
     </body>
   </file>
