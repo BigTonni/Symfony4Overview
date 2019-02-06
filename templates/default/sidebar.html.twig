@@ -19,12 +19,14 @@
     <h3 class="text-center pb-3">{{ 'categories'|trans }}</h3>
     <ul class="list-group">
         {% for category in categories %}
-            <li class="list-group-item">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
                 <a href="{{ path('category_show', {slug: category.slug}) }}">
                     {{ category.title }}
-                </a></li>
+                </a>
+                <span class="badge badge-primary badge-pill">{{ category.articles|length }}</span>
+            </li>
         {% else %}
-            <li class="list-group-item">{{ 'category.no_found'|trans }}</li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">{{ 'category.no_found'|trans }}</li>
         {% endfor %}
     </ul>
 </div>

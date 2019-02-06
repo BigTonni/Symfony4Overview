@@ -13,25 +13,22 @@ class SendNotificationCommand extends Command
 
     private $notification;
 
-    private $mailer;
-
-    public function __construct(NotificationSender $notification, \Swift_Mailer $mailer)
+    public function __construct(NotificationSender $notification)
     {
         $this->notification = $notification;
-        $this->mailer = $mailer;
         parent::__construct();
     }
 
     protected function configure(): void
     {
-        $this->setDescription('Send notifications')
+        $this->setDescription('Send notifications about new articles in selected categories')
             ->setHelp('This command allows you to send notifications to the user by email.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('Send Notifications');
-//        $this->notification->sendNotification($this->mailer);
-        $output->writeln('Notification sent');
+        $output->writeln('Send notifications about new articles in selected categories');
+        $this->notification->sendNotification();
+        $output->writeln('Notifications sent');
     }
 }

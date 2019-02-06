@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Article;
 use App\Entity\Category;
 use App\Form\CategoryType;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,8 +45,8 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @param Request $request
      * @Route("/new", name="category_new")
+     * @param Request $request
      * @return Response
      */
     public function new(Request $request): Response
@@ -77,9 +79,9 @@ class CategoryController extends AbstractController
     }
 
     /**
+     * @Route("/edit/{slug}", name="category_edit")
      * @param Request $request
      * @param Category $category
-     * @Route("/edit/{slug}", name="category_edit")
      * @return Response
      */
     public function edit(Request $request, Category $category): Response
@@ -102,14 +104,20 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @param Category $category
      * @Route("/{slug}", methods={"GET"}, name="category_show")
+     * @param Request $request
+     * @param Category $category
+     * @param PaginatorInterface $paginator
      * @return Response
      */
-    public function show(Category $category): Response
+    public function show(Request $request, Category $category, PaginatorInterface $paginator): Response
     {
+        $query = $this->getDoctrine()->getManager()->getRepository(Article::class)->findArticlesByCategoryId($category->getId());
+        $articles = $paginator->paginate($query, $request->query->getInt('page', 1), Article::NUM_ITEMS);
+
         return $this->render('category/show.html.twig', [
             'category' => $category,
+            'articles' => $articles,
         ]);
     }
 }
