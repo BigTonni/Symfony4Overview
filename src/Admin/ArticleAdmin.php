@@ -37,8 +37,9 @@ class ArticleAdmin extends AbstractAdmin
         $formMapper
             ->with('Content', ['class' => 'col-md-9'])
             ->add('title', TextType::class)
+            ->add('slug', TextType::class)
             ->add('body', TextareaType::class, [
-                'attr' => ['class' => 'ckeditor'],
+//                'attr' => ['class' => 'ckeditor'],
             ])
             ->end()
             ->with('Meta data', ['class' => 'col-md-3'])
@@ -78,7 +79,7 @@ class ArticleAdmin extends AbstractAdmin
             ->addIdentifier('title')
             ->add('status')
             ->add('slug')
-            ->add('author')
+            ->add('author.fullName')
             ->add('category.title')
 //            ->add('likes')
             ->add('createdAt')

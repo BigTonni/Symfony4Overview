@@ -28,7 +28,9 @@ class TagAdmin extends AbstractAdmin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
-        $formMapper->add('name', TextType::class);
+        $formMapper
+            ->add('name', TextType::class)
+            ->add('slug', TextType::class);
     }
 
     /**

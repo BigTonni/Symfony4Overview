@@ -28,7 +28,9 @@ class CategoryAdmin extends AbstractAdmin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
-        $formMapper->add('title', TextType::class);
+        $formMapper
+            ->add('title', TextType::class)
+            ->add('slug', TextType::class);
     }
 
     /**
