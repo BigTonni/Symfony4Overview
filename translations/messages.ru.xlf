@@ -93,6 +93,10 @@
         <source>menu.new_user</source>
         <target>Новый юзер</target>
       </trans-unit>
+      <trans-unit id="3N0n2g8" resname="menu.new_category">
+        <source>menu.new_category</source>
+        <target>Новая категория</target>
+      </trans-unit>
       <trans-unit id="u6Qyfxh" resname="menu.new_tag">
         <source>menu.new_tag</source>
         <target>Новый тег</target>
@@ -207,7 +211,7 @@
       </trans-unit>
       <trans-unit id="7bLNO3T" resname="category">
         <source>category</source>
-        <target>__category</target>
+        <target>Категория</target>
       </trans-unit>
       <trans-unit id="h2etZdM" resname="category.no_found">
         <source>category.no_found</source>
@@ -215,31 +219,31 @@
       </trans-unit>
       <trans-unit id="eL_giUu" resname="category.edit">
         <source>category.edit</source>
-        <target>__category.edit</target>
+        <target>Редактировать</target>
       </trans-unit>
       <trans-unit id="OXh0beg" resname="comment.total">
         <source>comment.total</source>
-        <target>__comment.total</target>
+        <target>Всего комментариев</target>
       </trans-unit>
       <trans-unit id="8ExkngT" resname="comment.no_found">
         <source>comment.no_found</source>
-        <target>__comment.no_found</target>
+        <target>Нет комментариев</target>
       </trans-unit>
       <trans-unit id="1wYTt2x" resname="action.edit_contents">
         <source>action.edit_contents</source>
-        <target>__action.edit_contents</target>
+        <target>Редактировать</target>
       </trans-unit>
       <trans-unit id="W12cLaV" resname="article.edit">
         <source>article.edit</source>
-        <target>__article.edit</target>
+        <target>Редактировать</target>
       </trans-unit>
       <trans-unit id="BjfjtoX" resname="action.delete_article">
         <source>action.delete_article</source>
-        <target>__action.delete_article</target>
+        <target>Удалить</target>
       </trans-unit>
       <trans-unit id=".sOzKEw" resname="article.no_found">
         <source>article.no_found</source>
-        <target>__article.no_found</target>
+        <target>Нет статей</target>
       </trans-unit>
       <trans-unit id="rjDqmQR" resname="menu.user">
         <source>menu.user</source>
@@ -335,15 +339,15 @@
       </trans-unit>
       <trans-unit id="d73OxmD" resname="tag.new">
         <source>tag.new</source>
-        <target>__tag.new</target>
+        <target>Новый тег</target>
       </trans-unit>
       <trans-unit id="ju.x8dg" resname="tag.edit">
         <source>tag.edit</source>
-        <target>__tag.edit</target>
+        <target>Редактировать тег</target>
       </trans-unit>
       <trans-unit id="B0loISu" resname="label.remember_me">
         <source>label.remember_me</source>
-        <target>__label.remember_me</target>
+        <target>Запомнить меня</target>
       </trans-unit>
       <trans-unit id="yKuTQ_i" resname="button.register">
         <source>button.register</source>
@@ -351,15 +355,19 @@
       </trans-unit>
       <trans-unit id="heDa7U_" resname="articles.new">
         <source>articles.new</source>
-        <target>__articles.new</target>
+        <target>Новые статьи</target>
       </trans-unit>
       <trans-unit id="18e6VBc" resname="comments.new">
         <source>comments.new</source>
-        <target>__comments.new</target>
+        <target>Новые комментарии</target>
       </trans-unit>
       <trans-unit id="AT4wfK_" resname="category.new">
         <source>category.new</source>
-        <target>__category.new</target>
+        <target>Новая категория</target>
+      </trans-unit>
+      <trans-unit id="p_LSbo0" resname="by">
+        <source>by</source>
+        <target>от</target>
       </trans-unit>
     </body>
   </file>
