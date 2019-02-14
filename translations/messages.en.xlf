@@ -15,7 +15,7 @@
       </trans-unit>
       <trans-unit id="nR.Uzne" resname="article.deleted_successfully">
         <source>article.deleted_successfully</source>
-        <target>Article deleted.</target>
+        <target>Article deleted successfully.</target>
       </trans-unit>
       <trans-unit id="hWNdK3u" resname="notification.tag_created">
         <source>notification.tag_created</source>
@@ -96,6 +96,10 @@
       <trans-unit id="u6Qyfxh" resname="menu.new_tag">
         <source>menu.new_tag</source>
         <target>New tag</target>
+      </trans-unit>
+      <trans-unit id="3N0n2g8" resname="menu.new_category">
+        <source>menu.new_category</source>
+        <target>New category</target>
       </trans-unit>
       <trans-unit id="fftM9nd" resname="users">
         <source>users</source>
@@ -215,11 +219,11 @@
       </trans-unit>
       <trans-unit id="1wYTt2x" resname="action.edit_contents">
         <source>action.edit_contents</source>
-        <target>__action.edit_contents</target>
+        <target>Edit</target>
       </trans-unit>
       <trans-unit id="BjfjtoX" resname="action.delete_article">
         <source>action.delete_article</source>
-        <target>__action.delete_article</target>
+        <target>Delete</target>
       </trans-unit>
       <trans-unit id="sn.z7ud" resname="delete_article_modal.title">
         <source>delete_article_modal.title</source>
@@ -231,7 +235,7 @@
       </trans-unit>
       <trans-unit id="8yeGT7d" resname="label.cancel">
         <source>label.cancel</source>
-        <target>__label.cancel</target>
+        <target>Cancel</target>
       </trans-unit>
       <trans-unit id="oRRFO4u" resname="label.delete_post">
         <source>label.delete_post</source>
@@ -239,7 +243,7 @@
       </trans-unit>
       <trans-unit id="rrU0GR8" resname="title.change_password">
         <source>title.change_password</source>
-        <target>__title.change_password</target>
+        <target>Change password</target>
       </trans-unit>
       <trans-unit id="wtG.cxy" resname="info.change_password">
         <source>info.change_password</source>
@@ -247,7 +251,7 @@
       </trans-unit>
       <trans-unit id="HLtdhYw" resname="action.save">
         <source>action.save</source>
-        <target>__action.save</target>
+        <target>Save</target>
       </trans-unit>
       <trans-unit id="etGJjTo" resname="action.edit_user">
         <source>action.edit_user</source>
@@ -360,6 +364,10 @@
       <trans-unit id="AT4wfK_" resname="category.new">
         <source>category.new</source>
         <target>New category</target>
+      </trans-unit>
+      <trans-unit id="p_LSbo0" resname="by">
+        <source>by</source>
+        <target>by</target>
       </trans-unit>
     </body>
   </file>

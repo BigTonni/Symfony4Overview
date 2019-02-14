@@ -6,10 +6,12 @@ use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CommentRepository")
  * @ORM\Table(name="comments")
+ * @Serializer\ExclusionPolicy("all")
  */
 class Comment
 {
@@ -19,6 +21,7 @@ class Comment
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Serializer\Expose()
      */
     private $id;
 
@@ -34,6 +37,7 @@ class Comment
      *     min=5,
      *     max=100
      * )
+     * @Serializer\Expose()
      */
     private $content;
 
@@ -41,6 +45,7 @@ class Comment
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      * @Assert\DateTime()
+     * @Serializer\Expose()
      */
     private $publishedAt;
 

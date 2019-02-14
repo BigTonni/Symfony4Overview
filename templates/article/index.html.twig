@@ -16,10 +16,10 @@
 
             <p class="post-metadata">
                 <span class="metadata"><i class="fa fa-calendar"></i> {{ article.createdAt|date("j F Y, H:i:s") }}</span>
-                <span class="metadata"><i class="fa fa-user"></i> by {{ article.author.fullName }}</span>
+                <span class="metadata"><i class="fa fa-user"></i> {{ 'by'|trans }} {{ article.author.fullName }}</span>
             </p>
 
-            <p>Tags:
+            <p>{{ 'tags'|trans }}:
                 {% for tag in article.tags %}
                     <a href="{{- path('tag_show', {slug: tag.slug}) -}}" class="btn btn-outline-primary btn-sm">{{ tag.name }}</a>
                 {% endfor %}

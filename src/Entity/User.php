@@ -9,10 +9,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ORM\Table(name="users")
+ * @Serializer\ExclusionPolicy("all")
  */
 class User implements UserInterface
 {
@@ -20,12 +22,14 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Serializer\Expose()
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=64, name="full_name")
      * @Assert\NotBlank()
+     * @Serializer\Expose()
      */
     private $fullName;
 
@@ -33,12 +37,14 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=64, unique=true)
      * @Assert\NotBlank()
      * @Assert\Length(min=2, max=50)
+     * @Serializer\Expose()
      */
     private $userName;
 
     /**
      * @ORM\Column(type="string", length=64, unique=true)
      * @Assert\Email()
+     * @Serializer\Expose()
      */
     private $email;
 
@@ -63,6 +69,7 @@ class User implements UserInterface
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      * @Assert\DateTime()
+     * @Serializer\Expose()
      */
     private $createdAt;
 
