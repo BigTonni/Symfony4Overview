@@ -41,7 +41,7 @@ class PageAdmin extends AbstractAdmin
             ->with('Meta data', ['class' => 'col-md-3'])
             ->add('author', EntityType::class, [
                 'class' => User::class,
-                'choice_label' => 'userName',
+                'choice_label' => 'username',
             ])
             ->end()
         ;

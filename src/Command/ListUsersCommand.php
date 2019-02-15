@@ -84,7 +84,7 @@ HELP
             return [
                 $user->getId(),
                 $user->getFullName(),
-                $user->getUserName(),
+                $user->getUsername(),
                 $user->getEmail(),
                 implode(', ', $user->getRoles()),
             ];

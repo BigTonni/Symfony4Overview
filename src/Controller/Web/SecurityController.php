@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Web;
 
 use App\Entity\User;
 use App\Security\LoginFormAuthenticator;
@@ -47,7 +47,7 @@ class SecurityController extends AbstractController
             $user = new User();
             $user->setEmail($request->request->get('email'));
             $user->setFullName('Test User');
-            $user->setUserName($request->request->get('email'));
+            $user->setUsername($request->request->get('email'));
             $user->setRoles(['ROLE_USER']);
             $user->setPassword($passwordEncoder->encodePassword(
                 $user,

@@ -29,7 +29,7 @@ class UserFixtures extends Fixture
 
         $admin = new User();
         $admin->setFullName('Admin admin');
-        $admin->setUserName('admin');
+        $admin->setUsername('admin');
         $admin->setEmail('admin@site.com');
         $admin->setRoles(['ROLE_ADMIN']);
         $admin->setCreatedAt(new \DateTime('now'));
@@ -44,7 +44,7 @@ class UserFixtures extends Fixture
 
         $super_admin = new User();
         $super_admin->setFullName('Super admin');
-        $super_admin->setUserName('superadmin');
+        $super_admin->setUsername('superadmin');
         $super_admin->setEmail('superadmin@site.com');
         $super_admin->setRoles(['ROLE_SUPER_ADMIN']);
         $super_admin->setPassword($this->passwordEncoder->encodePassword(
@@ -58,7 +58,7 @@ class UserFixtures extends Fixture
 
         $user = new User();
         $user->setFullName('Test Author1');
-        $user->setUserName('Author1');
+        $user->setUsername('Author1');
         $user->setPassword($this->passwordEncoder->encodePassword(
             $user,
             $testPassword

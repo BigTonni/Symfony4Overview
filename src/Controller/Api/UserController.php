@@ -45,7 +45,7 @@ class UserController extends AbstractFOSRestController implements ClassResourceI
             $formatted[] = [
                 'id' => $user->getId(),
                 'full name' => $user->getFullName(),
-                'user name' => $user->getUserName(),
+                'user name' => $user->getUsername(),
                 'email' => $user->getEmail(),
                 'created at' => $user->getCreatedAt(),
             ];
@@ -82,7 +82,7 @@ class UserController extends AbstractFOSRestController implements ClassResourceI
         $formatted = [
             'id' => $user->getId(),
             'full name' => $user->getFullName(),
-            'user name' => $user->getUserName(),
+            'user name' => $user->getUsername(),
             'email' => $user->getEmail(),
             'created at' => $user->getCreatedAt(),
         ];

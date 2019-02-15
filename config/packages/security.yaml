@@ -11,31 +11,61 @@ security:
                 class: App\Entity\User
                 property: email
 
-#        in_memory: { memory: ~ }
+    #        in_memory: { memory: ~ }
 
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+
+        login:
+            pattern:  ^/api/login
+            stateless: true
+            anonymous: true
+            json_login:
+                check_path:               /api/login_check
+                success_handler:          lexik_jwt_authentication.handler.authentication_success
+                failure_handler:          lexik_jwt_authentication.handler.authentication_failure
+#                require_previous_session: false
+
+        register:
+            pattern:  ^/api/register
+            stateless: true
+            anonymous: true
+
+        api:
+            pattern:   ^/api
+            stateless: true
+            anonymous: true
+            #            provider: app_user_provider
+            guard:
+                authenticators:
+                    - lexik_jwt_authentication.jwt_token_authenticator
+
+        refresh:
+            pattern:  ^/api/token/refresh
+            stateless: true
+            anonymous: true
+
         main:
             anonymous: true
 
             guard:
-                 authenticators:
-                 - App\Security\LoginFormAuthenticator
+                authenticators:
+                    - App\Security\LoginFormAuthenticator
             # https://symfony.com/doc/current/security/form_login_setup.html
 
             form_login:
-#                # The route name that the login form submits to
+                #                # The route name that the login form submits to
                 check_path: app_login
-#                # The name of the route where the login form lives
-#                # When the user tries to access a protected page, they are redirected here
+                #                # The name of the route where the login form lives
+                #                # When the user tries to access a protected page, they are redirected here
                 login_path: app_login
-#                # Secure the login form against CSRF
-#                # Reference: https://symfony.com/doc/current/security/csrf_in_login_form.html
+                #                # Secure the login form against CSRF
+                #                # Reference: https://symfony.com/doc/current/security/csrf_in_login_form.html
                 csrf_token_generator: security.csrf.token_manager
-#                # The page users are redirect to when there is no previous page stored in the
-#                # session (for example when the users access directly to the login page).
+                #                # The page users are redirect to when there is no previous page stored in the
+                #                # session (for example when the users access directly to the login page).
                 default_target_path: article_index
 
             logout:
@@ -53,34 +83,22 @@ security:
             # http_basic: true
             # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
 
-#        login:
-#            pattern:  ^/api/login
-#            stateless: true
-#            anonymous: true
-#            json_login:
-#                check_path:               /api/login_check
-#                success_handler:          lexik_jwt_authentication.handler.authentication_success
-#                failure_handler:          lexik_jwt_authentication.handler.authentication_failure
-#
-#            api:
-#                pattern:   ^/api
-#                stateless: true
-#                guard:
-#                    authenticators:
-#                        - lexik_jwt_authentication.jwt_token_authenticator
 
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-#        - { path: ^/, roles: IS_AUTHENTICATED_REMEMBERED }
-        - { path: ^/change-password, roles: IS_AUTHENTICATED_FULLY }
-
-
+        - { path: ^/(%app_locales%)/change-password, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/(%app_locales%)/admin/users, roles: ROLE_SUPER_ADMIN }
         - { path: ^/(%app_locales%)/admin, roles: ROLE_ADMIN }
         - { path: ^/(%app_locales%)/profile, roles: IS_AUTHENTICATED_FULLY }
- #   access_decision_manager:
- #       strategy: unanimous
- #       allow_if_all_abstain: false
+
+
+        - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/token/refresh, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
+        #        - { path: ^/, roles: IS_AUTHENTICATED_REMEMBERED }
+    #   access_decision_manager:
+    #       strategy: unanimous
+    #       allow_if_all_abstain: false

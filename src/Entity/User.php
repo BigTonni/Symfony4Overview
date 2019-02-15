@@ -39,7 +39,7 @@ class User implements UserInterface
      * @Assert\Length(min=2, max=50)
      * @Serializer\Expose()
      */
-    private $userName;
+    private $username;
 
     /**
      * @ORM\Column(type="string", length=64, unique=true)
@@ -95,14 +95,14 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getUserName(): ?string
+    public function getUsername(): ?string
     {
-        return $this->userName;
+        return $this->username;
     }
 
-    public function setUserName(string $userName): self
+    public function setUsername(string $username): self
     {
-        $this->userName = $userName;
+        $this->username = $username;
 
         return $this;
     }
