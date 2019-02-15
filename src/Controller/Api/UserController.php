@@ -10,6 +10,7 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
 use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,6 +37,7 @@ class UserController extends AbstractFOSRestController implements ClassResourceI
      *     )
      * )
      * @SWG\Tag(name="Users")
+     * @Security(name="Bearer")
      */
     public function listUsers()
     {
@@ -68,6 +70,7 @@ class UserController extends AbstractFOSRestController implements ClassResourceI
      *     )
      * )
      * @SWG\Tag(name="Users")
+     * @Security(name="Bearer")
      *
      * @param $id
      *
@@ -104,6 +107,7 @@ class UserController extends AbstractFOSRestController implements ClassResourceI
      *     )
      * )
      * @SWG\Tag(name="Users")
+     * @Security(name="Bearer")
      *
      * @param Request $request
      *
@@ -136,6 +140,7 @@ class UserController extends AbstractFOSRestController implements ClassResourceI
      *     )
      * )
      * @SWG\Tag(name="Users")
+     * @Security(name="Bearer")
      *
      * @param Request $request
      * @param User    $user
@@ -173,6 +178,7 @@ class UserController extends AbstractFOSRestController implements ClassResourceI
      *     )
      * )
      * @SWG\Tag(name="Users")
+     * @Security(name="Bearer")
      *
      * @param User $user
      *

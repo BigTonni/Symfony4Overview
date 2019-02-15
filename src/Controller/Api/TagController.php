@@ -10,6 +10,7 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
 use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,6 +37,7 @@ class TagController extends AbstractFOSRestController implements ClassResourceIn
      *     )
      * )
      * @SWG\Tag(name="Tags")
+     * @Security(name="Bearer")
      */
     public function listTags()
     {
@@ -67,6 +69,7 @@ class TagController extends AbstractFOSRestController implements ClassResourceIn
      *     )
      * )
      * @SWG\Tag(name="Tags")
+     * @Security(name="Bearer")
      *
      * @param $id
      *
@@ -102,6 +105,7 @@ class TagController extends AbstractFOSRestController implements ClassResourceIn
      *     )
      * )
      * @SWG\Tag(name="Tags")
+     * @Security(name="Bearer")
      *
      * @param Request $request
      *
@@ -134,6 +138,7 @@ class TagController extends AbstractFOSRestController implements ClassResourceIn
      *     )
      * )
      * @SWG\Tag(name="Tags")
+     * @Security(name="Bearer")
      *
      * @param Request $request
      * @param Tag     $tag
@@ -171,6 +176,7 @@ class TagController extends AbstractFOSRestController implements ClassResourceIn
      *     )
      * )
      * @SWG\Tag(name="Tags")
+     * @Security(name="Bearer")
      *
      * @param Tag $tag
      *

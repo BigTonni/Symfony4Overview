@@ -15,6 +15,7 @@ use FOS\RestBundle\Controller\Annotations\RequestParam;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 
 use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
 use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,6 +44,7 @@ class ArticleController extends AbstractFOSRestController implements ClassResour
      *     )
      * )
      * @SWG\Tag(name="Articles")
+     * @Security(name="Bearer")
      *
      * @QueryParam(name="page", requirements="\d+", default="1", description="Page of the overview.")
      * @QueryParam(name="limit", requirements="\d+", strict=true, nullable=true, description="limit")
@@ -91,6 +93,7 @@ class ArticleController extends AbstractFOSRestController implements ClassResour
      *     )
      * )
      * @SWG\Tag(name="Articles")
+     * @Security(name="Bearer")
      *
      * @param $id
      *
@@ -131,6 +134,7 @@ class ArticleController extends AbstractFOSRestController implements ClassResour
      *     )
      * )
      * @SWG\Tag(name="Articles")
+     * @Security(name="Bearer")
      *
      * @param Request $request
      *
@@ -164,6 +168,7 @@ class ArticleController extends AbstractFOSRestController implements ClassResour
      *     )
      * )
      * @SWG\Tag(name="Articles")
+     * @Security(name="Bearer")
      *
      * @param Request $request
      * @param int     $id
@@ -202,6 +207,7 @@ class ArticleController extends AbstractFOSRestController implements ClassResour
      *     )
      * )
      * @SWG\Tag(name="Articles")
+     * @Security(name="Bearer")
      *
      * @param Request $request
      * @param int     $id
@@ -239,6 +245,7 @@ class ArticleController extends AbstractFOSRestController implements ClassResour
      *     )
      * )
      * @SWG\Tag(name="Articles")
+     * @Security(name="Bearer")
      *
      * @param int $id
      *
