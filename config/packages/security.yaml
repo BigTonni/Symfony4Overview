@@ -93,13 +93,9 @@ security:
         - { path: ^/(%app_locales%)/admin, roles: ROLE_ADMIN }
         - { path: ^/(%app_locales%)/profile, roles: IS_AUTHENTICATED_FULLY }
 
-
         - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/token/refresh, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/doc, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
         #        - { path: ^/, roles: IS_AUTHENTICATED_REMEMBERED }
-    #   access_decision_manager:
-    #       strategy: unanimous
-    #       allow_if_all_abstain: false
