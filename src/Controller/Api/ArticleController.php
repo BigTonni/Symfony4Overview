@@ -52,13 +52,40 @@ class ArticleController extends BaseRestController
      *     type="integer",
      *     description="Count items"
      * )
+     * @SWG\Parameter(
+     *     name="title",
+     *     in="query",
+     *     type="string",
+     *     description="Article title"
+     * )
+     * @SWG\Parameter(
+     *     name="slug",
+     *     in="query",
+     *     type="string",
+     *     description="Article slug"
+     * )
      *
      * @param Request $request
      * @return JsonResponse|\FOS\RestBundle\View\View
      */
     public function listArticles(Request $request)
     {
-        $articles = $this->em->getRepository(Article::class)->findAll();
+        $filter_title = $request->query->get('title') ?? false;
+        $filter_slug = $request->query->get('slug') ?? false;
+
+        $query = $this->em->getRepository(Article::class)->createQueryBuilder('a');
+
+        if ($filter_title) {
+            $query->where('a.title LIKE :title')
+                ->setParameter('title', '%' . $filter_title . '%');
+        }
+        if ($filter_slug) {
+            $query->andWhere('a.slug LIKE :slug')
+                ->setParameter('slug', '%' . $filter_slug . '%');
+        }
+        $articles = $query->getQuery();
+
+//        $articles = $this->em->getRepository(Article::class)->findAll();
         if (!$articles) {
             return new JsonResponse(['message' => 'Articles not found'], Response::HTTP_NOT_FOUND);
         }
