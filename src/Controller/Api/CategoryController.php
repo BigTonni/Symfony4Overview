@@ -5,10 +5,7 @@ namespace App\Controller\Api;
 use App\Entity\Category;
 use App\Form\CategoryType;
 use Doctrine\ORM\EntityManagerInterface;
-use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\Routing\ClassResourceInterface;
-use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use Swagger\Annotations as SWG;
@@ -16,7 +13,11 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class CategoryController extends AbstractFOSRestController implements ClassResourceInterface
+/**
+ * @SWG\Tag(name="Categories")
+ * @Security(name="Bearer")
+ */
+class CategoryController extends BaseRestController
 {
     private $em;
 
@@ -36,12 +37,16 @@ class CategoryController extends AbstractFOSRestController implements ClassResou
      *         @SWG\Items(ref=@Model(type=Category::class, groups={"full"}))
      *     )
      * )
-     * @SWG\Tag(name="Categories")
-     * @Security(name="Bearer")
+     *
+     * @return JsonResponse|\FOS\RestBundle\View\View
      */
     public function listCategories()
     {
         $categories = $this->em->getRepository(Category::class)->findAll();
+        if (!$categories) {
+            return new JsonResponse(['message' => 'Categories not found'], Response::HTTP_NOT_FOUND);
+        }
+
         $formatted = [];
         foreach ($categories as $category) {
             $formatted[] = [
@@ -51,10 +56,10 @@ class CategoryController extends AbstractFOSRestController implements ClassResou
                 'created at' => $category->getCreatedAt(),
             ];
         }
-        $view = View::create($formatted);
-        $view->setFormat('json');
 
-        return $view;
+        return $this->view($formatted, Response::HTTP_OK, [], [
+            'full'
+        ]);
     }
 
     /**
@@ -68,17 +73,15 @@ class CategoryController extends AbstractFOSRestController implements ClassResou
      *         @SWG\Items(ref=@Model(type=Category::class, groups={"full"}))
      *     )
      * )
-     * @SWG\Tag(name="Categories")
-     * @Security(name="Bearer")
      *
      * @param $id
      *
-     * @return JsonResponse|View
+     * @return JsonResponse|\FOS\RestBundle\View\View
      */
     public function show($id)
     {
         $category = $this->em->getRepository(Category::class)->find($id);
-        if (empty($category)) {
+        if (!$category) {
             return new JsonResponse(['message' => 'Category not found'], Response::HTTP_NOT_FOUND);
         }
         $formatted = [
@@ -87,10 +90,10 @@ class CategoryController extends AbstractFOSRestController implements ClassResou
             'slug' => $category->getSlug(),
             'created at' => $category->getCreatedAt(),
         ];
-        $view = View::create($formatted);
-        $view->setFormat('json');
 
-        return $view;
+        return $this->view($formatted, Response::HTTP_OK, [], [
+            'full'
+        ]);
     }
 
     /**
@@ -104,12 +107,10 @@ class CategoryController extends AbstractFOSRestController implements ClassResou
      *         @SWG\Items(ref=@Model(type=Category::class, groups={"full"}))
      *     )
      * )
-     * @SWG\Tag(name="Categories")
-     * @Security(name="Bearer")
      *
      * @param Request $request
      *
-     * @return Category|\Symfony\Component\Form\FormInterface
+     * @return \FOS\RestBundle\View\View|\Symfony\Component\Form\FormInterface
      */
     public function new(Request $request)
     {
@@ -120,7 +121,9 @@ class CategoryController extends AbstractFOSRestController implements ClassResou
             $this->em->persist($category);
             $this->em->flush();
 
-            return $category;
+            return $this->view($category, Response::HTTP_CREATED, [], [
+                'full'
+            ]);
         }
 
         return $form;
@@ -137,13 +140,11 @@ class CategoryController extends AbstractFOSRestController implements ClassResou
      *         @SWG\Items(ref=@Model(type=Category::class, groups={"full"}))
      *     )
      * )
-     * @SWG\Tag(name="Categories")
-     * @Security(name="Bearer")
      *
      * @param Request  $request
      * @param Category $category
      *
-     * @return JsonResponse|\Symfony\Component\Form\FormInterface
+     * @return JsonResponse|\Symfony\Component\Form\FormInterface|\FOS\RestBundle\View\View
      */
     public function update(Request $request, Category $category)
     {
@@ -151,6 +152,7 @@ class CategoryController extends AbstractFOSRestController implements ClassResou
         if (!$category) {
             return new JsonResponse(['message' => 'Category not found'], Response::HTTP_NOT_FOUND);
         }
+
         $form = $this->createForm(CategoryType::class, $category, [
             'method' => 'put',
         ]);
@@ -158,7 +160,9 @@ class CategoryController extends AbstractFOSRestController implements ClassResou
         if ($form->isSubmitted() && $form->isValid()) {
             $this->em->flush();
 
-            return View::create($category, Codes::HTTP_NO_CONTENT);
+            return $this->view($category, Response::HTTP_OK, [], [
+                'full'
+            ]);
         }
 
         return $form;
@@ -175,8 +179,6 @@ class CategoryController extends AbstractFOSRestController implements ClassResou
      *         @SWG\Items(ref=@Model(type=Category::class, groups={"full"}))
      *     )
      * )
-     * @SWG\Tag(name="Categories")
-     * @Security(name="Bearer")
      *
      * @param Category $category
      *
@@ -189,7 +191,7 @@ class CategoryController extends AbstractFOSRestController implements ClassResou
             $this->em->remove($category);
             $this->em->flush();
 
-            return new JsonResponse(null, 204);
+            return new JsonResponse(null, Response::HTTP_NO_CONTENT);
         }
 
         return new JsonResponse(['message' => 'Category not found'], Response::HTTP_NOT_FOUND);

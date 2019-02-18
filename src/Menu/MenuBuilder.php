@@ -99,6 +99,12 @@ class MenuBuilder
             }
         }
 
+        $menu->addChild('API-Doc', ['route' => 'app.swagger_ui'])
+            ->setAttributes([
+                    'class' => 'nav-item', ]
+            )
+            ->setLinkAttribute('class', 'nav-link');
+
         return $menu;
     }
 }
