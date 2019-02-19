@@ -5,34 +5,31 @@ namespace App\Controller\Api;
 use App\Entity\Article;
 use App\Form\ArticleType;
 use Doctrine\ORM\EntityManagerInterface;
-use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\Routing\ClassResourceInterface;
-use FOS\RestBundle\View\View;
-
-use FOS\RestBundle\Request\ParamFetcher;
-use FOS\RestBundle\Controller\Annotations\RequestParam;
-use FOS\RestBundle\Controller\Annotations\QueryParam;
-
+use Knp\Component\Pager\PaginatorInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
 use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
-class ArticleController extends AbstractFOSRestController implements ClassResourceInterface
+/**
+ * @SWG\Tag(name="Articles")
+ * @Security(name="Bearer")
+ */
+class ArticleController extends BaseRestController
 {
     private $em;
+    private $paginator;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, PaginatorInterface $paginator)
     {
         $this->em = $entityManager;
+        $this->paginator = $paginator;
     }
 
     /**
-     * @Rest\View()
      * @Rest\Get("/articles")
      * @SWG\Response(
      *     response=200,
@@ -42,23 +39,64 @@ class ArticleController extends AbstractFOSRestController implements ClassResour
      *         @SWG\Items(ref=@Model(type=Article::class, groups={"full"}))
      *     )
      * )
-     * @SWG\Tag(name="Articles")
+     * @SWG\Parameter(
+     *     name="page",
+     *     in="query",
+     *     type="integer",
+     *     description="Page number"
+     * )
+     * @SWG\Parameter(
+     *     name="count",
+     *     in="query",
+     *     type="integer",
+     *     description="Count items"
+     * )
+     * @SWG\Parameter(
+     *     name="title",
+     *     in="query",
+     *     type="string",
+     *     description="Article title"
+     * )
+     * @SWG\Parameter(
+     *     name="slug",
+     *     in="query",
+     *     type="string",
+     *     description="Article slug"
+     * )
      *
-     * @QueryParam(name="page", requirements="\d+", default="1", description="Page of the overview.")
-     * @QueryParam(name="limit", requirements="\d+", strict=true, nullable=true, description="limit")
-     *
-     * @param ParamFetcher $paramFetcher
+     * @param Request $request
+     * @return \FOS\RestBundle\View\View|JsonResponse
      */
-    public function listArticles(ParamFetcher $paramFetcher)
+    public function listArticles(Request $request)
     {
-        $articles = $this->em->getRepository(Article::class)->findAll();
+        $filter_title = $request->query->get('title') ?? false;
+        $filter_slug = $request->query->get('slug') ?? false;
 
-        $dynamicQueryParam = new QueryParam();
-        $dynamicQueryParam->name = "limit";
-        $dynamicQueryParam->requirements = "\d+";
-        $paramFetcher->addParam($dynamicQueryParam);
+        $query = $this->em->getRepository(Article::class)->createQueryBuilder('a');
 
-        $page = $paramFetcher->get('page');
+        if ($filter_title) {
+            $query->where('a.title LIKE :title')
+                ->setParameter('title', '%' . $filter_title . '%');
+        }
+        if ($filter_slug) {
+            $query->andWhere('a.slug LIKE :slug')
+                ->setParameter('slug', '%' . $filter_slug . '%');
+        }
+        $articles = $query->getQuery();
+
+//        $articles = $this->em->getRepository(Article::class)->findAll();
+        if (!$articles) {
+            return new JsonResponse(['message' => 'Articles not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        $page = $request->query->get('page') ?? 1;
+        $count = $request->query->get('count') ?? Article::NUM_ITEMS;
+
+        $articles = $this->paginator->paginate(
+            $articles,
+            $request->query->getInt('page', $page),
+            $request->query->getInt('count', $count)
+        );
 
         $formatted = [];
         foreach ($articles as $article) {
@@ -76,7 +114,9 @@ class ArticleController extends AbstractFOSRestController implements ClassResour
             ];
         }
 
-        return array('articles' => $formatted, 'page' => $page);
+        return $this->view($formatted, Response::HTTP_OK, [], [
+            'full',
+        ]);
     }
 
     /**
@@ -90,16 +130,21 @@ class ArticleController extends AbstractFOSRestController implements ClassResour
      *         @SWG\Items(ref=@Model(type=Article::class, groups={"full"}))
      *     )
      * )
-     * @SWG\Tag(name="Articles")
+     * @SWG\Parameter(
+     *     in="path",
+     *     name="id",
+     *     description="Article id",
+     *     required=true,
+     *     type="integer",
+     * )
      *
      * @param $id
-     *
-     * @return JsonResponse|View
+     * @return \FOS\RestBundle\View\View|JsonResponse
      */
     public function show(int $id)
     {
         $article = $this->em->getRepository(Article::class)->find($id);
-        if (empty($article)) {
+        if (!$article) {
             return new JsonResponse(['message' => 'Article not found'], Response::HTTP_NOT_FOUND);
         }
 
@@ -114,10 +159,10 @@ class ArticleController extends AbstractFOSRestController implements ClassResour
             'author' => $article->getAuthor()->getFullName(),
             'created at' => $article->getCreatedAt(),
         ];
-        $view = View::create($formatted, Response::HTTP_OK);
-        $view->setFormat('json');
 
-        return $view;
+        return $this->view($formatted, Response::HTTP_OK, [], [
+            'full',
+        ]);
     }
 
     /**
@@ -130,11 +175,9 @@ class ArticleController extends AbstractFOSRestController implements ClassResour
      *         @SWG\Items(ref=@Model(type=Article::class, groups={"full"}))
      *     )
      * )
-     * @SWG\Tag(name="Articles")
      *
      * @param Request $request
-     *
-     * @return Article|\Symfony\Component\Form\FormInterface
+     * @return \FOS\RestBundle\View\View|\Symfony\Component\Form\FormInterface
      */
     public function new(Request $request)
     {
@@ -146,7 +189,9 @@ class ArticleController extends AbstractFOSRestController implements ClassResour
             $this->em->persist($article);
             $this->em->flush();
 
-            return View::create($article, Response::HTTP_CREATED);
+            return $this->view($article, Response::HTTP_CREATED, [], [
+                'full',
+            ]);
         }
 
         return $form;
@@ -163,12 +208,10 @@ class ArticleController extends AbstractFOSRestController implements ClassResour
      *         @SWG\Items(ref=@Model(type=Article::class, groups={"full"}))
      *     )
      * )
-     * @SWG\Tag(name="Articles")
      *
      * @param Request $request
      * @param int     $id
-     *
-     * @return JsonResponse|\Symfony\Component\Form\FormInterface
+     * @return \FOS\RestBundle\View\View|JsonResponse|\Symfony\Component\Form\FormInterface
      */
     public function update(Request $request, int $id)
     {
@@ -184,7 +227,9 @@ class ArticleController extends AbstractFOSRestController implements ClassResour
         if ($form->isSubmitted() && $form->isValid()) {
             $this->em->flush();
 
-            return View::create($article, Codes::HTTP_NO_CONTENT);
+            return $this->view($article, Response::HTTP_OK, [], [
+                'full',
+            ]);
         }
 
         return $form;
@@ -201,12 +246,10 @@ class ArticleController extends AbstractFOSRestController implements ClassResour
      *         @SWG\Items(ref=@Model(type=Article::class, groups={"full"}))
      *     )
      * )
-     * @SWG\Tag(name="Articles")
      *
      * @param Request $request
      * @param int     $id
-     *
-     * @return JsonResponse|\Symfony\Component\Form\FormInterface
+     * @return \FOS\RestBundle\View\View|JsonResponse
      */
     public function patch(Request $request, int $id)
     {
@@ -219,12 +262,14 @@ class ArticleController extends AbstractFOSRestController implements ClassResour
         $form->submit($request->request->all(), false);
 
         if (false === $form->isValid()) {
-            return $this->view($form);
+            return new JsonResponse(['message' => 'article.no_found'], Response::HTTP_BAD_REQUEST);
         }
 
         $this->em->flush();
 
-        return View::create(null, Response::HTTP_NO_CONTENT);
+        return $this->view($article, Response::HTTP_OK, [], [
+            'full',
+        ]);
     }
 
     /**
@@ -238,7 +283,6 @@ class ArticleController extends AbstractFOSRestController implements ClassResour
      *         @SWG\Items(ref=@Model(type=Article::class, groups={"full"}))
      *     )
      * )
-     * @SWG\Tag(name="Articles")
      *
      * @param int $id
      *
@@ -274,5 +318,4 @@ class ArticleController extends AbstractFOSRestController implements ClassResour
 
         return $str_tags;
     }
-
 }

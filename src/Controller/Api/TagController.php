@@ -5,17 +5,19 @@ namespace App\Controller\Api;
 use App\Entity\Tag;
 use App\Form\TagType;
 use Doctrine\ORM\EntityManagerInterface;
-use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\Routing\ClassResourceInterface;
-use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
 use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class TagController extends AbstractFOSRestController implements ClassResourceInterface
+/**
+ * @SWG\Tag(name="Tags")
+ * @Security(name="Bearer")
+ */
+class TagController extends BaseRestController
 {
     private $em;
 
@@ -35,11 +37,15 @@ class TagController extends AbstractFOSRestController implements ClassResourceIn
      *         @SWG\Items(ref=@Model(type=Tag::class, groups={"full"}))
      *     )
      * )
-     * @SWG\Tag(name="Tags")
+     *
+     * @return \FOS\RestBundle\View\View|JsonResponse
      */
     public function listTags()
     {
         $tags = $this->em->getRepository(Tag::class)->findAll();
+        if (!$tags) {
+            return new JsonResponse(['message' => 'Tags not found'], Response::HTTP_NOT_FOUND);
+        }
         $formatted = [];
         foreach ($tags as $tag) {
             $formatted[] = [
@@ -49,10 +55,10 @@ class TagController extends AbstractFOSRestController implements ClassResourceIn
                 'created at' => $tag->getCreatedAt(),
             ];
         }
-        $view = View::create($formatted);
-        $view->setFormat('json');
 
-        return $view;
+        return $this->view($formatted, Response::HTTP_OK, [], [
+            'full',
+        ]);
     }
 
     /**
@@ -66,16 +72,14 @@ class TagController extends AbstractFOSRestController implements ClassResourceIn
      *         @SWG\Items(ref=@Model(type=Tag::class, groups={"full"}))
      *     )
      * )
-     * @SWG\Tag(name="Tags")
      *
      * @param $id
-     *
-     * @return JsonResponse|View
+     * @return \FOS\RestBundle\View\View|JsonResponse
      */
     public function show($id)
     {
         $tag = $this->em->getRepository(Tag::class)->find($id);
-        if (empty($tag)) {
+        if (!$tag) {
             return new JsonResponse(['message' => 'Tag not found'], Response::HTTP_NOT_FOUND);
         }
         $formatted = [
@@ -84,10 +88,10 @@ class TagController extends AbstractFOSRestController implements ClassResourceIn
             'slug' => $tag->getSlug(),
             'created at' => $tag->getCreatedAt(),
         ];
-        $view = View::create($formatted);
-        $view->setFormat('json');
 
-        return $view;
+        return $this->view($formatted, Response::HTTP_OK, [], [
+            'full',
+        ]);
     }
 
     /**
@@ -101,11 +105,10 @@ class TagController extends AbstractFOSRestController implements ClassResourceIn
      *         @SWG\Items(ref=@Model(type=Tag::class, groups={"full"}))
      *     )
      * )
-     * @SWG\Tag(name="Tags")
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\Form\FormInterface|Tag
+     * @return \FOS\RestBundle\View\View|\Symfony\Component\Form\FormInterface
      */
     public function new(Request $request)
     {
@@ -116,7 +119,9 @@ class TagController extends AbstractFOSRestController implements ClassResourceIn
             $this->em->persist($tag);
             $this->em->flush();
 
-            return $tag;
+            return $this->view($tag, Response::HTTP_CREATED, [], [
+                'full',
+            ]);
         }
 
         return $form;
@@ -133,12 +138,11 @@ class TagController extends AbstractFOSRestController implements ClassResourceIn
      *         @SWG\Items(ref=@Model(type=Tag::class, groups={"full"}))
      *     )
      * )
-     * @SWG\Tag(name="Tags")
      *
      * @param Request $request
      * @param Tag     $tag
      *
-     * @return JsonResponse|\Symfony\Component\Form\FormInterface
+     * @return \FOS\RestBundle\View\View|JsonResponse
      */
     public function update(Request $request, Tag $tag)
     {
@@ -153,7 +157,9 @@ class TagController extends AbstractFOSRestController implements ClassResourceIn
         if ($form->isSubmitted() && $form->isValid()) {
             $this->em->flush();
 
-            return View::create($tag, Codes::HTTP_NO_CONTENT);
+            return $this->view($tag, Response::HTTP_OK, [], [
+                'full',
+            ]);
         }
 
         return $form;
@@ -170,10 +176,8 @@ class TagController extends AbstractFOSRestController implements ClassResourceIn
      *         @SWG\Items(ref=@Model(type=Tag::class, groups={"full"}))
      *     )
      * )
-     * @SWG\Tag(name="Tags")
      *
      * @param Tag $tag
-     *
      * @return JsonResponse
      */
     public function remove(Tag $tag)

@@ -5,10 +5,12 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PageRepository")
+ * @Serializer\ExclusionPolicy("all")
  */
 class Page
 {
@@ -18,12 +20,14 @@ class Page
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Serializer\Expose()
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank()
+     * @Serializer\Expose()
      */
     private $title;
 
@@ -32,11 +36,13 @@ class Page
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank()
      * @Assert\Type("string")
+     * @Serializer\Expose()
      */
     private $slug;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Serializer\Expose()
      */
     private $body;
 
@@ -51,6 +57,7 @@ class Page
 
     /**
      * @ORM\Column(type="boolean")
+     * @Serializer\Expose()
      */
     private $isPublished;
 

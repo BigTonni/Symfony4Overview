@@ -10,8 +10,6 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserAdmin extends AbstractAdmin
 {
@@ -38,7 +36,7 @@ class UserAdmin extends AbstractAdmin
             ->with('Basic information', ['class' => 'col-md-9'])
             ->add('email', EmailType::class)
             ->add('fullName', TextType::class)
-            ->add('userName', TextType::class)
+            ->add('username', TextType::class)
             ->end()
             ->with('Roles', ['class' => 'col-md-3'])
             ->add('roles', CollectionType::class)
@@ -61,7 +59,7 @@ class UserAdmin extends AbstractAdmin
         $listMapper
             ->addIdentifier('email')
             ->add('fullName')
-            ->add('userName')
+            ->add('username')
             ->add('createdAt');
     }
 }

@@ -5,17 +5,19 @@ namespace App\Controller\Api;
 use App\Entity\User;
 use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
-use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\Routing\ClassResourceInterface;
-use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
 use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class UserController extends AbstractFOSRestController implements ClassResourceInterface
+/**
+ * @SWG\Tag(name="Users")
+ * @Security(name="Bearer")
+ */
+class UserController extends BaseRestController
 {
     private $em;
 
@@ -35,25 +37,30 @@ class UserController extends AbstractFOSRestController implements ClassResourceI
      *         @SWG\Items(ref=@Model(type=User::class, groups={"full"}))
      *     )
      * )
-     * @SWG\Tag(name="Users")
+     *
+     * @return \FOS\RestBundle\View\View|JsonResponse
      */
     public function listUsers()
     {
         $users = $this->em->getRepository(User::class)->findAll();
+        if (!$users) {
+            return new JsonResponse(['message' => 'Users not found'], Response::HTTP_NOT_FOUND);
+        }
+
         $formatted = [];
         foreach ($users as $user) {
             $formatted[] = [
                 'id' => $user->getId(),
                 'full name' => $user->getFullName(),
-                'user name' => $user->getUserName(),
+                'user name' => $user->getUsername(),
                 'email' => $user->getEmail(),
                 'created at' => $user->getCreatedAt(),
             ];
         }
-        $view = View::create($formatted);
-        $view->setFormat('json');
 
-        return $view;
+        return $this->view($formatted, Response::HTTP_OK, [], [
+            'full',
+        ]);
     }
 
     /**
@@ -67,29 +74,27 @@ class UserController extends AbstractFOSRestController implements ClassResourceI
      *         @SWG\Items(ref=@Model(type=User::class, groups={"full"}))
      *     )
      * )
-     * @SWG\Tag(name="Users")
      *
      * @param $id
-     *
-     * @return JsonResponse|View
+     * @return \FOS\RestBundle\View\View|JsonResponse
      */
     public function show($id)
     {
         $user = $this->em->getRepository(User::class)->find($id);
-        if (empty($user)) {
+        if (!$user) {
             return new JsonResponse(['message' => 'User not found'], Response::HTTP_NOT_FOUND);
         }
         $formatted = [
             'id' => $user->getId(),
             'full name' => $user->getFullName(),
-            'user name' => $user->getUserName(),
+            'user name' => $user->getUsername(),
             'email' => $user->getEmail(),
             'created at' => $user->getCreatedAt(),
         ];
-        $view = View::create($formatted);
-        $view->setFormat('json');
 
-        return $view;
+        return $this->view($formatted, Response::HTTP_OK, [], [
+            'full',
+        ]);
     }
 
     /**
@@ -103,11 +108,9 @@ class UserController extends AbstractFOSRestController implements ClassResourceI
      *         @SWG\Items(ref=@Model(type=User::class, groups={"full"}))
      *     )
      * )
-     * @SWG\Tag(name="Users")
      *
      * @param Request $request
-     *
-     * @return \Symfony\Component\Form\FormInterface|User
+     * @return \FOS\RestBundle\View\View|\Symfony\Component\Form\FormInterface
      */
     public function new(Request $request)
     {
@@ -118,7 +121,9 @@ class UserController extends AbstractFOSRestController implements ClassResourceI
             $this->em->persist($user);
             $this->em->flush();
 
-            return $user;
+            return $this->view($user, Response::HTTP_CREATED, [], [
+                'full',
+            ]);
         }
 
         return $form;
@@ -135,12 +140,10 @@ class UserController extends AbstractFOSRestController implements ClassResourceI
      *         @SWG\Items(ref=@Model(type=User::class, groups={"full"}))
      *     )
      * )
-     * @SWG\Tag(name="Users")
      *
      * @param Request $request
      * @param User    $user
-     *
-     * @return JsonResponse|\Symfony\Component\Form\FormInterface
+     * @return \FOS\RestBundle\View\View|JsonResponse|\Symfony\Component\Form\FormInterface
      */
     public function update(Request $request, User $user)
     {
@@ -155,7 +158,9 @@ class UserController extends AbstractFOSRestController implements ClassResourceI
         if ($form->isSubmitted() && $form->isValid()) {
             $this->em->flush();
 
-            return View::create($user, Codes::HTTP_NO_CONTENT);
+            return $this->view($user, Response::HTTP_OK, [], [
+                'full',
+            ]);
         }
 
         return $form;
@@ -172,10 +177,8 @@ class UserController extends AbstractFOSRestController implements ClassResourceI
      *         @SWG\Items(ref=@Model(type=User::class, groups={"full"}))
      *     )
      * )
-     * @SWG\Tag(name="Users")
      *
      * @param User $user
-     *
      * @return JsonResponse
      */
     public function remove(User $user)

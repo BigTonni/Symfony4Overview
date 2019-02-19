@@ -22,7 +22,7 @@
 
     <div id="article-add-comment" class="well">
         <h3>{{ 'comment.add' }}</h3>
-        {{ render(controller('App\\Controller\\ArticleController::commentForm', {'id': article.id})) }}
+        {{ render(controller('App\\Controller\\Web\\ArticleController::commentForm', {'id': article.id})) }}
     </div>
 
     <h3>

@@ -45,7 +45,7 @@ class NotificationSender
                 if (!empty($articles)) {
                     $subscriber_email = $subscription->getUser()->getEmail();
                     $users[$subscriber_email]['articles'][] = $articles;
-                    $users[$subscriber_email]['userName'] = $subscription->getUser()->getUserName();
+                    $users[$subscriber_email]['username'] = $subscription->getUser()->getUsername();
                     //For unsubscribe-link
                     $users[$subscriber_email]['sub_id'] = $subscription->getId();
                 }
@@ -60,7 +60,7 @@ class NotificationSender
                     ];
                 }
 
-                $this->sendMail($user_email, $user['userName'], $articles);
+                $this->sendMail($user_email, $user['username'], $articles);
             }
         }
     }

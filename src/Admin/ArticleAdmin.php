@@ -50,7 +50,7 @@ class ArticleAdmin extends AbstractAdmin
             ->add('tags', EntityType::class, ['class' => 'App:Tag', 'choice_label' => 'name', 'multiple' => true])
             ->add('author', EntityType::class, [
                 'class' => User::class,
-                'choice_label' => 'userName',
+                'choice_label' => 'username',
             ])
             ->end()
         ;

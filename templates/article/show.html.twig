@@ -47,7 +47,7 @@
                             {% if is_granted('ROLE_USER') %}
                                     <div class="row mb-5">
                                         <div class="col-sm-12">
-                                            {{ render(controller('App\\Controller\\ArticleController::commentForm', {'id': article.id})) }}
+                                            {{ render(controller('App\\Controller\\Web\\ArticleController::commentForm', {'id': article.id})) }}
                                         </div>
                                     </div>
                             {% endif %}

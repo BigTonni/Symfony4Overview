@@ -4,7 +4,7 @@
 
 homepage:
     path: /{_locale}
-    controller: App\Controller\HomeController::index
+    controller: App\Controller\Web\HomeController::index
     requirements:
         _locale:  '%app_locales%'
     defaults:
@@ -15,3 +15,19 @@ app.swagger_ui:
     path: /api/doc
     methods: GET
     defaults: { _controller: nelmio_api_doc.controller.swagger_ui }
+
+register:
+    path: /api/register
+    controller: App\Controller\Api\AuthController::register
+    methods: POST
+
+api:
+    path: /api
+    controller: App\Controller\Api\AuthController::api
+
+api_login_check:
+    path: /api/login_check
+
+gesdinet_jwt_refresh_token:
+    path:       /api/token/refresh
+    controller: gesdinet.jwtrefreshtoken::refresh
