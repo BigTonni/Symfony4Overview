@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5039e50b832c1fae06fc266924bb5336",
+    "content-hash": "ec456fe578e9e91ade7fbed931e0726b",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -3928,6 +3928,64 @@
                 "simple-cache"
             ],
             "time": "2017-10-23T01:57:42+00:00"
+        },
+        {
+            "name": "redcode/tree-bundle",
+            "version": "0.1-alpha",
+            "target-dir": "RedCode/TreeBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/redco/sonata-admin-tree-bundle.git",
+                "reference": "430eee919979d8b0f4b5fa1445b8ee0f9ba99fc2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/redco/sonata-admin-tree-bundle/zipball/430eee919979d8b0f4b5fa1445b8ee0f9ba99fc2",
+                "reference": "430eee919979d8b0f4b5fa1445b8ee0f9ba99fc2",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6.0",
+                "sonata-project/admin-bundle": "^3.1",
+                "stof/doctrine-extensions-bundle": "^1.2"
+            },
+            "require-dev": {
+                "fabpot/php-cs-fixer": "^1.10",
+                "phpunit/phpunit": "^4.8",
+                "satooshi/php-coveralls": "^0.6.1"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-0": {
+                    "RedCode\\TreeBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andrew Reddikh",
+                    "email": "andrew@reddikh.com",
+                    "homepage": "http://reddikh.com"
+                }
+            ],
+            "description": "This Symfony bundle integrates jsTree and Gedmo Nested Set directly to Sonata Admin",
+            "homepage": "https://github.com/redco/sonata-admin-tree-bundle",
+            "keywords": [
+                "ajax",
+                "async",
+                "asynchronous",
+                "bundle",
+                "doctrine",
+                "nested",
+                "set",
+                "sonataproject",
+                "symfony",
+                "tree"
+            ],
+            "time": "2016-07-27T07:21:28+00:00"
         },
         {
             "name": "sensio/framework-extra-bundle",
@@ -9655,7 +9713,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "redcode/tree-bundle": 15
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

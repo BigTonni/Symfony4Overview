@@ -8,3 +8,7 @@ _sonata_admin:
     type: sonata_admin
     prefix: /admin
     defaults:   { _locale: en }
+
+redcode_tree:
+    resource: "@RedCodeTreeBundle/Resources/config/routing.yml"
+    prefix:   /admin

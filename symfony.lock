@@ -272,6 +272,9 @@
     "psr/simple-cache": {
         "version": "1.0.1"
     },
+    "redcode/tree-bundle": {
+        "version": "0.1-alpha"
+    },
     "sensio/framework-extra-bundle": {
         "version": "5.2",
         "recipe": {

@@ -2,27 +2,16 @@
 
 namespace App\Admin;
 
-use App\Entity\Category;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
+//use App\Entity\Category;
+use RedCode\TreeBundle\Admin\AbstractTreeAdmin;
+//use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-class CategoryAdmin extends AbstractAdmin
+class CategoryAdmin extends AbstractTreeAdmin
 {
-    /**
-     * @param $object
-     *
-     * @return string|null
-     */
-    public function toString($object): ?string
-    {
-        return $object instanceof Category
-            ? $object->getTitle()
-            : 'Category';
-    }
-
     /**
      * @param FormMapper $formMapper
      */
@@ -30,7 +19,8 @@ class CategoryAdmin extends AbstractAdmin
     {
         $formMapper
             ->add('title', TextType::class)
-            ->add('slug', TextType::class);
+            ->add('slug', TextType::class)
+            ->add('parent');
     }
 
     /**
@@ -38,7 +28,10 @@ class CategoryAdmin extends AbstractAdmin
      */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
-        $datagridMapper->add('title');
+        $datagridMapper
+            ->add('id')
+            ->add('title')
+            ->add('createdAt');
     }
 
     /**
@@ -47,7 +40,18 @@ class CategoryAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
+            ->addIdentifier('id')
             ->addIdentifier('title')
-            ->add('slug');
+            ->add('slug')
+            ->add('createdAt')
+            ->add('lvt')
+            ->add('lvl')
+            ->add('rgt')
+//            ->add('_action', null, [
+//                'show' => [],
+//                'edit' => [],
+//                'delete' => [],
+//            ])
+        ;
     }
 }

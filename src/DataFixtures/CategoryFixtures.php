@@ -5,7 +5,6 @@ namespace App\DataFixtures;
 use App\Entity\Category;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
-use Faker\Factory;
 
 class CategoryFixtures extends Fixture
 {
@@ -16,12 +15,27 @@ class CategoryFixtures extends Fixture
      */
     public function load(ObjectManager $manager): void
     {
-        $faker = Factory::create();
-        $category = new Category();
-        $category->setTitle($faker->lexify('Category ?'));
-        $manager->persist($category);
+        $food = new Category();
+        $food->setTitle('Food');
+
+        $fruits = new Category();
+        $fruits->setTitle('Fruits');
+        $fruits->setParent($food);
+
+        $vegetables = new Category();
+        $vegetables->setTitle('Vegetables');
+        $vegetables->setParent($food);
+
+        $carrots = new Category();
+        $carrots->setTitle('Carrots');
+        $carrots->setParent($vegetables);
+
+        $manager->persist($food);
+        $manager->persist($fruits);
+        $manager->persist($vegetables);
+        $manager->persist($carrots);
         $manager->flush();
 
-        $this->addReference(self::CATEGORY_REFERENCE, $category);
+        $this->addReference(self::CATEGORY_REFERENCE, $food);
     }
 }
