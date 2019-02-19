@@ -2,9 +2,7 @@
 
 namespace App\Admin;
 
-//use App\Entity\Category;
 use RedCode\TreeBundle\Admin\AbstractTreeAdmin;
-//use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -44,9 +42,7 @@ class CategoryAdmin extends AbstractTreeAdmin
             ->addIdentifier('title')
             ->add('slug')
             ->add('createdAt')
-            ->add('lvt')
             ->add('lvl')
-            ->add('rgt')
 //            ->add('_action', null, [
 //                'show' => [],
 //                'edit' => [],
