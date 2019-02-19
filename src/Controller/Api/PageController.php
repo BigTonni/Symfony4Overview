@@ -9,7 +9,6 @@ use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -45,7 +44,6 @@ class PageController extends BaseRestController
 
         $formatted = [];
         foreach ($pages as $page) {
-
             $formatted[] = [
                 'id' => $page->getId(),
                 'title' => $page->getTitle(),
@@ -57,7 +55,7 @@ class PageController extends BaseRestController
         }
 
         return $this->view($formatted, Response::HTTP_OK, [], [
-            'full'
+            'full',
         ]);
     }
 
@@ -75,7 +73,7 @@ class PageController extends BaseRestController
      *
      * @param $id
      *
-     * @return JsonResponse|\FOS\RestBundle\View\View
+     * @return \FOS\RestBundle\View\View|JsonResponse
      */
     public function show(int $id)
     {
@@ -94,7 +92,7 @@ class PageController extends BaseRestController
         ];
 
         return $this->view($formatted, Response::HTTP_OK, [], [
-            'full'
+            'full',
         ]);
     }
 }

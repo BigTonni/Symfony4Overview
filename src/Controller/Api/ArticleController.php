@@ -5,20 +5,19 @@ namespace App\Controller\Api;
 use App\Entity\Article;
 use App\Form\ArticleType;
 use Doctrine\ORM\EntityManagerInterface;
-use Knp\Component\Pager\PaginatorInterface;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use Knp\Component\Pager\PaginatorInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 /**
  * @SWG\Tag(name="Articles")
  * @Security(name="Bearer")
-*/
+ */
 class ArticleController extends BaseRestController
 {
     private $em;
@@ -66,7 +65,7 @@ class ArticleController extends BaseRestController
      * )
      *
      * @param Request $request
-     * @return JsonResponse|\FOS\RestBundle\View\View
+     * @return \FOS\RestBundle\View\View|JsonResponse
      */
     public function listArticles(Request $request)
     {
@@ -116,7 +115,7 @@ class ArticleController extends BaseRestController
         }
 
         return $this->view($formatted, Response::HTTP_OK, [], [
-            'full'
+            'full',
         ]);
     }
 
@@ -140,7 +139,7 @@ class ArticleController extends BaseRestController
      * )
      *
      * @param $id
-     * @return JsonResponse|\FOS\RestBundle\View\View
+     * @return \FOS\RestBundle\View\View|JsonResponse
      */
     public function show(int $id)
     {
@@ -162,7 +161,7 @@ class ArticleController extends BaseRestController
         ];
 
         return $this->view($formatted, Response::HTTP_OK, [], [
-            'full'
+            'full',
         ]);
     }
 
@@ -191,7 +190,7 @@ class ArticleController extends BaseRestController
             $this->em->flush();
 
             return $this->view($article, Response::HTTP_CREATED, [], [
-                'full'
+                'full',
             ]);
         }
 
@@ -212,7 +211,7 @@ class ArticleController extends BaseRestController
      *
      * @param Request $request
      * @param int     $id
-     * @return JsonResponse|\Symfony\Component\Form\FormInterface|\FOS\RestBundle\View\View
+     * @return \FOS\RestBundle\View\View|JsonResponse|\Symfony\Component\Form\FormInterface
      */
     public function update(Request $request, int $id)
     {
@@ -229,7 +228,7 @@ class ArticleController extends BaseRestController
             $this->em->flush();
 
             return $this->view($article, Response::HTTP_OK, [], [
-                'full'
+                'full',
             ]);
         }
 
@@ -250,7 +249,7 @@ class ArticleController extends BaseRestController
      *
      * @param Request $request
      * @param int     $id
-     * @return JsonResponse|\FOS\RestBundle\View\View
+     * @return \FOS\RestBundle\View\View|JsonResponse
      */
     public function patch(Request $request, int $id)
     {
@@ -269,7 +268,7 @@ class ArticleController extends BaseRestController
         $this->em->flush();
 
         return $this->view($article, Response::HTTP_OK, [], [
-            'full'
+            'full',
         ]);
     }
 

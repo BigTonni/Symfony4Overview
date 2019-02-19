@@ -38,7 +38,7 @@ class TagController extends BaseRestController
      *     )
      * )
      *
-     * @return JsonResponse|\FOS\RestBundle\View\View
+     * @return \FOS\RestBundle\View\View|JsonResponse
      */
     public function listTags()
     {
@@ -57,7 +57,7 @@ class TagController extends BaseRestController
         }
 
         return $this->view($formatted, Response::HTTP_OK, [], [
-            'full'
+            'full',
         ]);
     }
 
@@ -74,7 +74,7 @@ class TagController extends BaseRestController
      * )
      *
      * @param $id
-     * @return JsonResponse|\FOS\RestBundle\View\View
+     * @return \FOS\RestBundle\View\View|JsonResponse
      */
     public function show($id)
     {
@@ -90,7 +90,7 @@ class TagController extends BaseRestController
         ];
 
         return $this->view($formatted, Response::HTTP_OK, [], [
-            'full'
+            'full',
         ]);
     }
 
@@ -108,7 +108,7 @@ class TagController extends BaseRestController
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\Form\FormInterface|\FOS\RestBundle\View\View
+     * @return \FOS\RestBundle\View\View|\Symfony\Component\Form\FormInterface
      */
     public function new(Request $request)
     {
@@ -120,7 +120,7 @@ class TagController extends BaseRestController
             $this->em->flush();
 
             return $this->view($tag, Response::HTTP_CREATED, [], [
-                'full'
+                'full',
             ]);
         }
 
@@ -142,7 +142,7 @@ class TagController extends BaseRestController
      * @param Request $request
      * @param Tag     $tag
      *
-     * @return JsonResponse|\FOS\RestBundle\View\View
+     * @return \FOS\RestBundle\View\View|JsonResponse
      */
     public function update(Request $request, Tag $tag)
     {
@@ -158,7 +158,7 @@ class TagController extends BaseRestController
             $this->em->flush();
 
             return $this->view($tag, Response::HTTP_OK, [], [
-                'full'
+                'full',
             ]);
         }
 

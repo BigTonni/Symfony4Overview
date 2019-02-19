@@ -38,7 +38,7 @@ class UserController extends BaseRestController
      *     )
      * )
      *
-     * @return JsonResponse|\FOS\RestBundle\View\View
+     * @return \FOS\RestBundle\View\View|JsonResponse
      */
     public function listUsers()
     {
@@ -59,7 +59,7 @@ class UserController extends BaseRestController
         }
 
         return $this->view($formatted, Response::HTTP_OK, [], [
-            'full'
+            'full',
         ]);
     }
 
@@ -76,7 +76,7 @@ class UserController extends BaseRestController
      * )
      *
      * @param $id
-     * @return JsonResponse|\FOS\RestBundle\View\View
+     * @return \FOS\RestBundle\View\View|JsonResponse
      */
     public function show($id)
     {
@@ -93,7 +93,7 @@ class UserController extends BaseRestController
         ];
 
         return $this->view($formatted, Response::HTTP_OK, [], [
-            'full'
+            'full',
         ]);
     }
 
@@ -110,7 +110,7 @@ class UserController extends BaseRestController
      * )
      *
      * @param Request $request
-     * @return \Symfony\Component\Form\FormInterface|\FOS\RestBundle\View\View
+     * @return \FOS\RestBundle\View\View|\Symfony\Component\Form\FormInterface
      */
     public function new(Request $request)
     {
@@ -122,7 +122,7 @@ class UserController extends BaseRestController
             $this->em->flush();
 
             return $this->view($user, Response::HTTP_CREATED, [], [
-                'full'
+                'full',
             ]);
         }
 
@@ -143,7 +143,7 @@ class UserController extends BaseRestController
      *
      * @param Request $request
      * @param User    $user
-     * @return JsonResponse|\Symfony\Component\Form\FormInterface|\FOS\RestBundle\View\View
+     * @return \FOS\RestBundle\View\View|JsonResponse|\Symfony\Component\Form\FormInterface
      */
     public function update(Request $request, User $user)
     {
@@ -159,7 +159,7 @@ class UserController extends BaseRestController
             $this->em->flush();
 
             return $this->view($user, Response::HTTP_OK, [], [
-                'full'
+                'full',
             ]);
         }
 

@@ -10,8 +10,6 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserAdmin extends AbstractAdmin
 {

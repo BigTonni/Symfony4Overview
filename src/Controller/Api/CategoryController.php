@@ -38,7 +38,7 @@ class CategoryController extends BaseRestController
      *     )
      * )
      *
-     * @return JsonResponse|\FOS\RestBundle\View\View
+     * @return \FOS\RestBundle\View\View|JsonResponse
      */
     public function listCategories()
     {
@@ -58,7 +58,7 @@ class CategoryController extends BaseRestController
         }
 
         return $this->view($formatted, Response::HTTP_OK, [], [
-            'full'
+            'full',
         ]);
     }
 
@@ -76,7 +76,7 @@ class CategoryController extends BaseRestController
      *
      * @param $id
      *
-     * @return JsonResponse|\FOS\RestBundle\View\View
+     * @return \FOS\RestBundle\View\View|JsonResponse
      */
     public function show($id)
     {
@@ -92,7 +92,7 @@ class CategoryController extends BaseRestController
         ];
 
         return $this->view($formatted, Response::HTTP_OK, [], [
-            'full'
+            'full',
         ]);
     }
 
@@ -122,7 +122,7 @@ class CategoryController extends BaseRestController
             $this->em->flush();
 
             return $this->view($category, Response::HTTP_CREATED, [], [
-                'full'
+                'full',
             ]);
         }
 
@@ -144,7 +144,7 @@ class CategoryController extends BaseRestController
      * @param Request  $request
      * @param Category $category
      *
-     * @return JsonResponse|\Symfony\Component\Form\FormInterface|\FOS\RestBundle\View\View
+     * @return \FOS\RestBundle\View\View|JsonResponse|\Symfony\Component\Form\FormInterface
      */
     public function update(Request $request, Category $category)
     {
@@ -161,7 +161,7 @@ class CategoryController extends BaseRestController
             $this->em->flush();
 
             return $this->view($category, Response::HTTP_OK, [], [
-                'full'
+                'full',
             ]);
         }
 

@@ -2,9 +2,9 @@
 
 namespace App\Controller\Api;
 
+use FOS\RestBundle\Context\Context;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Routing\ClassResourceInterface;
-use FOS\RestBundle\Context\Context;
 use FOS\RestBundle\View\View;
 
 class BaseRestController extends AbstractFOSRestController implements ClassResourceInterface
@@ -23,6 +23,7 @@ class BaseRestController extends AbstractFOSRestController implements ClassResou
             $view->setContext((new Context())->setGroups($serializedGroups));
         }
         $view->setFormat('json');
+
         return $view;
     }
 }
