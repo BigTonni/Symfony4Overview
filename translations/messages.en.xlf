@@ -101,6 +101,10 @@
         <source>menu.new_category</source>
         <target>New category</target>
       </trans-unit>
+      <trans-unit id="wvvYSw_" resname="menu.admin">
+        <source>menu.admin</source>
+        <target>Adminpanel</target>
+      </trans-unit>
       <trans-unit id="fftM9nd" resname="users">
         <source>users</source>
         <target>Users</target>
@@ -259,75 +263,75 @@
       </trans-unit>
       <trans-unit id="7bLNO3T" resname="category">
         <source>category</source>
-        <target>__category</target>
+        <target>Category</target>
       </trans-unit>
       <trans-unit id="h2etZdM" resname="category.no_found">
         <source>category.no_found</source>
-        <target>__category.no_found</target>
+        <target>Category does not found</target>
       </trans-unit>
       <trans-unit id="eL_giUu" resname="category.edit">
         <source>category.edit</source>
-        <target>__category.edit</target>
+        <target>Category edit</target>
       </trans-unit>
       <trans-unit id="OXh0beg" resname="comment.total">
         <source>comment.total</source>
-        <target>__comment.total</target>
+        <target>Comment total</target>
       </trans-unit>
       <trans-unit id="8ExkngT" resname="comment.no_found">
         <source>comment.no_found</source>
-        <target>__comment.no_found</target>
+        <target>Comment does not found</target>
       </trans-unit>
       <trans-unit id="rjDqmQR" resname="menu.user">
         <source>menu.user</source>
-        <target>__menu.user</target>
+        <target>User</target>
       </trans-unit>
       <trans-unit id="hTKWQ6g" resname="action.delete">
         <source>action.delete</source>
-        <target>__action.delete</target>
+        <target>Delete</target>
       </trans-unit>
       <trans-unit id="TvuuOMC" resname="user.new">
         <source>user.new</source>
-        <target>__user.new</target>
+        <target>New user</target>
       </trans-unit>
       <trans-unit id="vQxH4zm" resname="user.edit">
         <source>user.edit</source>
-        <target>__user.edit</target>
+        <target>Edit user</target>
       </trans-unit>
       <trans-unit id="MjlRaK9" resname="user.list">
         <source>user.list</source>
-        <target>__user.list</target>
+        <target>List user</target>
       </trans-unit>
       <trans-unit id="ck1qEpr" resname="action.user_articles">
         <source>action.user_articles</source>
-        <target>__action.user_articles</target>
+        <target>User articles</target>
       </trans-unit>
       <trans-unit id="YUNjd45" resname="user.no_found">
         <source>user.no_found</source>
-        <target>__user.no_found</target>
+        <target>User does not found</target>
       </trans-unit>
       <trans-unit id="K0JE_yZ" resname="comments">
         <source>comments</source>
-        <target>__comments</target>
+        <target>Comments</target>
       </trans-unit>
       <trans-unit id="OeWcFY9" resname="button.reply">
         <source>button.reply</source>
-        <target>__button.reply</target>
+        <target>Reply</target>
       </trans-unit>
       <trans-unit id="kGONf_b" resname="comment.error">
         <source>comment.error</source>
-        <target>__comment.error</target>
+        <target>Comment error</target>
       </trans-unit>
       <trans-unit id="RZy6jqi" resname="profile.wellcome_back">
         <source>profile.wellcome_back</source>
-        <target>__profile.wellcome_back</target>
+        <target>Wellcome_back</target>
       </trans-unit>
       <trans-unit id="SuJPSME" resname="button.update">
         <source>button.update</source>
-        <target>__button.update</target>
+        <target>Update</target>
       </trans-unit>
       <trans-unit id="epKnurA" resname="menu.tag_list">
         <source>menu.tag_list</source>
-        <target>__menu.tag_list</target>
+        <target>Tag list</target>
       </trans-unit>
       <trans-unit id="Pre._QN" resname="tag.no_found">
         <source>tag.no_found</source>
@@ -337,6 +341,10 @@
         <source>menu.tag</source>
         <target>__menu.tag</target>
       </trans-unit>
+      <trans-unit id="xvRnmr3" resname="menu.api_doc">
+          <source>menu.api_doc</source>
+          <target>API Doc</target>
+        </trans-unit>
       <trans-unit id="d73OxmD" resname="tag.new">
         <source>tag.new</source>
         <target>New tag</target>

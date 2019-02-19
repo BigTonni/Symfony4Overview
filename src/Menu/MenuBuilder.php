@@ -97,9 +97,14 @@ class MenuBuilder
                     )
                     ->setLinkAttribute('class', 'nav-link');
             }
+            $menu->addChild('menu.admin', ['route' => 'sonata_admin_redirect'])
+                ->setAttributes([
+                    'class' => 'nav-item', ]
+                )
+                ->setLinkAttribute('class', 'nav-link');;
         }
 
-        $menu->addChild('API-Doc', ['route' => 'app.swagger_ui'])
+        $menu->addChild('menu.api_doc', ['route' => 'app.swagger_ui'])
             ->setAttributes([
                     'class' => 'nav-item', ]
             )

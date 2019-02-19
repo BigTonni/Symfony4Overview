@@ -97,6 +97,10 @@
         <source>menu.new_category</source>
         <target>Новая категория</target>
       </trans-unit>
+      <trans-unit id="wvvYSw_" resname="menu.admin">
+        <source>menu.admin</source>
+        <target>Админка</target>
+      </trans-unit>
       <trans-unit id="u6Qyfxh" resname="menu.new_tag">
         <source>menu.new_tag</source>
         <target>Новый тег</target>
@@ -337,6 +341,10 @@
         <source>menu.tag</source>
         <target>__menu.tag</target>
       </trans-unit>
+      <trans-unit id="xvRnmr3" resname="menu.api_doc">
+          <source>menu.api_doc</source>
+          <target>API Док</target>
+        </trans-unit>
       <trans-unit id="d73OxmD" resname="tag.new">
         <source>tag.new</source>
         <target>Новый тег</target>

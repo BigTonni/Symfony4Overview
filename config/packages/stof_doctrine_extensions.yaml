@@ -7,3 +7,4 @@ stof_doctrine_extensions:
             blameable: true
             sluggable: true
             timestampable: true
+            tree: true
