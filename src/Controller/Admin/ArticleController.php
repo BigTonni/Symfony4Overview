@@ -3,8 +3,10 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Article;
+use App\Entity\Like;
 use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
+use App\Service\Article\Manager\ArticleManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,6 +21,8 @@ use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
  */
 class ArticleController extends AbstractController
 {
+    private $articleManager;
+
     private $translator;
 
     private $breadcrumbs;
@@ -27,10 +31,11 @@ class ArticleController extends AbstractController
      * @param TranslatorInterface $translator
      * @param Breadcrumbs $breadcrumbs
      */
-    public function __construct(TranslatorInterface $translator, Breadcrumbs $breadcrumbs)
+    public function __construct(TranslatorInterface $translator, Breadcrumbs $breadcrumbs, ArticleManager $articleManager)
     {
         $this->translator = $translator;
         $this->breadcrumbs = $breadcrumbs;
+        $this->articleManager = $articleManager;
     }
 
     /**
@@ -60,9 +65,10 @@ class ArticleController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($article);
-            $em->flush();
+//            $em = $this->getDoctrine()->getManager();
+//            $em->persist($article);
+//            $em->flush();
+            $this->articleManager->create($article);
 
             $this->addFlash(
                 'notice',
@@ -91,8 +97,9 @@ class ArticleController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->flush();
+//            $em = $this->getDoctrine()->getManager();
+//            $em->flush();
+            $this->articleManager->edit($article);
 
             $this->addFlash(
                 'notice',
@@ -121,8 +128,12 @@ class ArticleController extends AbstractController
         // using an annotation: @IsGranted("show", subject="article", message="Articles can only be shown to their authors.")
         $this->denyAccessUnlessGranted('show', $article, 'article.can_shown_their_authors.');
 
+        $em = $this->getDoctrine()->getManager();
+        $countLikes = $em->getRepository(Like::class)->getCountLikesForArticle($article->getId());
+
         return $this->render('admin/article/show.html.twig', [
             'article' => $article,
+            'like' => $countLikes,
         ]);
     }
 
@@ -141,9 +152,10 @@ class ArticleController extends AbstractController
         $article->getTags()->clear();
         $article->getComments()->clear();
 
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($article);
-        $em->flush();
+//        $em = $this->getDoctrine()->getManager();
+//        $em->remove($article);
+//        $em->flush();
+        $this->articleManager->remove($article);
 
         $this->addFlash(
             'notice',

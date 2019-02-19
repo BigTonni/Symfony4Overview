@@ -6,7 +6,7 @@
     
 {% block main %}
     <h1>{{ tag.name|upper }}
-        <div style="float: right;"><a href="{{ path('tag_edit', {id: tag.id}) }}" class="btn btn-xs btn-warning">{{ 'action.edit'|trans }}</a></div>
+        <div style="float: right;"><a href="{{ path('tag_edit', {slug: tag.slug}) }}" class="btn btn-xs btn-warning">{{ 'action.edit'|trans }}</a></div>
     </h1>
     
 {% endblock %}

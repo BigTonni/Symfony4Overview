@@ -98,6 +98,15 @@ class Article
      */
     private $likes;
 
+    /**
+     * @var Image
+     *
+     * @ORM\OneToOne(targetEntity="App\Entity\Image", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=true)
+     * @Assert\Valid()
+     */
+    private $image;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -279,5 +288,17 @@ class Article
         $this->likes->removeElement($like);
 
         return $this;
+    }
+
+    public function setImage(Image $image = null): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    public function getImage(): ?Image
+    {
+        return $this->image;
     }
 }

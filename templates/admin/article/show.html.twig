@@ -1,49 +1,82 @@
-{% extends 'admin/layout.html.twig' %}
+{% extends 'base.html.twig' %}
 
-{% block body_id 'admin_article_show' %}
-    
+{% block title %}Read: {{ article.title }}{% endblock %}
+
 {% block main %}
-    <h1>{{ article.title|upper }}</h1>
 
-    <p class="post-metadata">
-        <span class="metadata"><i class="fa fa-calendar"></i> {{ article.createdAt|date("j F Y, H:i:s") }}</span>
-        <span class="metadata"><i class="fa fa-user"></i> {{ 'by'|trans }} {{ article.author.fullName }}</span>
-    </p>
+    {{ wo_render_breadcrumbs() }}
 
-    <p>{{ 'category'|trans }}: {{ article.category.title }}</p>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="show-article-container p-3 mt-4">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            {#<img class="show-article-img" src="{{ asset('images/default-image.png') }}">#}
+                            {% if article.image is not null %}
+                                <img class="show-article-img" src="{{ asset(image_article_thumbnail_display ~ article.image.alt) }}" alt="{{ article.image.alt }}">
+                            {% endif %}
+                            <div class="show-article-title-container d-inline-block pl-3 align-middle">
+                                <span class="show-article-title ">{{ article.title|upper }} </span>
+                                <br>
+                                <span class="align-left article-details"><img class="article-author-img rounded-circle" src="{{ asset('images/placeholder.png') }}"> {{ article.author.fullName }}</span>
+                                <span class="pl-2 article-details"> {{ article.createdAt|date("j F Y, H:i:s") }}</span>
+                                <span class="pl-2 article-details">
+                                <span class="js-like-article-count">{{ like.countLikes }}</span>
+                                <a href="{{ path('article_toggle_like', {slug: article.slug}) }}" class="fa fa-heart-o like-article js-like-article"></a>
+                            </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="article-text">
+                                {{ article.body }}
+                            </div>
+                        </div>
+                    </div>
+                    <p>{{ 'category'|trans }}: {{ article.category.title }}</p>
 
-    <p>{{ 'tags'|trans }}:<br/>
-        {% for tag in article.tags %}
-            <a href="{{- path('tag_show', {slug: tag.slug}) -}}" class="btn btn-outline-primary btn-sm">{{ tag.name }}</a>
-        {% endfor %}
-    </p>
+                    <p>{{ 'tags'|trans }}:<br/>
+                        {% for tag in article.tags %}
+                            <a href="{{- path('tag_show', {slug: tag.slug}) -}}" class="btn btn-outline-primary btn-sm">{{ tag.name }}</a>
+                        {% endfor %}
+                    </p>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h3><i class="pr-3 fa fa-comment"></i>{{ article.comments|length }} {{ 'comments'|trans }}</h3>
+                            <hr>
 
-    <p>{{ article.body }}</p>
+                            {% if is_granted('ROLE_USER') %}
+                                <div class="row mb-5">
+                                    <div class="col-sm-12">
+                                        {{ render(controller('App\\Controller\\Web\\ArticleController::commentForm', {'id': article.id})) }}
+                                    </div>
+                                </div>
+                            {% endif %}
 
-    <div id="article-add-comment" class="well">
-        <h3>{{ 'comment.add' }}</h3>
-        {{ render(controller('App\\Controller\\Web\\ArticleController::commentForm', {'id': article.id})) }}
+                            {% for comment in article.comments %}
+                                {#<a name="comment_{{ comment.id }}"></a>#}
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <img class="comment-img rounded-circle" src="{{ asset('images/placeholder.png') }}">
+                                        <div class="comment-container d-inline-block pl-3 align-top">
+                                            <span class="commenter-name">{{ comment.author.fullName }}</span>
+                                            <br>
+                                            <span class="comment"> {{ comment.content }}</span> (<i>{{ comment.publishedAt|date("j F Y, H:i:s") }}</i>)
+                                            <p><a href="#">{{ 'button.reply'|trans }}</a></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <h3>
-        {{ 'comment.total'|trans }}: {{ article.comments|length }}
-    </h3>
-    {% for comment in article.comments %}
-        <div class="row article-comment">
-            <a name="comment_{{ comment.id }}"></a>
-            <div class="col-sm-4">
-                <h4>{{ comment.author.fullName }}</h4> (<i>{{ comment.publishedAt|date("j F Y, H:i:s") }}</i>)
-            </div>
-            <div class="col-sm-8">
-                {{ comment.content }}
-            </div>
-        </div>
-    {% else %}
-        <div class="article-comment">
-            <p>{{ 'comment.no_found'|trans }}</p>
-        </div>
-    {% endfor %}
-    
 {% endblock %}
 
 {% block sidebar %}
@@ -59,4 +92,10 @@
 
     {{ parent() }}
 
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{ asset('js/article_show.js') }}"></script>
 {% endblock %}

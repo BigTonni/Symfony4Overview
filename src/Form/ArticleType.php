@@ -24,6 +24,10 @@ class ArticleType extends AbstractType
             ->add('title', TextType::class)
             ->add('slug', TextType::class)
             ->add('body', TextareaType::class, ['attr' => ['rows' => 8]])
+            ->add('image', ImageType::class, [
+                'required' => false,
+                'label' => false,
+            ])
             ->add('status', ArticleStatusType::class)
             ->add('category', EntityType::class, ['class' => 'App:Category', 'choice_label' => 'title'])
 //            ->add('author', EntityType::class, ['class' => 'App:User', 'choice_label' => 'userName'])
