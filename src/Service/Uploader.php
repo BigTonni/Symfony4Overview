@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\Image;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 class Uploader
 {
@@ -37,7 +38,11 @@ class Uploader
 
     public function uploadImage(UploadedFile $file, string $imageName): void
     {
-        $file->move($this->getTargetDir(), $imageName);
+        try {
+            $file->move($this->getTargetDir(), $imageName);
+        } catch (FileException $e) {
+            new FileException('Something happens');
+        }
     }
 
     public function removeImage(string $imageName): void

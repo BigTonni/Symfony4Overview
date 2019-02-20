@@ -20,6 +20,12 @@ services:
         bind:
             $targetDir: '%image_articles_thumbnails_directory%'
 
+    # Not used 'App\Service\Uploader' because there is an error 'Cannot autowire service "App\Service\Uploader": argument "$targetDir" of method "__construct()" is type-hinted "string", you should configure its value explicitly.'
+#    App\Service\Uploader:
+#        arguments:
+#            $targetDir: '%image_articles_thumbnails_directory%'
+
+
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:

@@ -65,9 +65,6 @@ class ArticleController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-//            $em = $this->getDoctrine()->getManager();
-//            $em->persist($article);
-//            $em->flush();
             $this->articleManager->create($article);
 
             $this->addFlash(
@@ -97,8 +94,6 @@ class ArticleController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-//            $em = $this->getDoctrine()->getManager();
-//            $em->flush();
             $this->articleManager->edit($article);
 
             $this->addFlash(
@@ -121,6 +116,7 @@ class ArticleController extends AbstractController
      * @param Article $article
      * @Route("/{slug}", methods={"GET"}, name="admin_article_show")
      * @return Response
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function show(Article $article): Response
     {
@@ -152,9 +148,6 @@ class ArticleController extends AbstractController
         $article->getTags()->clear();
         $article->getComments()->clear();
 
-//        $em = $this->getDoctrine()->getManager();
-//        $em->remove($article);
-//        $em->flush();
         $this->articleManager->remove($article);
 
         $this->addFlash(
