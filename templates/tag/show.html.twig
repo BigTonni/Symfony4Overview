@@ -5,8 +5,45 @@
 {% block body_id 'tag_show' %}
     
 {% block main %}
+    {{ wo_render_breadcrumbs() }}
+
     <h1>{{ tag.name|upper }}
         <div style="float: right;"><a href="{{ path('tag_edit', {slug: tag.slug}) }}" class="btn btn-xs btn-warning">{{ 'action.edit'|trans }}</a></div>
     </h1>
+    {% for article in articles %}
+        <article class="post">
+            <h2>
+                <a href="{{ path('article_show', {slug: article.slug}) }}">
+                    {{ article.title }}
+                </a>
+            </h2>
+
+            <p class="post-metadata">
+                <span class="metadata"><i class="fa fa-calendar"></i> {{ article.createdAt|date("j F Y, H:i:s") }}</span>
+                <span class="metadata"><i class="fa fa-user"></i> {{ 'by'|trans }} {{ article.author.fullName }}</span>
+            </p>
+
+            <p>{{ 'tags'|trans }}:
+                {% for tag in article.tags %}
+                    <a href="{{- path('tag_show', {slug: tag.slug}) -}}" class="btn btn-outline-primary btn-sm">{{ tag.name }}</a>
+                {% endfor %}
+            </p>
+
+            <div class="col-md-12 col-lg-12 col-xl-12">
+                {{ article.body }}
+            </div>
+
+        </article>
+    {% else %}
+        <div class="well">{{ 'article.no_posts_found'|trans }}</div>
+    {% endfor %}
+
+    <div class="navigation text-center">
+        {{ knp_pagination_render(articles) }}
+    </div>
     
+{% endblock %}
+
+{% block sidebar %}
+    {{ render(controller('App\\Controller\\Web\\HomeController::sidebar')) }}
 {% endblock %}

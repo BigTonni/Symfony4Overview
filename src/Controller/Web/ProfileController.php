@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Web\Admin;
+namespace App\Controller\Web;
 
 use App\Entity\Article;
 use App\Entity\Comment;

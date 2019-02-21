@@ -1,12 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ 'menu.home'|trans }}{% endblock %}
+{% block title %}{{ 'menu.article_list'|trans }}{% endblock %}
 
-{% block body_id 'homepage' %}
+{% block body_id 'list_articles' %}
 
 {% block main %}
-    <h2>{{ 'articles.new'|trans }}</h2>
-    {% for article in pagination %}
+    {{ wo_render_breadcrumbs() }}
+
+    <h2>{{ 'title.article_list'|trans }}</h2>
+
+    {% for article in articles %}
         <div class="article-container my-1">
             <a href="{{ path('article_show', {slug: article.slug}) }}">
 
@@ -20,14 +23,22 @@
                     <br>
                     <span class="align-left article-details"><img class="article-author-img rounded-circle" src="{{ asset('images/placeholder.png') }}"> {{ article.author.fullName }} </span>
                     <span class="pl-5 article-details float-right"> {{ article.createdAt|date("j F Y, H:i:s") }}</span>
+                    <br>
+                    {{ article.body|truncate(20)|raw }}
                 </div>
             </a>
         </div>
     {% else %}
-        <div class="well">{{ 'article.no_found'|trans }}</div>
+        <div class="well">{{ 'article.no_posts_found'|trans }}</div>
     {% endfor %}
 {% endblock %}
 
 {% block sidebar %}
+    <div class="section actions">
+        <a href="{{ path('article_new') }}" class="btn btn-lg btn-block btn-success">
+            <i class="fa fa-plus" aria-hidden="true"></i> {{ 'action.create_article'|trans }}
+        </a>
+    </div>
+
     {{ render(controller('App\\Controller\\Web\\HomeController::sidebar')) }}
 {% endblock %}

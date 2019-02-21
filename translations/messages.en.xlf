@@ -335,11 +335,11 @@
       </trans-unit>
       <trans-unit id="Pre._QN" resname="tag.no_found">
         <source>tag.no_found</source>
-        <target>__tag.no_found</target>
+        <target>Tag does not found</target>
       </trans-unit>
       <trans-unit id="xvRnmr2" resname="menu.tag">
         <source>menu.tag</source>
-        <target>__menu.tag</target>
+        <target>Tag</target>
       </trans-unit>
       <trans-unit id="GRk23Lm" resname="menu.api_doc">
         <source>menu.api_doc</source>

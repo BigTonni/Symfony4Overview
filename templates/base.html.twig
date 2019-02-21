@@ -36,7 +36,17 @@
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                 <a class="dropdown-item" href="{{ path('app_profile') }}">{{ 'menu.profile'|trans }}</a>
                                 <a class="dropdown-item" href="{{ path('profile_change_password') }}">{{ 'menu.profile_change_password'|trans }}</a>
-                                <a class="dropdown-item" href="{{ path('admin_article_new') }}">{{ 'menu.new_article'|trans }}</a>
+                                <a class="dropdown-item" href="{{ path('article_new') }}">{{ 'menu.new_article'|trans }}</a>
+
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <a class="dropdown-item" href="{{ path('category_new') }}">{{ 'menu.new_category'|trans }}</a>
+                                    <a class="dropdown-item" href="{{ path('tag_new') }}">{{ 'menu.new_tag'|trans }}</a>
+
+                                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                        <a class="dropdown-item" href="{{ path('user_new') }}">{{ 'menu.new_user'|trans }}</a>
+                                    {% endif %}
+                                {% endif %}
+
                                 <a class="dropdown-item" href="{{ path('app_logout') }}">{{ 'menu.logout'|trans }}</a>
                             </div>
                         </li>

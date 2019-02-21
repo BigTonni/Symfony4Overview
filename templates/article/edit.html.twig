@@ -14,3 +14,6 @@
     {{ form_end(form) }}
     
 {% endblock %}
+{% block sidebar %}
+    {{ render(controller('App\\Controller\\Web\\HomeController::sidebar')) }}
+{% endblock %}
