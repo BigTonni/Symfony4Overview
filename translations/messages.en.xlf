@@ -323,7 +323,7 @@
       </trans-unit>
       <trans-unit id="RZy6jqi" resname="profile.wellcome_back">
         <source>profile.wellcome_back</source>
-        <target>Wellcome_back</target>
+        <target>Wellcome back</target>
       </trans-unit>
       <trans-unit id="SuJPSME" resname="button.update">
         <source>button.update</source>
@@ -341,10 +341,10 @@
         <source>menu.tag</source>
         <target>__menu.tag</target>
       </trans-unit>
-      <trans-unit id="xvRnmr3" resname="menu.api_doc">
-          <source>menu.api_doc</source>
-          <target>API Doc</target>
-        </trans-unit>
+      <trans-unit id="GRk23Lm" resname="menu.api_doc">
+        <source>menu.api_doc</source>
+        <target>API Doc</target>
+      </trans-unit>
       <trans-unit id="d73OxmD" resname="tag.new">
         <source>tag.new</source>
         <target>New tag</target>
@@ -376,6 +376,22 @@
       <trans-unit id="p_LSbo0" resname="by">
         <source>by</source>
         <target>by</target>
+      </trans-unit>
+      <trans-unit id="dMn3jTJ" resname="profile.manage">
+        <source>profile.manage</source>
+        <target>Dashboard</target>
+      </trans-unit>
+      <trans-unit id=".MyufYk" resname="profile.articles">
+        <source>profile.articles</source>
+        <target>Your articles</target>
+      </trans-unit>
+      <trans-unit id="3WAP1bY" resname="profile.likes">
+        <source>profile.likes</source>
+        <target>Your likes</target>
+      </trans-unit>
+      <trans-unit id="LFNLYNO" resname="profile.comments">
+        <source>profile.comments</source>
+        <target>Your comments</target>
       </trans-unit>
     </body>
   </file>

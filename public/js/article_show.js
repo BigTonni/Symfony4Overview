@@ -1,15 +1,16 @@
 $(document).ready(function() {
+
+    //Like/dislike
     $('.js-like-article').on('click', function(e) {
         e.preventDefault();
 
-        var $link = $(e.currentTarget);
+        let $link = $(e.currentTarget);
         $link.toggleClass('fa-heart-o').toggleClass('fa-heart');
 
         $.ajax({
             method: 'POST',
             url: $link.attr('href')
         }).done(function(data) {
-            console.log(data);
             $('.js-like-article-count').html(data.like.countLikes);
         })
     });

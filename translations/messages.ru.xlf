@@ -27,7 +27,7 @@
       </trans-unit>
       <trans-unit id="OBmPOoB" resname="user.updated_successfully">
         <source>user.updated_successfully</source>
-        <target>User отредактирован.</target>
+        <target>Юзер отредактирован.</target>
       </trans-unit>
       <trans-unit id="mJ3NpR8" resname="menu.article_list">
         <source>menu.article_list</source>
@@ -341,10 +341,10 @@
         <source>menu.tag</source>
         <target>__menu.tag</target>
       </trans-unit>
-      <trans-unit id="xvRnmr3" resname="menu.api_doc">
-          <source>menu.api_doc</source>
-          <target>API Док</target>
-        </trans-unit>
+      <trans-unit id="GRk23Lm" resname="menu.api_doc">
+        <source>menu.api_doc</source>
+        <target>API Док</target>
+      </trans-unit>
       <trans-unit id="d73OxmD" resname="tag.new">
         <source>tag.new</source>
         <target>Новый тег</target>
@@ -376,6 +376,22 @@
       <trans-unit id="p_LSbo0" resname="by">
         <source>by</source>
         <target>от</target>
+      </trans-unit>
+      <trans-unit id="dMn3jTJ" resname="profile.manage">
+        <source>profile.manage</source>
+        <target>Дашборд</target>
+      </trans-unit>
+      <trans-unit id=".MyufYk" resname="profile.articles">
+        <source>profile.articles</source>
+        <target>Ваши статьи</target>
+      </trans-unit>
+      <trans-unit id="3WAP1bY" resname="profile.likes">
+        <source>profile.likes</source>
+        <target>Ваши лайки</target>
+      </trans-unit>
+      <trans-unit id="LFNLYNO" resname="profile.comments">
+        <source>profile.comments</source>
+        <target>Ваши комментарии</target>
       </trans-unit>
     </body>
   </file>
