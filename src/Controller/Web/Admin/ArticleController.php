@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Admin;
+namespace App\Controller\Web\Admin;
 
 use App\Entity\Article;
 use App\Entity\Like;
@@ -30,6 +30,7 @@ class ArticleController extends AbstractController
     /**
      * @param TranslatorInterface $translator
      * @param Breadcrumbs $breadcrumbs
+     * @param ArticleManager $articleManager
      */
     public function __construct(TranslatorInterface $translator, Breadcrumbs $breadcrumbs, ArticleManager $articleManager)
     {
@@ -115,8 +116,8 @@ class ArticleController extends AbstractController
     /**
      * @param Article $article
      * @Route("/{slug}", methods={"GET"}, name="admin_article_show")
-     * @return Response
      * @throws \Doctrine\ORM\NonUniqueResultException
+     * @return Response
      */
     public function show(Article $article): Response
     {
