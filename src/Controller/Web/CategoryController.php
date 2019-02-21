@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 /**
  * @Route("/{_locale}/category", requirements={"_locale" : "en|ru"}, defaults={"_locale" : "en"})
@@ -21,12 +22,16 @@ class CategoryController extends AbstractController
 {
     private $translator;
 
+    private $breadcrumbs;
+
     /**
      * @param TranslatorInterface $translator
+     * @param Breadcrumbs $breadcrumbs
      */
-    public function __construct(TranslatorInterface $translator)
+    public function __construct(TranslatorInterface $translator, Breadcrumbs $breadcrumbs)
     {
         $this->translator = $translator;
+        $this->breadcrumbs = $breadcrumbs;
     }
 
     /**
@@ -35,6 +40,9 @@ class CategoryController extends AbstractController
      */
     public function categoryList(): Response
     {
+        $this->breadcrumbs->prependRouteItem('menu.home', 'homepage');
+        $this->breadcrumbs->addRouteItem('categories', 'category_list');
+
         $categories = $this->getDoctrine()
             ->getRepository(Category::class)
             ->findAll();
@@ -112,6 +120,11 @@ class CategoryController extends AbstractController
      */
     public function show(Request $request, Category $category, PaginatorInterface $paginator): Response
     {
+        $this->breadcrumbs->prependRouteItem('menu.home', 'homepage');
+        $this->breadcrumbs->addRouteItem($category->getTitle(), 'category_show', [
+            'slug' => $category->getSlug(),
+        ]);
+
         $query = $this->getDoctrine()->getManager()->getRepository(Article::class)->findArticlesByCategoryId($category->getId());
         $articles = $paginator->paginate($query, $request->query->getInt('page', 1), Article::NUM_ITEMS);
 

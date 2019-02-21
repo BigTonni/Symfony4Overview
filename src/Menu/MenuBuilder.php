@@ -51,7 +51,29 @@ class MenuBuilder
             )
             ->setLinkAttribute('class', 'nav-link');
 
-        if (!$this->checker->isGranted('ROLE_USER')) {
+        //Only auth users
+        if ($this->checker->isGranted('IS_AUTHENTICATED_FULLY')) {
+            $menu->addChild('menu.my_articles', ['route' => 'list_articles'])
+                ->setAttributes([
+                        'class' => 'nav-item', ]
+                )
+                ->setLinkAttribute('class', 'nav-link');
+            $menu->addChild('tags', ['route' => 'tag_list'])
+                ->setAttributes([
+                        'class' => 'nav-item', ]
+                )
+                ->setLinkAttribute('class', 'nav-link');
+            $menu->addChild('categories', ['route' => 'category_list'])
+                ->setAttributes([
+                        'class' => 'nav-item', ]
+                )
+                ->setLinkAttribute('class', 'nav-link');
+            $menu->addChild('menu.admin', ['route' => 'sonata_admin_redirect'])
+                ->setAttributes([
+                        'class' => 'nav-item', ]
+                )
+                ->setLinkAttribute('class', 'nav-link');
+        } else {
             $menu->addChild('menu.login', ['route' => 'app_login'])
                 ->setAttributes([
                         'class' => 'nav-item', ]
@@ -60,46 +82,6 @@ class MenuBuilder
             $menu->addChild('menu.register', ['route' => 'app_register'])
                 ->setAttributes([
                         'class' => 'nav-item', ]
-                )
-                ->setLinkAttribute('class', 'nav-link');
-        } else {
-            if ($this->checker->isGranted('ROLE_SUPER_ADMIN')) {
-                $menu->addChild('menu.new_user', ['route' => 'user_new'])
-                    ->setAttributes([
-                            'class' => 'nav-item', ]
-                    )
-                    ->setLinkAttribute('class', 'nav-link');
-            }
-            if ($this->checker->isGranted('ROLE_ADMIN')) {
-                $menu->addChild('tags', ['route' => 'tag_list'])
-                    ->setAttributes([
-                            'class' => 'nav-item', ]
-                    )
-                    ->setLinkAttribute('class', 'nav-link');
-                $menu->addChild('categories', ['route' => 'category_list'])
-                    ->setAttributes([
-                            'class' => 'nav-item', ]
-                    )
-                    ->setLinkAttribute('class', 'nav-link');
-                $menu->addChild('menu.my_articles', ['route' => 'admin_index'])
-                    ->setAttributes([
-                            'class' => 'nav-item', ]
-                    )
-                    ->setLinkAttribute('class', 'nav-link');
-                $menu->addChild('menu.new_category', ['route' => 'category_new'])
-                    ->setAttributes([
-                            'class' => 'nav-item', ]
-                    )
-                    ->setLinkAttribute('class', 'nav-link');
-                $menu->addChild('menu.new_tag', ['route' => 'tag_new'])
-                    ->setAttributes([
-                            'class' => 'nav-item', ]
-                    )
-                    ->setLinkAttribute('class', 'nav-link');
-            }
-            $menu->addChild('menu.admin', ['route' => 'sonata_admin_redirect'])
-                ->setAttributes([
-                    'class' => 'nav-item', ]
                 )
                 ->setLinkAttribute('class', 'nav-link');
         }

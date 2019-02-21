@@ -2,9 +2,10 @@
 
 {% block title %}{{ 'menu.article_list'|trans }}{% endblock %}
 
-{% block body_id 'article_list' %}
+{% block body_id 'list_new_articles' %}
 
 {% block main %}
+    {{ wo_render_breadcrumbs() }}
 
     {% for article in articles %}
         <article class="post">

@@ -5,6 +5,8 @@
 {% block body_id 'tag_index' %}
 
 {% block main %}
+    {{ wo_render_breadcrumbs() }}
+
     {% for tag in tags %}
         <article class="post">
             <h2>
@@ -20,4 +22,8 @@
         {{ knp_pagination_render(tags) }}
     </div>
 
+{% endblock %}
+
+{% block sidebar %}
+    {{ render(controller('App\\Controller\\Web\\HomeController::sidebar')) }}
 {% endblock %}

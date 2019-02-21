@@ -45,6 +45,17 @@ class ArticleRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findArticlesByTagId($id)
+    {
+        return $this->createQueryBuilder('a')
+            ->innerJoin('a.tags', 't')
+            ->where('t.id = :id')
+            ->setParameter(':id', $id)
+            ->orderBy('t.name', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findTodayArticlesByCategoryId($id)
     {
         return $this->createQueryBuilder('a')

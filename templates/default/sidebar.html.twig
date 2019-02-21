@@ -8,7 +8,7 @@
     <h3 class="text-center pb-3">{{ 'comments.new'|trans }}</h3>
     {% for comment in comments %}
         <p>
-            <i class="fa fa-comment"></i> {{ comment.content }}<br>— <a href="{{ path('article_show', {slug: comment.article.slug}) }}">{{ comment.author.fullName }}, {{ comment.publishedAt|date("j F Y, H:i:s") }}</a>
+            <i class="fa fa-comment"></i> <a href="{{ path('article_show', {slug: comment.article.slug}) }}">{{ comment.content }}</a><br> {{ comment.author.fullName }}, {{ comment.publishedAt|date("j F Y, H:i:s") }}
         </p>
     {% else %}
         <div class="well">{{ 'comment.no_found'|trans }}</div>
