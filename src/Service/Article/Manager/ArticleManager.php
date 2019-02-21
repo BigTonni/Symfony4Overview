@@ -49,7 +49,6 @@ class ArticleManager
 
         if (null !== $image) {
             if ($this->uploader->hasNewImage($image)) {
-
                 if ($this->uploader->hasActiveImage($image)) {
                     $this->uploader->removeImage($image->getAlt());
                 }

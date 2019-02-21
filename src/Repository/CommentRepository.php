@@ -20,17 +20,29 @@ class CommentRepository extends ServiceEntityRepository
     }
 
     /**
+     * @throws \Exception
      * @return mixed
      */
     public function findLatest()
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.publishedAt <= :now')
+        return $this->createQueryBuilder('com')
+            ->where('com.publishedAt <= :now')
             ->setParameter('now', new \DateTime())
-            ->orderBy('a.publishedAt', 'DESC')
+            ->orderBy('com.publishedAt', 'DESC')
             ->setMaxResults(Comment::NUM_ITEMS)
             ->getQuery()
             ->getResult()
+            ;
+    }
+
+    public function getCountUserComments($user_id)
+    {
+        return $this->createQueryBuilder('com')
+            ->where('com.author = :user_id')
+            ->setParameter('user_id', $user_id)
+            ->select('COUNT(com.id) as countComments')
+            ->getQuery()
+            ->getOneOrNullResult()
             ;
     }
 }

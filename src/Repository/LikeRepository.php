@@ -27,8 +27,24 @@ class LikeRepository extends ServiceEntityRepository
     public function getCountLikesForArticle($article_id)
     {
         return $this->createQueryBuilder('l')
-            ->andWhere('l.article IN (:article_id)')
+            ->where('l.article = :article_id')
             ->setParameter(':article_id', $article_id)
+            ->select('COUNT(l.id) as countLikes')
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    /**
+     * @param $user_id
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @return mixed
+     */
+    public function getCountUserLikes($user_id)
+    {
+        return $this->createQueryBuilder('l')
+            ->innerJoin('l.article', 'a')
+            ->where('a.author = :user_id')
+            ->setParameter(':user_id', $user_id)
             ->select('COUNT(l.id) as countLikes')
             ->getQuery()
             ->getOneOrNullResult();

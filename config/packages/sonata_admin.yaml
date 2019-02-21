@@ -6,7 +6,7 @@ sonata_admin:
             - { type: sonata.block.service.text, class: col-lg-9 col-xs-6, position: right }
 
     templates:
-        edit: admin/edit.html.twig
+        edit: admin/sonata-edit.html.twig
 
 sonata_block:
     blocks:

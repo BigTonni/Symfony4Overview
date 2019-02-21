@@ -60,6 +60,22 @@ class ArticleRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param $user_id
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @return mixed
+     */
+    public function getCountUserArticles($user_id)
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.author = :user_id')
+            ->setParameter('user_id', $user_id)
+            ->select('COUNT(a.id) as countArticles')
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
+
+    /**
      * @param string $rawQuery
      * @param int $limit
      * @return Article[]
