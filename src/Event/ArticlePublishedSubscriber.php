@@ -15,7 +15,7 @@ class ArticlePublishedSubscriber extends AbstractController implements EventSubs
         ];
     }
 
-    public function onPostPublished(ArticlePublishedEvent $articlePublishedEvent)
+    public function onArticlePublished(ArticlePublishedEvent $articlePublishedEvent)
     {
         $article = $articlePublishedEvent->getArticle();
         $category = $article->getCategory();
