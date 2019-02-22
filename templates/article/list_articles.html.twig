@@ -7,9 +7,19 @@
 {% block main %}
     {{ wo_render_breadcrumbs() }}
 
-    <h2>{{ 'title.article_list'|trans }}</h2>
+    <h3>{{ 'article.published'|trans }}</h3>
 
-    {% for article in articles %}
+    {% for article in publishedArticles %}
+
+        {{ include('article/_item_detail.html.twig', {article: article}) }}
+
+    {% else %}
+        <div class="well">{{ 'article.no_posts_found'|trans }}</div>
+    {% endfor %}
+
+    <h3 style="color: red;">{{ 'article.not_published'|trans }}</h3>
+
+    {% for article in notPublishedArticles %}
 
         {{ include('article/_item_detail.html.twig', {article: article}) }}
 

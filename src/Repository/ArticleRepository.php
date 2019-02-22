@@ -14,9 +14,12 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class ArticleRepository extends ServiceEntityRepository
 {
+    private $statusPublished;
+
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Article::class);
+        $this->statusPublished = Article::STATUS_PUBLISH;
     }
 
     /**
@@ -26,11 +29,36 @@ class ArticleRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('a')
             ->where('a.status = :status')
-            ->setParameter('status', 2)
+            ->setParameter('status', $this->statusPublished)
             ->orderBy('a.createdAt', 'Desc')
             ->getQuery()
-            ->getResult()
-            ;
+            ->getResult();
+    }
+
+    public function findPublishedArticlesByUserId($id)
+    {
+        return $this->createQueryBuilder('a')
+            ->innerJoin('a.author', 'u')
+            ->where('u.id = :id')
+            ->setParameter(':id', $id)
+            ->andWhere('a.status = :status')
+            ->setParameter('status', $this->statusPublished)
+            ->orderBy('a.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findNotPublishedArticlesByUserId($id)
+    {
+        return $this->createQueryBuilder('a')
+            ->innerJoin('a.author', 'u')
+            ->where('u.id = :id')
+            ->setParameter(':id', $id)
+            ->andWhere('a.status != :status')
+            ->setParameter('status', $this->statusPublished)
+            ->orderBy('a.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
     }
 
     public function findArticlesByCategoryId($id)
@@ -40,7 +68,7 @@ class ArticleRepository extends ServiceEntityRepository
             ->where('c.id = :id')
             ->setParameter(':id', $id)
             ->andWhere('a.status = :status')
-            ->setParameter('status', 2)
+            ->setParameter('status', $this->statusPublished)
             ->orderBy('c.title', 'DESC')
             ->getQuery()
             ->getResult();
@@ -53,7 +81,7 @@ class ArticleRepository extends ServiceEntityRepository
             ->where('t.id = :id')
             ->setParameter(':id', $id)
             ->andWhere('a.status = :status')
-            ->setParameter('status', 2)
+            ->setParameter('status', $this->statusPublished)
             ->orderBy('t.name', 'DESC')
             ->getQuery()
             ->getResult();
@@ -85,8 +113,7 @@ class ArticleRepository extends ServiceEntityRepository
             ->setParameter('user_id', $user_id)
             ->select('COUNT(a.id) as countArticles')
             ->getQuery()
-            ->getOneOrNullResult()
-            ;
+            ->getOneOrNullResult();
     }
 
     /**

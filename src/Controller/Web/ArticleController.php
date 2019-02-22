@@ -68,19 +68,19 @@ class ArticleController extends AbstractController
     /**
      * @Route("/list-articles", methods={"GET"}, name="list_articles")
      * @param Request $request
-     * @param PaginatorInterface $paginator
      * @return Response
      */
-    public function myListArticles(Request $request, PaginatorInterface $paginator): Response
+    public function myListArticles(Request $request): Response
     {
         $this->breadcrumbs->prependRouteItem('menu.home', 'homepage');
         $this->breadcrumbs->addRouteItem('menu.my_articles', 'list_articles');
 
-        $em = $this->getDoctrine()->getManager();
-        $query = $em->getRepository(Article::class)->findBy(['author' => $this->getUser()]);
-        $articles = $paginator->paginate($query, $request->query->getInt('page', 1), self::ARTICLES_PER_PAGE);
+        $userId = $this->getUser()->getId();
+        $articleRepository = $this->getDoctrine()->getManager()->getRepository(Article::class);
+        $publishedArticles = $articleRepository->findPublishedArticlesByUserId($userId);
+        $notPublishedArticles = $articleRepository->findNotPublishedArticlesByUserId($userId);
 
-        return $this->render('article/list_articles.html.twig', ['articles' => $articles]);
+        return $this->render('article/list_articles.html.twig', ['publishedArticles' => $publishedArticles, 'notPublishedArticles' => $notPublishedArticles]);
     }
 
     /**

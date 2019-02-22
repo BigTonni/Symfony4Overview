@@ -37,10 +37,6 @@
         <source>menu.back_to_blog</source>
         <target>Назад к блогу</target>
       </trans-unit>
-      <trans-unit id="K7Agvgq" resname="title.article_list">
-        <source>title.article_list</source>
-        <target>Список статей</target>
-      </trans-unit>
       <trans-unit id="Ffi98jp" resname="action.show">
         <source>action.show</source>
         <target>Показать</target>
@@ -409,14 +405,22 @@
         <source>label.new_password_confirm</source>
         <target>Подтвердите новый пароль</target>
       </trans-unit>
-      <trans-unit id="Ucl9Jfd" resname="user.change_password_successfully">
-          <source>user.change_password_successfully</source>
-          <target>Password changed</target>
-        </trans-unit>
-        <trans-unit id="Ucl9Jfe" resname="category.no_exist">
-          <source>category.no_exist</source>
-          <target>There is no category</target>
-        </trans-unit>
+      <trans-unit id="4VWtxrV" resname="user.change_password_successfully">
+        <source>user.change_password_successfully</source>
+        <target>Password changed</target>
+      </trans-unit>
+      <trans-unit id="I4Yuztp" resname="category.no_exist">
+        <source>category.no_exist</source>
+        <target>There is no category</target>
+      </trans-unit>
+      <trans-unit id="MYm4S3F" resname="article.published">
+        <source>article.published</source>
+        <target>__article.published</target>
+      </trans-unit>
+      <trans-unit id="MNPoxgU" resname="article.not_published">
+        <source>article.not_published</source>
+        <target>__article.not_published</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
