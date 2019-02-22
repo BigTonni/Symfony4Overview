@@ -3,9 +3,9 @@
 namespace App\Controller\Web;
 
 use App\Entity\Article;
+use App\Entity\Category;
 use App\Entity\Comment;
 use App\Entity\Like;
-use App\Entity\Category;
 use App\Form\ArticleType;
 use App\Form\CommentType;
 use App\Service\Article\Manager\ArticleManager;
@@ -159,10 +159,9 @@ class ArticleController extends AbstractController
     public function new(Request $request): Response
     {
         //Do any Categories exist?
-        if( empty($this->getDoctrine()
+        if (empty($this->getDoctrine()
             ->getRepository(Category::class)
-            ->findAll()) ) {
-
+            ->findAll())) {
             $this->addFlash(
                 'notice',
                 $this->translator->trans('category.no_exist')
