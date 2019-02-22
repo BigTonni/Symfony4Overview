@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'menu.user'|trans }}{% endblock %}
+
+{% block body_id 'user_show' %}
+
+{% block main %}
+    <h1>{{ user.fullName }}</h1>
+
+    <p class="post-metadata">
+        <span class="metadata">{{ user.username }}</span>
+        <span class="metadata">{{ user.email }}</span>
+    </p>
+
+{% endblock %}
+
+{% block sidebar %}
+    <div class="section">
+        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPER_ADMIN') %}
+
+            <a href="{{ path('user_edit', {id: user.id}) }}" class="btn btn-xs btn-warning">{{ 'action.edit'|trans }}</a>
+            <a href="{{ path('user_delete', {id: user.id}) }}" class="btn btn-xs btn-danger">{{ 'action.delete'|trans }}</a>
+
+        {% endif %}
+
+        <a href="{{ path('user_articles', {id: user.id}) }}" class="btn btn-xs btn-success">{{ 'action.user_articles'|trans }}</a>
+    </div>
+    {{ render(controller('App\\Controller\\Web\\HomeController::sidebar')) }}
+{% endblock %}

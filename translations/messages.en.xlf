@@ -249,17 +249,13 @@
         <source>title.change_password</source>
         <target>Change password</target>
       </trans-unit>
-      <trans-unit id="wtG.cxy" resname="info.change_password">
-        <source>info.change_password</source>
-        <target>__info.change_password</target>
-      </trans-unit>
       <trans-unit id="HLtdhYw" resname="action.save">
         <source>action.save</source>
         <target>Save</target>
       </trans-unit>
       <trans-unit id="etGJjTo" resname="action.edit_user">
         <source>action.edit_user</source>
-        <target>__action.edit_user</target>
+        <target>Edit user</target>
       </trans-unit>
       <trans-unit id="7bLNO3T" resname="category">
         <source>category</source>
@@ -393,6 +389,30 @@
         <source>profile.comments</source>
         <target>Your comments</target>
       </trans-unit>
+      <trans-unit id="nfw.zVe" resname="category.list">
+        <source>category.list</source>
+        <target>List categories</target>
+      </trans-unit>
+      <trans-unit id="QVB8YfU" resname="button.unsubscribe">
+        <source>button.unsubscribe</source>
+        <target>Unsubscribe</target>
+      </trans-unit>
+      <trans-unit id="0.pXJCm" resname="button.subscribe">
+        <source>button.subscribe</source>
+        <target>Subscribe</target>
+      </trans-unit>
+      <trans-unit id="iiWFLaI" resname="label.new_password">
+        <source>label.new_password</source>
+        <target>New password</target>
+      </trans-unit>
+      <trans-unit id="Ucl9Jfc" resname="label.new_password_confirm">
+        <source>label.new_password_confirm</source>
+        <target>Confirm new password</target>
+      </trans-unit>
+      <trans-unit id="Ucl9Jfd" resname="user.change_password_successfully">
+          <source>user.change_password_successfully</source>
+          <target>Password changed</target>
+        </trans-unit>
     </body>
   </file>
 </xliff>

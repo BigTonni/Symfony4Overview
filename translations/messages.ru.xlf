@@ -317,10 +317,6 @@
         <source>title.change_password</source>
         <target>__title.change_password</target>
       </trans-unit>
-      <trans-unit id="wtG.cxy" resname="info.change_password">
-        <source>info.change_password</source>
-        <target>__info.change_password</target>
-      </trans-unit>
       <trans-unit id="HLtdhYw" resname="action.save">
         <source>action.save</source>
         <target>__action.save</target>
@@ -393,6 +389,30 @@
         <source>profile.comments</source>
         <target>Ваши комментарии</target>
       </trans-unit>
+      <trans-unit id="nfw.zVe" resname="category.list">
+        <source>category.list</source>
+        <target>__category.list</target>
+      </trans-unit>
+      <trans-unit id="QVB8YfU" resname="button.unsubscribe">
+        <source>button.unsubscribe</source>
+        <target>__button.unsubscribe</target>
+      </trans-unit>
+      <trans-unit id="0.pXJCm" resname="button.subscribe">
+        <source>button.subscribe</source>
+        <target>__button.subscribe</target>
+      </trans-unit>
+      <trans-unit id="iiWFLaI" resname="label.new_password">
+        <source>label.new_password</source>
+        <target>Новый пароль</target>
+      </trans-unit>
+      <trans-unit id="Ucl9Jfc" resname="label.new_password_confirm">
+        <source>label.new_password_confirm</source>
+        <target>Подтвердите новый пароль</target>
+      </trans-unit>
+      <trans-unit id="Ucl9Jfd" resname="user.change_password_successfully">
+          <source>user.change_password_successfully</source>
+          <target>Password changed</target>
+        </trans-unit>
     </body>
   </file>
 </xliff>

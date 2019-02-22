@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ 'category.list' }}{% endblock %}
+{% block title %}{{ 'category.list'|trans }}{% endblock %}
 
 {% block body_id 'category_list' %}
 
@@ -16,7 +16,7 @@
                 <div style="float: right;"><a href="{{ path('category_edit', {slug: category.slug}) }}" class="btn btn-xs btn-warning">Edit</a></div>
             </h2>
 
-            {% if is_granted('ROLE_USER') %}
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
 
                 {% set isSubscribe = false %}
                 {% for subscriber in category.subscriber.values %}
@@ -26,9 +26,9 @@
                 {% endfor %}
 
                 {% if isSubscribe == true %}
-                    <a href="{{ path('category_unsubscribe', {slug: category.slug}) }}" class="">Unsubscribe</a>
+                    <a href="{{ path('category_unsubscribe', {slug: category.slug}) }}" class="">{{ 'button.unsubscribe'|trans }}</a>
                 {% else %}
-                    <a href="{{ path('category_subscribe', {slug: category.slug}) }}" class="">Subscribe</a>
+                    <a href="{{ path('category_subscribe', {slug: category.slug}) }}" class="">{{ 'button.subscribe'|trans }}Subscribe</a>
                 {% endif %}
 
             {% endif %}

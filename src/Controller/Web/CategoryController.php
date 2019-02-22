@@ -16,7 +16,6 @@ use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 /**
  * @Route("/{_locale}/category", requirements={"_locale" : "en|ru"}, defaults={"_locale" : "en"})
- * @IsGranted("ROLE_ADMIN")
  */
 class CategoryController extends AbstractController
 {
@@ -35,6 +34,7 @@ class CategoryController extends AbstractController
     }
 
     /**
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      * @Route("/list", name="category_list")
      * @return Response
      */
@@ -53,6 +53,7 @@ class CategoryController extends AbstractController
     }
 
     /**
+     * @IsGranted("ROLE_ADMIN")
      * @Route("/new", name="category_new")
      * @param Request $request
      * @return Response
@@ -87,6 +88,7 @@ class CategoryController extends AbstractController
     }
 
     /**
+     * @IsGranted("ROLE_ADMIN")
      * @Route("/edit/{slug}", name="category_edit")
      * @param Request $request
      * @param Category $category
@@ -112,6 +114,7 @@ class CategoryController extends AbstractController
     }
 
     /**
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      * @Route("/{slug}", methods={"GET"}, name="category_show")
      * @param Request $request
      * @param Category $category

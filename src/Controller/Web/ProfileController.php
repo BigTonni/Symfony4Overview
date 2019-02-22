@@ -39,29 +39,6 @@ class ProfileController extends AbstractController
     }
 
     /**
-     * @Route("/edit", methods={"GET", "POST"}, name="profile_edit")
-     * @param Request $request
-     * @return Response
-     */
-    public function edit(Request $request): Response
-    {
-        $user = $this->getUser();
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-            $this->addFlash('success', 'user.updated_successfully');
-
-            return $this->redirectToRoute('profile_edit');
-        }
-
-        return $this->render('profile/edit.html.twig', [
-            'user' => $user,
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
      * @Route("/change-password", methods={"GET", "POST"}, name="profile_change_password")
      * @param Request $request
      * @param UserPasswordEncoderInterface $encoder
@@ -78,6 +55,11 @@ class ProfileController extends AbstractController
             $user->setPassword($encoder->encodePassword($user, $form->get('newPassword')->getData()));
 
             $this->getDoctrine()->getManager()->flush();
+
+            $this->addFlash(
+                'notice',
+                $this->translator->trans('user.change_password_successfully')
+            );
 
             return $this->redirectToRoute('app_logout');
         }

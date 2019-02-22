@@ -243,13 +243,15 @@ class ArticleController extends AbstractController
     /**
      * @Route("/delete/{slug}", methods={"POST"}, name="article_delete")
      * @IsGranted("delete", subject="article")
-     * @IsGranted("ROLE_ADMIN")
      * @param Request $request
      * @param Article $article
      * @return Response
      */
     public function delete(Request $request, Article $article): Response
     {
+        if (!$this->isGranted('ROLE_ADMIN') && !$this->isGranted('ROLE_SUPER_ADMIN')) {
+            return $this->redirectToRoute('list_articles');
+        }
         if (!$this->isCsrfTokenValid('delete', $request->request->get('token'))) {
             return $this->redirectToRoute('list_articles');
         }

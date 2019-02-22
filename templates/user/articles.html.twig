@@ -29,3 +29,7 @@
     {% endfor %}
 
 {% endblock %}
+
+{% block sidebar %}
+    {{ render(controller('App\\Controller\\Web\\HomeController::sidebar')) }}
+{% endblock %}

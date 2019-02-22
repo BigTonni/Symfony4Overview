@@ -5,6 +5,7 @@ namespace App\Controller\Web;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\ArticleRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,6 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
+ * @IsGranted("IS_AUTHENTICATED_FULLY")
  * @Route("/{_locale}/user", requirements={"_locale" : "en|ru"}, defaults={"_locale" : "en"})
  */
 class UserController extends AbstractController
@@ -36,21 +38,22 @@ class UserController extends AbstractController
             ->getRepository(User::class)
             ->findAll();
 
-        return $this->render('user/user_list.html.twig', [
+        return $this->render('user/list.html.twig', [
             'users' => $users,
         ]);
     }
 
-    /** @param int $id
+    /**
+     * @param int $id
      * @Route("/articles/{id}", name="user_articles", requirements={"id" : "\d+"}, defaults={"id" = 1})
      * @param ArticleRepository $articles
      * @return Response
      */
     public function articlesList(ArticleRepository $articles, $id): Response
     {
-        $authorArticles = $articles->findBy(['author' => $id], ['publishedAt' => 'DESC']);
+        $authorArticles = $articles->findBy(['author' => $id]);
 
-        return $this->render('user/user_articles.html.twig', [
+        return $this->render('user/articles.html.twig', [
             'articles' => $authorArticles,
         ]);
     }
@@ -60,9 +63,9 @@ class UserController extends AbstractController
      * @Route("/{id}", methods={"GET", "POST"}, name="user_show", requirements={"id" : "\d+"}, defaults={"id" = 1})
      * @return Response
      */
-    public function userShow(User $user): Response
+    public function show(User $user): Response
     {
-        return $this->render('user/user_show.html.twig', [
+        return $this->render('user/show.html.twig', [
             'user' => $user,
         ]);
     }
@@ -70,6 +73,7 @@ class UserController extends AbstractController
     /**
      * @param Request $request
      * @Route("/new", name="user_new")
+     * @throws \Exception
      * @return Response
      */
     public function new(Request $request): Response
@@ -82,6 +86,7 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $user->setCreatedAt(new \DateTime());
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
@@ -89,7 +94,7 @@ class UserController extends AbstractController
             return $this->redirectToRoute('user_list');
         }
 
-        return $this->render('user/user_new.html.twig', [
+        return $this->render('user/new.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -111,11 +116,12 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->flush();
+            $this->addFlash('success', 'user.updated_successfully');
 
             return $this->redirectToRoute('user_list');
         }
 
-        return $this->render('user/user_edit.html.twig', [
+        return $this->render('user/edit.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -127,13 +133,20 @@ class UserController extends AbstractController
      */
     public function delete(User $user): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        if (!$this->isGranted('ROLE_ADMIN') && !$this->isGranted('ROLE_SUPER_ADMIN')) {
+            return $this->redirectToRoute('user_list');
+        }
 
         $user->getComments()->clear();
 
         $em = $this->getDoctrine()->getManager();
         $em->remove($user);
         $em->flush();
+
+        $this->addFlash(
+            'notice',
+            $this->translator->trans('user.deleted_successfully')
+        );
 
         return $this->redirectToRoute('user_list');
     }

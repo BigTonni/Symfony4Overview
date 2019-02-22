@@ -16,7 +16,6 @@ use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 /**
  * @Route("/{_locale}/tag", requirements={"_locale" : "en|ru"}, defaults={"_locale" : "en"})
- * @IsGranted("ROLE_ADMIN")
  */
 class TagController extends AbstractController
 {
@@ -35,6 +34,7 @@ class TagController extends AbstractController
     }
 
     /**
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      * @param Request $request
      * @param PaginatorInterface $paginator
      * @Route("/list", name="tag_list")
@@ -55,13 +55,14 @@ class TagController extends AbstractController
     }
 
     /**
+     * @IsGranted("ROLE_ADMIN")
      * @param Request $request
      * @Route("/new", name="tag_new")
      * @return Response
      */
     public function new(Request $request): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+//        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $tag = new Tag();
 
         $form = $this->createForm(TagType::class, $tag);
@@ -88,6 +89,7 @@ class TagController extends AbstractController
     }
 
     /**
+     * @IsGranted("ROLE_ADMIN")
      * @param Request $request
      * @param Tag $tag
      * @Route("/edit/{slug}", name="tag_edit")
@@ -120,6 +122,7 @@ class TagController extends AbstractController
     }
 
     /**
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      * @Route("/{slug}", methods={"GET"}, name="tag_show")
      * @param Request $request
      * @param Tag $tag
