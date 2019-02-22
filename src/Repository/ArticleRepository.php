@@ -22,13 +22,12 @@ class ArticleRepository extends ServiceEntityRepository
     /**
      * @return mixed
      */
-    public function findLatest()
+    public function findLatestPublished()
     {
         return $this->createQueryBuilder('a')
             ->where('a.status = :status')
             ->setParameter('status', 2)
             ->orderBy('a.createdAt', 'Desc')
-            ->setMaxResults(Article::NUM_ITEMS)
             ->getQuery()
             ->getResult()
             ;
@@ -40,6 +39,8 @@ class ArticleRepository extends ServiceEntityRepository
             ->innerJoin('a.category', 'c')
             ->where('c.id = :id')
             ->setParameter(':id', $id)
+            ->andWhere('a.status = :status')
+            ->setParameter('status', 2)
             ->orderBy('c.title', 'DESC')
             ->getQuery()
             ->getResult();
@@ -51,6 +52,8 @@ class ArticleRepository extends ServiceEntityRepository
             ->innerJoin('a.tags', 't')
             ->where('t.id = :id')
             ->setParameter(':id', $id)
+            ->andWhere('a.status = :status')
+            ->setParameter('status', 2)
             ->orderBy('t.name', 'DESC')
             ->getQuery()
             ->getResult();

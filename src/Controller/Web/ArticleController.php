@@ -5,6 +5,7 @@ namespace App\Controller\Web;
 use App\Entity\Article;
 use App\Entity\Comment;
 use App\Entity\Like;
+use App\Entity\Category;
 use App\Form\ArticleType;
 use App\Form\CommentType;
 use App\Service\Article\Manager\ArticleManager;
@@ -56,7 +57,7 @@ class ArticleController extends AbstractController
         $this->breadcrumbs->addRouteItem('menu.blog', 'article_index');
 
         $em = $this->getDoctrine()->getManager();
-        $query = $em->getRepository(Article::class)->createQueryBuilder('a')->getQuery();
+        $query = $em->getRepository(Article::class)->findLatestPublished();
         $articles = $paginator->paginate($query, $request->query->getInt('page', 1), self::ARTICLES_PER_PAGE);
 
         return $this->render('article/index.html.twig', [
@@ -157,6 +158,19 @@ class ArticleController extends AbstractController
      */
     public function new(Request $request): Response
     {
+        //Do any Categories exist?
+        if( empty($this->getDoctrine()
+            ->getRepository(Category::class)
+            ->findAll()) ) {
+
+            $this->addFlash(
+                'notice',
+                $this->translator->trans('category.no_exist')
+            );
+
+            return $this->redirectToRoute('list_articles');
+        }
+
         $article = new Article();
         $article->setAuthor($this->getUser());
 

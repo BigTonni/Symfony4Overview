@@ -16,7 +16,7 @@ class HomeController extends AbstractController
      */
     public function index(ArticleRepository $articles): Response
     {
-        $articles = $articles->findLatest();
+        $articles = $articles->findLatestPublished();
 
         return $this->render('default/homepage.html.twig', ['pagination' => $articles]);
     }
@@ -24,6 +24,7 @@ class HomeController extends AbstractController
     /**
      * @param CommentRepository $comments
      * @return Response
+     * @throws \Exception
      */
     public function sidebar(CommentRepository $comments): Response
     {
