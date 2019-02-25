@@ -198,6 +198,11 @@ class Article
         return $this;
     }
 
+    public function isAuthor(User $author = null)
+    {
+        return $author && $author->getEmail() === $this->getAuthorEmail();
+    }
+
     /**
      * @return Article[]|Collection
      */
@@ -300,5 +305,10 @@ class Article
     public function getImage(): ?Image
     {
         return $this->image;
+    }
+
+    private function getAuthorEmail()
+    {
+        return $this->author->getEmail();
     }
 }

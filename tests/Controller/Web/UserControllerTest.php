@@ -10,6 +10,8 @@ class UserControllerTest extends WebTestCase
 {
     /**
      * @dataProvider getUrlsForAnonymousUsers
+     * @param string $httpMethod
+     * @param string $url
      */
     public function testAccessDeniedForAnonymousUsers(string $httpMethod, string $url)
     {
@@ -18,7 +20,7 @@ class UserControllerTest extends WebTestCase
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_FOUND, $response->getStatusCode());
         $this->assertSame(
-            'http://127.0.0.1:8000/en/login',
+            'http://localhost/en/login',
             $response->getTargetUrl(),
             sprintf('The %s secure URL redirects to the login form.', $url)
         );
@@ -31,7 +33,7 @@ class UserControllerTest extends WebTestCase
             'PHP_AUTH_USER' => 'test@author1.com',
             'PHP_AUTH_PW' => 'test',
         ]);
-        $crawler = $client->request('GET', '/en/profile/edit');
+        $crawler = $client->request('GET', '/en/user/edit');
         $form = $crawler->selectButton('Save')->form([
             'user[email]' => $newUserEmail,
         ]);
@@ -49,10 +51,10 @@ class UserControllerTest extends WebTestCase
     {
         $newUserPassword = 'new-password';
         $client = static::createClient([], [
-            'PHP_AUTH_USER' => 'test@author_new.com',
+            'PHP_AUTH_USER' => 'test@author1.com',
             'PHP_AUTH_PW' => 'test',
         ]);
-        $crawler = $client->request('GET', '/en/profile/change-password');
+        $crawler = $client->request('GET', '/en/user/change-password');
         $form = $crawler->selectButton('Save')->form([
             'change_password[currentPassword]' => 'test',
             'change_password[newPassword][first]' => $newUserPassword,
@@ -70,7 +72,7 @@ class UserControllerTest extends WebTestCase
 
     public function getUrlsForAnonymousUsers()
     {
-        yield ['GET', '/en/profile/edit'];
-        yield ['GET', '/en/profile/change-password'];
+        yield ['GET', '/en/user/edit'];
+        yield ['GET', '/en/user/change-password'];
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Controller\Web;
 
 use App\Entity\User;
+use App\Form\Type\ChangePasswordType;
 use App\Form\UserType;
 use App\Repository\ArticleRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -10,10 +11,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * @IsGranted("IS_AUTHENTICATED_FULLY")
+ * @IsGranted("ROLE_USER")
  * @Route("/{_locale}/user", requirements={"_locale" : "en|ru"}, defaults={"_locale" : "en"})
  */
 class UserController extends AbstractController
@@ -101,13 +103,12 @@ class UserController extends AbstractController
 
     /**
      * @param Request $request
-     * @param User $user
-     * @Route("/edit/{id}", name="user_edit", requirements={"id" : "\d+"}, defaults={"id" = 1})
+     * @Route("/edit", name="user_edit")
      * @return Response
      */
-    public function edit(Request $request, User $user): Response
+    public function edit(Request $request): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $user = $this->getUser();
 
         $form = $this->createForm(UserType::class, $user);
 
@@ -118,7 +119,7 @@ class UserController extends AbstractController
             $em->flush();
             $this->addFlash('success', 'user.updated_successfully');
 
-            return $this->redirectToRoute('user_list');
+            return $this->redirectToRoute('user_edit');
         }
 
         return $this->render('user/edit.html.twig', [
@@ -149,5 +150,36 @@ class UserController extends AbstractController
         );
 
         return $this->redirectToRoute('user_list');
+    }
+
+    /**
+     * @Route("/change-password", methods={"GET", "POST"}, name="profile_change_password")
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $encoder
+     * @return Response
+     */
+    public function changePassword(Request $request, UserPasswordEncoderInterface $encoder): Response
+    {
+        $user = $this->getUser();
+
+        $form = $this->createForm(ChangePasswordType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user->setPassword($encoder->encodePassword($user, $form->get('newPassword')->getData()));
+
+            $this->getDoctrine()->getManager()->flush();
+
+            $this->addFlash(
+                'notice',
+                $this->translator->trans('user.change_password_successfully')
+            );
+
+            return $this->redirectToRoute('app_logout');
+        }
+
+        return $this->render('profile/change_password.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 }

@@ -12,11 +12,12 @@ class ArticleControllerTest extends WebTestCase
 
         $client->request('GET', '/api/articles');
 
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertSame(200, $client->getResponse()->getStatusCode());
     }
 
     /**
      * @dataProvider provideUrls
+     * @param mixed $url
      */
     public function testPageIsSuccessful($url)
     {
@@ -31,7 +32,7 @@ class ArticleControllerTest extends WebTestCase
         return [
             ['/'],
             ['/api/doc'],
-            ['/login']
+            ['/login'],
         ];
     }
 }

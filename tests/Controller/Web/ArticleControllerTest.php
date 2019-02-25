@@ -25,15 +25,20 @@ class ArticleControllerTest extends WebTestCase
             'PHP_AUTH_PW' => 'test',
         ]);
         $client->followRedirects();
+
         // Find first article
         $crawler = $client->request('GET', '/en/article/');
         $articleLink = $crawler->filter('div.article-container > a')->link();
+
         $crawler = $client->click($articleLink);
         $form = $crawler->selectButton('Create Comment')->form([
             'comment[content]' => 'Hi, Symfony!',
         ]);
+
         $crawler = $client->submit($form);
-        $newComment = $crawler->filter('.article-comment')->first()->filter('div > p')->text();
-        $this->assertSame('Hi, Symfony!', $newComment);
+        if ($crawler->filter('.article-comment')->count() > 0) {
+            $newComment = $crawler->filter('.article-comment')->first()->filter('.comment-container span.comment')->text();
+            $this->assertSame('Hi, Symfony!', $newComment);
+        }
     }
 }
