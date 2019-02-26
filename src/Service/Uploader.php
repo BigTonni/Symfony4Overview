@@ -41,7 +41,6 @@ class Uploader
         try {
             $file->move($this->getTargetDir(), $imageName);
         } catch (FileException $e) {
-            new FileException('Something happens');
             throw new FileException($imageName . ' does not move to ' . $this->getTargetDir());
         }
     }

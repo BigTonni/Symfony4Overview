@@ -3,9 +3,9 @@
 namespace App\Controller\Web;
 
 use App\Entity\Article;
+use App\Entity\Category;
 use App\Entity\Comment;
 use App\Entity\Like;
-use App\Entity\Category;
 use App\Form\ArticleType;
 use App\Form\CommentType;
 use App\Service\Article\Manager\ArticleManager;
@@ -20,7 +20,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 /**
- * @IsGranted("ROLE_USER")
  * @Route("/{_locale}/article", requirements={"_locale" : "en|ru"}, defaults={"_locale" : "en"})
  */
 class ArticleController extends AbstractController
@@ -66,7 +65,8 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/list-articles", methods={"GET"}, name="list_articles")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     * @Route("/user-articles", methods={"GET"}, name="list_articles")
      * @param Request $request
      * @return Response
      */
@@ -105,8 +105,8 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/comment/{articleSlug}/new", methods={"POST"}, name="comment_new")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
+     * @Route("/comment/{articleSlug}/new", methods={"POST"}, name="comment_new")
      * @ParamConverter("article", options={"mapping" : {"articleSlug" : "slug"}})
      * @param Request $request
      * @param Article $article
@@ -152,6 +152,7 @@ class ArticleController extends AbstractController
     }
 
     /**
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      * @Route("/new", methods={"GET", "POST"}, name="article_new")
      * @param Request $request
      * @return Response
@@ -159,10 +160,9 @@ class ArticleController extends AbstractController
     public function new(Request $request): Response
     {
         //Do any Categories exist?
-        if( empty($this->getDoctrine()
+        if (empty($this->getDoctrine()
             ->getRepository(Category::class)
-            ->findAll()) ) {
-
+            ->findAll())) {
             $this->addFlash(
                 'notice',
                 $this->translator->trans('category.no_exist')
@@ -195,8 +195,9 @@ class ArticleController extends AbstractController
     }
 
     /**
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      * @Route("/edit/{slug}", methods={"GET", "POST"}, name="article_edit")
-     * @IsGranted("edit", subject="article", message="Articles can only be edited by their authors.")
+//     * @IsGranted("edit", subject="article", message="Articles can only be edited by their authors.")
      * @param Request $request
      * @param Article $article
      * @return Response
@@ -235,7 +236,7 @@ class ArticleController extends AbstractController
     {
         // This security check can also be performed
         // using an annotation: @IsGranted("show", subject="article", message="Articles can only be shown to their authors.")
-        $this->denyAccessUnlessGranted('show', $article, 'article.can_shown_their_authors.');
+//        $this->denyAccessUnlessGranted('show', $article, 'article.can_shown_their_authors.');
 
         $this->breadcrumbs->prependRouteItem('menu.home', 'homepage');
         $this->breadcrumbs->addRouteItem($article->getCategory()->getTitle(), 'category_show', [
@@ -264,6 +265,11 @@ class ArticleController extends AbstractController
     public function delete(Request $request, Article $article): Response
     {
         if (!$this->isGranted('ROLE_ADMIN') && !$this->isGranted('ROLE_SUPER_ADMIN')) {
+            $this->addFlash(
+                'notice',
+                $this->translator->trans('article.can_delete_only_admin')
+            );
+
             return $this->redirectToRoute('list_articles');
         }
         if (!$this->isCsrfTokenValid('delete', $request->request->get('token'))) {

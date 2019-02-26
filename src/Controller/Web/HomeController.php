@@ -23,8 +23,8 @@ class HomeController extends AbstractController
 
     /**
      * @param CommentRepository $comments
-     * @return Response
      * @throws \Exception
+     * @return Response
      */
     public function sidebar(CommentRepository $comments): Response
     {

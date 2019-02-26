@@ -28,7 +28,7 @@
                 {% if isSubscribe == true %}
                     <a href="{{ path('category_unsubscribe', {slug: category.slug}) }}" class="">{{ 'button.unsubscribe'|trans }}</a>
                 {% else %}
-                    <a href="{{ path('category_subscribe', {slug: category.slug}) }}" class="">{{ 'button.subscribe'|trans }}Subscribe</a>
+                    <a href="{{ path('category_subscribe', {slug: category.slug}) }}" class="">{{ 'button.subscribe'|trans }}</a>
                 {% endif %}
 
             {% endif %}
