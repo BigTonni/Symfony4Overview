@@ -1,13 +1,11 @@
 language: php
 
 php:
-    - 7.0
     - 7.2
 
-before_script:
-    - composer global require friendsofphp/php-cs-fixer
-    - composer install --dev
-
+install:
+    - composer install
+    - ./bin/phpunit install
+    -
 script:
-    - vendor/bin/phpunit
-    - $HOME/.composer/vendor/bin/php-cs-fixer --diff --dry-run -v fix ./src
+    - ./bin/phpunit
