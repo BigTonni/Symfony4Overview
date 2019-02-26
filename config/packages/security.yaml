@@ -99,3 +99,7 @@ security:
         - { path: ^/api/doc, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
         #        - { path: ^/, roles: IS_AUTHENTICATED_REMEMBERED }
+
+    role_hierarchy:
+        ROLE_SUPER_ADMIN: ROLE_ADMIN
+        ROLE_ADMIN: ROLE_USER

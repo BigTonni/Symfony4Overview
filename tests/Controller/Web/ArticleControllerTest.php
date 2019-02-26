@@ -11,6 +11,7 @@ class ArticleControllerTest extends WebTestCase
     {
         $client = static::createClient();
         $crawler = $client->request('GET', '/en/article/');
+
         $this->assertCount(
             Article::NUM_ITEMS,
             $crawler->filter('div.article-container'),
@@ -31,13 +32,14 @@ class ArticleControllerTest extends WebTestCase
         $articleLink = $crawler->filter('div.article-container > a')->link();
 
         $crawler = $client->click($articleLink);
+
         $form = $crawler->selectButton('Create Comment')->form([
             'comment[content]' => 'Hi, Symfony!',
         ]);
 
         $crawler = $client->submit($form);
         if ($crawler->filter('.article-comment')->count() > 0) {
-            $newComment = $crawler->filter('.article-comment')->first()->filter('.comment-container span.comment')->text();
+            $newComment = $crawler->filter('.article-comment')->last()->filter('.comment-container span.comment')->text();
             $this->assertSame('Hi, Symfony!', $newComment);
         }
     }

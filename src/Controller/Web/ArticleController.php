@@ -24,8 +24,6 @@ use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
  */
 class ArticleController extends AbstractController
 {
-    public const ARTICLES_PER_PAGE = 3;
-
     private $translator;
 
     private $breadcrumbs;
@@ -57,7 +55,7 @@ class ArticleController extends AbstractController
 
         $em = $this->getDoctrine()->getManager();
         $query = $em->getRepository(Article::class)->findLatestPublished();
-        $articles = $paginator->paginate($query, $request->query->getInt('page', 1), self::ARTICLES_PER_PAGE);
+        $articles = $paginator->paginate($query, $request->query->getInt('page', 1), Article::NUM_ITEMS);
 
         return $this->render('article/index.html.twig', [
             'articles' => $articles,
@@ -96,7 +94,7 @@ class ArticleController extends AbstractController
             $request->query->get('search_field', '')
         );
 
-        $articles = $paginator->paginate($query, $request->query->getInt('page', 1), self::ARTICLES_PER_PAGE);
+        $articles = $paginator->paginate($query, $request->query->getInt('page', 1), Article::NUM_ITEMS);
 
         return $this->render('article/search.html.twig', [
             'articles' => $articles,

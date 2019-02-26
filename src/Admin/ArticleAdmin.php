@@ -6,6 +6,7 @@ use App\Entity\Article;
 use App\Entity\Category;
 use App\Entity\User;
 //use App\Entity\Like;
+use App\Form\Type\ArticleStatusType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -38,6 +39,7 @@ class ArticleAdmin extends AbstractAdmin
             ->with('Content', ['class' => 'col-md-9'])
             ->add('title', TextType::class)
             ->add('slug', TextType::class)
+            ->add('status', ArticleStatusType::class)
             ->add('body', TextareaType::class, [
 //                'attr' => ['class' => 'ckeditor'],
             ])

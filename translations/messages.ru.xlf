@@ -421,6 +421,10 @@
         <source>article.not_published</source>
         <target>__article.not_published</target>
       </trans-unit>
+      <trans-unit id="6s_Pdp." resname="article.to_publish_a_comment">
+        <source>article.to_publish_a_comment</source>
+        <target>__article.to_publish_a_comment</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

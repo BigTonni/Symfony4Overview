@@ -43,16 +43,22 @@
                     </p>
                     <div class="row">
                         <div class="col-sm-12">
-                            <h3><i class="pr-3 fa fa-comment"></i>{{ article.comments|length }} {{ 'comments'|trans }}</h3>
-                            <hr>
 
-                            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                                    <div class="row mb-5">
-                                        <div class="col-sm-12">
-                                            {{ render(controller('App\\Controller\\Web\\ArticleController::commentForm', {'id': article.id})) }}
+                            <div id="article-add-comment">
+                                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                {{ render(controller('App\\Controller\\Web\\ArticleController::commentForm', {'id': article.id})) }}
+                                            </div>
                                         </div>
-                                    </div>
-                            {% endif %}
+                                {% else %}
+                                        <a class="btn btn-success" href="{{ path('app_login', {'redirect_to': app.request.pathInfo}) }}">
+                                            {{ 'menu.login'|trans }}
+                                        </a>
+                                        {{ 'article.to_publish_a_comment'|trans }}
+                                {% endif %}
+                            </div>
+                            <h3><i class="pr-3 fa fa-comment"></i>{{ article.comments|length }} {{ 'comments'|trans }}</h3>
 
                             {% for comment in article.comments %}
                                 <div class="row article-comment">
@@ -61,7 +67,7 @@
                                         <div class="comment-container d-inline-block pl-3 align-top">
                                             <span class="commenter-name">{{ comment.author.fullName }}</span>
                                             <br>
-                                            <span class="comment"> {{ comment.content }}</span> (<i>{{ comment.publishedAt|date("j F Y, H:i:s") }}</i>)
+                                            <span class="comment">{{ comment.content }}</span> (<i>{{ comment.publishedAt|date("j F Y, H:i") }}</i>)
                                             <p><a href="#">{{ 'button.reply'|trans }}</a></p>
                                         </div>
                                     </div>
@@ -80,12 +86,9 @@
 {% block sidebar %}
     {% if article.isAuthor(app.user) %}
         <div class="section">
-            <a href="{{ path('article_edit', {slug: article.slug}) }}" class="btn btn-lg btn-block btn-success">
+            <a href="{{ path('article_edit', {slug: article.slug}) }}" class="btn btn-lg btn-block btn-warning">
                 <i class="fa fa-edit" aria-hidden="true"></i> {{ 'action.edit_contents'|trans }}
-            </a>
-        </div>
-
-        <div class="section">
+            </a><br/>
             {{ include('article/_delete_form.html.twig', {article: article}, with_context = false) }}
         </div>
     {% endif %}
