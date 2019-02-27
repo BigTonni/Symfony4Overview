@@ -64,14 +64,13 @@ class ArticleController extends AbstractController
 
     /**
      * @IsGranted("IS_AUTHENTICATED_FULLY")
-     * @Route("/user-articles", methods={"GET"}, name="list_articles")
-     * @param Request $request
+     * @Route("/user-articles", methods={"GET"}, name="article_list")
      * @return Response
      */
-    public function myListArticles(Request $request): Response
+    public function myListArticles(): Response
     {
         $this->breadcrumbs->prependRouteItem('menu.home', 'homepage');
-        $this->breadcrumbs->addRouteItem('menu.my_articles', 'list_articles');
+        $this->breadcrumbs->addRouteItem('menu.my_articles', 'article_list');
 
         $userId = $this->getUser()->getId();
         $articleRepository = $this->getDoctrine()->getManager()->getRepository(Article::class);
@@ -166,7 +165,7 @@ class ArticleController extends AbstractController
                 $this->translator->trans('category.no_exist')
             );
 
-            return $this->redirectToRoute('list_articles');
+            return $this->redirectToRoute('article_list');
         }
 
         $article = new Article();
@@ -183,7 +182,7 @@ class ArticleController extends AbstractController
                 $this->translator->trans('article.created_successfully')
             );
 
-            return $this->redirectToRoute('list_articles');
+            return $this->redirectToRoute('article_list');
         }
 
         return $this->render('article/new.html.twig', [
@@ -268,10 +267,10 @@ class ArticleController extends AbstractController
                 $this->translator->trans('article.can_delete_only_admin')
             );
 
-            return $this->redirectToRoute('list_articles');
+            return $this->redirectToRoute('article_list');
         }
         if (!$this->isCsrfTokenValid('delete', $request->request->get('token'))) {
-            return $this->redirectToRoute('list_articles');
+            return $this->redirectToRoute('article_list');
         }
         $article->getTags()->clear();
         $article->getComments()->clear();
@@ -283,6 +282,6 @@ class ArticleController extends AbstractController
             $this->translator->trans('article.deleted_successfully')
         );
 
-        return $this->redirectToRoute('list_articles');
+        return $this->redirectToRoute('article_list');
     }
 }

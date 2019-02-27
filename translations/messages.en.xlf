@@ -425,6 +425,14 @@
         <source>article.to_publish_a_comment</source>
         <target>to publish a comment</target>
       </trans-unit>
+      <trans-unit id="dzoz0fR" resname="text.to_switch_user">
+        <source>text.to_switch_user</source>
+        <target>You are currently switched to this user.</target>
+      </trans-unit>
+      <trans-unit id="YfpFk_V" resname="text.to_switch_exit">
+        <source>text.to_switch_exit</source>
+        <target>Exit Impersonation</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

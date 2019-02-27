@@ -425,6 +425,14 @@
         <source>article.to_publish_a_comment</source>
         <target>__article.to_publish_a_comment</target>
       </trans-unit>
+      <trans-unit id="dzoz0fR" resname="text.to_switch_user">
+        <source>text.to_switch_user</source>
+        <target>__text.to_switch_user</target>
+      </trans-unit>
+      <trans-unit id="YfpFk_V" resname="text.to_switch_exit">
+        <source>text.to_switch_exit</source>
+        <target>__text.to_switch_exit</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

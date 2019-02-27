@@ -23,7 +23,7 @@ class SecurityController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
-            return $this->redirectToRoute('list_articles');
+            return $this->redirectToRoute('article_list');
         }
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -49,7 +49,7 @@ class SecurityController extends AbstractController
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $formAuthenticator): Response
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
-            return $this->redirectToRoute('list_articles');
+            return $this->redirectToRoute('article_list');
         }
 
         $user = new User();

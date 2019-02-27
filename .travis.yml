@@ -1,11 +1,11 @@
-language: php
-
-php:
-    - 7.2
-
-install:
-    - composer install
-    - ./bin/phpunit install
-    -
-script:
-    - ./bin/phpunit
+#language: php
+#
+#php:
+#    - 7.2
+#
+#install:
+#    - composer install
+#    - ./bin/phpunit install
+#    -
+#script:
+#    - ./bin/phpunit

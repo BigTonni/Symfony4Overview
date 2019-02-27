@@ -53,7 +53,7 @@ class MenuBuilder
 
         //Only auth users
         if ($this->checker->isGranted('IS_AUTHENTICATED_FULLY')) {
-            $menu->addChild('menu.my_articles', ['route' => 'list_articles'])
+            $menu->addChild('menu.my_articles', ['route' => 'article_list'])
                 ->setAttributes([
                         'class' => 'nav-item', ]
                 )

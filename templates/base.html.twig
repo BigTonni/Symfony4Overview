@@ -15,6 +15,13 @@
     
     <body id="{% block body_id %}{% endblock %}">
 
+        {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+            <div class="alert alert-warning" style="margin-bottom: 0;">
+                {{ 'text.to_switch_user'|trans }}
+                <a href="{{ path('homepage', {'_switch_user': '_exit'}) }}">{{ 'text.to_switch_exit'|trans }}</a>
+            </div>
+        {% endif %}
+
         <nav class="navbar navbar-expand-lg navbar-dark navbar-bg mb-5">
             <a style="margin-left: 75px;" class="navbar-brand space-brand" href="{{ path('homepage') }}">{{ 'menu.home'|trans }}</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,7 +38,7 @@
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item dropdown" style="margin-right: 75px;">
                             <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img class="nav-profile-img rounded-circle" src="{{ asset('images/placeholder-man.png') }}">
+                                <img class="nav-profile-img rounded-circle" src="{{ user.avatarUrl(100) }}">
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                 <a class="dropdown-item" href="{{ path('app_profile') }}">{{ 'menu.profile'|trans }}</a>

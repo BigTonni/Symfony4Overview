@@ -78,6 +78,8 @@ security:
                 secret: '%kernel.secret%'
                 lifetime: 2592000
 
+            switch_user: true
+
             # activate different ways to authenticate
 
             # http_basic: true
@@ -89,8 +91,7 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/(%app_locales%)/change-password, roles: IS_AUTHENTICATED_FULLY }
-        - { path: ^/(%app_locales%)/admin/users, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/(%app_locales%)/admin, roles: ROLE_ADMIN }
+        - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/(%app_locales%)/profile, roles: IS_AUTHENTICATED_FULLY }
 
         - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
@@ -98,8 +99,8 @@ security:
         - { path: ^/api/token/refresh, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/doc, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
-        #        - { path: ^/, roles: IS_AUTHENTICATED_REMEMBERED }
+#        - { path: ^/, roles: IS_AUTHENTICATED_REMEMBERED }
 
     role_hierarchy:
         ROLE_SUPER_ADMIN: ROLE_ADMIN
-        ROLE_ADMIN: ROLE_USER
+        ROLE_ADMIN: [ROLE_USER, ROLE_ALLOWED_TO_SWITCH]
