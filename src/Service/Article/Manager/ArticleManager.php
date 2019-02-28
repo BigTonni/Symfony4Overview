@@ -3,6 +3,7 @@
 namespace App\Service\Article\Manager;
 
 use App\Entity\Article;
+use App\Entity\Notification;
 use App\Service\Uploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -67,8 +68,21 @@ class ArticleManager
 
     public function remove(Article $article): void
     {
+        $notifications = $this->em->getRepository(Notification::class)->findBy(['article' => $article]);
+        foreach ($notifications as $notification) {
+            $this->em->remove($notification);
+        }
+
         $this->em->remove($article);
         $this->em->flush();
+    }
+
+    public function getNotReadArticles()
+    {
+        return $this->em->getRepository(Notification::class)->findBy([
+            'user' => $this->tokenStorage->getToken()->getUser(),
+            'isRead' => false,
+        ]);
     }
 
     private function uploadImage(Article $article): void

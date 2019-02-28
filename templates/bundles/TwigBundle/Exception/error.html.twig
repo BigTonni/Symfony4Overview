@@ -11,6 +11,7 @@
     <p>
         {{ 'http_error.suggestion'|trans({ '%url%': path('article_index') })|raw }}
     </p>
+    <p><a href="{{ path('homepage') }}">{{ 'link.to_homepage'|trans }}</a></p>
 {% endblock %}
 
 {% block sidebar %}

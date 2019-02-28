@@ -433,6 +433,26 @@
         <source>text.to_switch_exit</source>
         <target>__text.to_switch_exit</target>
       </trans-unit>
+      <trans-unit id="97Zszg8" resname="messages.new_notifications">
+        <source>messages.new_notifications</source>
+        <target>__messages.new_notifications</target>
+      </trans-unit>
+      <trans-unit id="SjSi0NE" resname="link.to_homepage">
+        <source>link.to_homepage</source>
+        <target>__link.to_homepage</target>
+      </trans-unit>
+      <trans-unit id="LUzaSnp" resname="subscription.created_successfully">
+        <source>subscription.created_successfully</source>
+        <target>Subscription created successfully</target>
+      </trans-unit>
+      <trans-unit id="VNbMVPk" resname="subscription.deleted_successfully">
+        <source>subscription.deleted_successfully</source>
+        <target>Subscription deleted successfully</target>
+      </trans-unit>
+      <trans-unit id="V5iHh7v" resname="button.subscribed_articles">
+        <source>button.subscribed_articles</source>
+        <target>__button.subscribed_articles</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -44,14 +44,11 @@ class SubscriptionController extends AbstractController
             $subscribers = new Subscription();
             $subscribers->setUser($this->getUser());
             $subscribers->setCategory($category);
-            $subscribers->setIsSend(false);
+
             $em->persist($subscribers);
         }
         $em->flush();
 
-//        $this->addFlash(
-//            'notice', 'Subscription created successfully'
-//        );
         $this->addFlash(
             'notice',
             $this->translator->trans('subscription.created_successfully')
@@ -63,6 +60,7 @@ class SubscriptionController extends AbstractController
     /**
      * @Route("/unsubscribe/{slug}", name="category_unsubscribe")
      * @param Category $category
+     * @throws \Doctrine\ORM\NonUniqueResultException
      * @return Response
      */
     public function unsubscribe(Category $category): Response
@@ -76,14 +74,14 @@ class SubscriptionController extends AbstractController
         );
 
         if ($arrSubscription) {
-            foreach ($arrSubscription as $subscription) {
-                $em->remove($subscription);
-            }
+//            foreach ($arrSubscription as $subscription) {
+//                $em->remove($subscription);
+//            }
+
+            $em->getRepository(Subscription::class)->deleteByCatagoryAndUser($category, $this->getUser());
+
             $em->flush();
 
-//            $this->addFlash(
-//                'notice', 'Subscription deleted successfully'
-//            );
             $this->addFlash(
                 'notice',
                 $this->translator->trans('subscription.deleted_successfully')

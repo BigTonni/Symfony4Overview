@@ -16,7 +16,7 @@ class ArticleViewedEvent extends Event
         $this->article = $article;
     }
 
-    public function getPost(): Article
+    public function getArticle(): Article
     {
         return $this->article;
     }

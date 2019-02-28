@@ -2,6 +2,7 @@
 
 namespace App\Event;
 
+use App\Entity\Notification;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -16,6 +17,16 @@ class ArticleViewedSubscriber extends AbstractController implements EventSubscri
 
     public function onArticleViewed(ArticleViewedEvent $articleViewedEvent)
     {
-        //code...
+        $article = $articleViewedEvent->getArticle();
+        $em = $this->getDoctrine()->getManager();
+        $articleInNotification = $em->getRepository(Notification::class)->findBy(
+            [
+                'article' => $articleViewedEvent->getArticle(),
+                'user' => $this->getUser(),
+            ]
+        );
+        if ($articleInNotification) {
+            $em->getRepository(Notification::class)->updateReadStatus($article, $this->getUser(), true);
+        }
     }
 }

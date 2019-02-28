@@ -2,8 +2,8 @@
 
 namespace App\Service;
 
-use App\Entity\Article;
-use App\Entity\Subscription;
+use App\Entity\Notification;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -19,8 +19,8 @@ class NotificationSender
     /**
      * @param EntityManagerInterface $em
      * @param EngineInterface $templating
-     * @param \Swift_Mailer $mailer
      * @param RouterInterface $router
+     * @param \Swift_Mailer $mailer
      */
     public function __construct(EntityManagerInterface $em, EngineInterface $templating, RouterInterface $router, \Swift_Mailer $mailer)
     {
@@ -30,30 +30,38 @@ class NotificationSender
         $this->router = $router;
     }
 
+    /**
+     * @param User $user
+     * @return array
+     */
+    public function localNotification(User $user): array
+    {
+        $notification = $this->em->getRepository(Notification::class)->findBy([
+            'user' => $user,
+            'isRead' => false,
+        ]);
+
+        return $notification;
+    }
+
     public function sendNotification(): void
     {
-        $subscriptions = $this->em->getRepository(Subscription::class)->findBy(
-            ['isSend' => false]
-        );
+        $notifications = $this->em->getRepository(Notification::class)->selectUsersByReadStatus(false);
 
-        if (!empty($subscriptions)) {
+        if (!empty($notifications)) {
             $users = [];
-            foreach ($subscriptions as $key => $subscription) {
-                $articles = $this->em->getRepository(Article::class)
-                    ->findTodayArticlesByCategoryId($subscription->getCategory()->getId());
-
-                if (!empty($articles)) {
-                    $subscriber_email = $subscription->getUser()->getEmail();
-                    $users[$subscriber_email]['articles'][] = $articles;
-                    $users[$subscriber_email]['username'] = $subscription->getUser()->getUsername();
-                    //For unsubscribe-link
-                    $users[$subscriber_email]['sub_id'] = $subscription->getId();
-                }
+            foreach ($notifications as $notification) {
+                $subscriber = $notification->getUser();
+                $subscriber_email = $subscriber->getEmail();
+                $users[$subscriber_email]['articles'][] = $notification->getArticle();
+                $users[$subscriber_email]['username'] = $subscriber->getUsername();
+                //For unsubscribe-link
+                $users[$subscriber_email]['sub_id'] = $notification->getId();
             }
 
             foreach ($users as $user_email => $user) {
                 $articles = [];
-                foreach ($user['articles'][0] as $key => $article) {
+                foreach ($user['articles'] as $key => $article) {
                     $articles[] = [
                         'title' => $article->getTitle(),
                         'slug' => $this->router->generate('article_show', ['slug' => $article->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL),

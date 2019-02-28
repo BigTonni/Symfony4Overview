@@ -17,11 +17,6 @@ class Subscription
     private $id;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    private $isSend = false;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="subscribers")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -35,18 +30,6 @@ class Subscription
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getIsSend(): ?bool
-    {
-        return $this->isSend;
-    }
-
-    public function setIsSend(?bool $isSend): self
-    {
-        $this->isSend = $isSend;
-
-        return $this;
     }
 
     /**

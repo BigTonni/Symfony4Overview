@@ -13,26 +13,27 @@
                 <a href="{{ path('category_show', {slug: category.slug}) }}">
                     {{ category.title }}
                 </a>
-                <div style="float: right;"><a href="{{ path('category_edit', {slug: category.slug}) }}" class="btn btn-xs btn-warning">Edit</a></div>
-            </h2>
+                <div style="float: right;">
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
 
-            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        {% set isSubscribe = false %}
+                        {% for subscriber in category.subscriber.values %}
+                            {% if  subscriber.user == app.user%}
+                                {% set isSubscribe = true %}
+                            {% endif %}
+                        {% endfor %}
 
-                {% set isSubscribe = false %}
-                {% for subscriber in category.subscriber.values %}
-                    {% if  subscriber.user == app.user%}
-                        {% set isSubscribe = true %}
+                        {% if isSubscribe == true %}
+                            <a href="{{ path('category_unsubscribe', {slug: category.slug}) }}" class="btn btn-warning">{{ 'button.unsubscribe'|trans }}</a>
+                        {% else %}
+                            <a href="{{ path('category_subscribe', {slug: category.slug}) }}" class="btn btn-success">{{ 'button.subscribe'|trans }}</a>
+                        {% endif %}
+
                     {% endif %}
-                {% endfor %}
 
-                {% if isSubscribe == true %}
-                    <a href="{{ path('category_unsubscribe', {slug: category.slug}) }}" class="">{{ 'button.unsubscribe'|trans }}</a>
-                {% else %}
-                    <a href="{{ path('category_subscribe', {slug: category.slug}) }}" class="">{{ 'button.subscribe'|trans }}</a>
-                {% endif %}
-
-            {% endif %}
-
+                    <a href="{{ path('category_edit', {slug: category.slug}) }}" class="btn btn-xs btn-warning">Edit</a>
+                </div>
+            </h2>
         </article>
     {% else %}
         <div class="well">{{ 'category.no_found'|trans }}</div>
