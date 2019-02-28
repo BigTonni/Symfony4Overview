@@ -1,10 +1,10 @@
 # GeekHub Advanced PHP 2019
 
-##Lessons by Symfony#4 
+## Lessons by Symfony#4 
 <ol>
 <li>Entities: article, comment, category, tag, user and etc.</li>
 <li>Pages: all articles, sorting articles by category and tag, single article with new comment form and list of all comments.</li>
-<li>Pagination via **KnpPaginatorBundle**.</li>
+<li>Pagination via ** KnpPaginatorBundle **.</li>
 <li>Breadcrumbs via **BreadcrumbsBundle.</li>
 <li>Меню (KnpMenuBundle).</li>
 <li>To use Timestampable и Sluggable behaviour from **StofDoctrineExtensionsBundle**.</li>
@@ -27,3 +27,18 @@
 <li>REST-API with API-doc</li>
 <li>Tests</li>
 </ol>
+
+Example to register a new user:
+```sh
+curl -X POST http://127.0.0.1:8000/api/register -d _email=john@doe.com -d _password=test
+```
+Example, get a JWT Token:
+```sh
+curl -X POST -H "Content-Type: application/json" http://127.0.0.1:8000/api/login_check -d '{"username":"john@doe.com","password":"test"}'
+-> { "token": "[TOKEN]" }
+```
+Example of accessing secured routes:
+```sh
+curl -H "Authorization: Bearer [TOKEN]" http://127.0.0.1:8000/api/articles
+-> ALL ARTICLES
+```
