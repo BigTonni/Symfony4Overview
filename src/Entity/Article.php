@@ -114,6 +114,14 @@ class Article
         $this->likes = new ArrayCollection();
     }
 
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string) $this->title;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

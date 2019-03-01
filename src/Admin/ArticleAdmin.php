@@ -5,7 +5,7 @@ namespace App\Admin;
 use App\Entity\Article;
 use App\Entity\Category;
 use App\Entity\User;
-//use App\Entity\Like;
+use App\Form\ImageType;
 use App\Form\Type\ArticleStatusType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -40,9 +40,7 @@ class ArticleAdmin extends AbstractAdmin
             ->add('title', TextType::class)
             ->add('slug', TextType::class)
             ->add('status', ArticleStatusType::class)
-            ->add('body', TextareaType::class, [
-//                'attr' => ['class' => 'ckeditor'],
-            ])
+            ->add('body', TextareaType::class)
             ->end()
             ->with('Meta data', ['class' => 'col-md-3'])
             ->add('category', ModelType::class, [
@@ -53,6 +51,9 @@ class ArticleAdmin extends AbstractAdmin
             ->add('author', EntityType::class, [
                 'class' => User::class,
                 'choice_label' => 'username',
+            ])
+            ->add('image', ImageType::class, [
+                'required' => false,
             ])
             ->end()
         ;
@@ -83,7 +84,6 @@ class ArticleAdmin extends AbstractAdmin
             ->add('slug')
             ->add('author.fullName')
             ->add('category.title')
-//            ->add('likes')
             ->add('createdAt')
         ;
     }

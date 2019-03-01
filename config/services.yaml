@@ -86,6 +86,12 @@ services:
         tags:
         - { name: sonata.admin, manager_type: orm, group: 'Blog', label: admin.tags }
 
+    admin.comment:
+        class: App\Admin\CommentAdmin
+        arguments: [~, App\Entity\Comment, ~]
+        tags:
+        - { name: sonata.admin, manager_type: orm, group: 'Blog', label: admin.comments }
+
     admin.page:
         class: App\Admin\PageAdmin
         arguments: [~, App\Entity\Page, ~]

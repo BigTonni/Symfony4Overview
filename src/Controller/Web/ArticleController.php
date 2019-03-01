@@ -220,7 +220,7 @@ class ArticleController extends AbstractController
                 ])
             );
 
-            return $this->redirectToRoute('article_edit', ['slug' => $article->getSlug()]);
+            return $this->redirectToRoute('article_show', ['slug' => $article->getSlug()]);
         }
 
         return $this->render('article/edit.html.twig', [

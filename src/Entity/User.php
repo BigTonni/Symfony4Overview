@@ -80,6 +80,14 @@ class User implements UserInterface
         $this->comments = new ArrayCollection();
     }
 
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string) $this->fullName;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

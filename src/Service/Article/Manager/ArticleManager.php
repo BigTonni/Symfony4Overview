@@ -68,9 +68,18 @@ class ArticleManager
 
     public function remove(Article $article): void
     {
+        //Remove article notifications
         $notifications = $this->em->getRepository(Notification::class)->findBy(['article' => $article]);
         foreach ($notifications as $notification) {
             $this->em->remove($notification);
+        }
+        //Remove article image
+        if (null !== $image = $article->getImage()) {
+            if ($this->uploader->hasNewImage($image)) {
+                if ($this->uploader->hasActiveImage($image)) {
+                    $this->uploader->removeImage($image->getAlt());
+                }
+            }
         }
 
         $this->em->remove($article);

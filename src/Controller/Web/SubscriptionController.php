@@ -74,10 +74,6 @@ class SubscriptionController extends AbstractController
         );
 
         if ($arrSubscription) {
-//            foreach ($arrSubscription as $subscription) {
-//                $em->remove($subscription);
-//            }
-
             $em->getRepository(Subscription::class)->deleteByCatagoryAndUser($category, $this->getUser());
 
             $em->flush();

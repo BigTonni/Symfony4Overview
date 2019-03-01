@@ -453,6 +453,14 @@
         <source>button.subscribed_articles</source>
         <target>__button.subscribed_articles</target>
       </trans-unit>
+      <trans-unit id="V5iHh7w" resname="article.can_delete_only_admin">
+        <source>article.can_delete_only_admin</source>
+        <target>Article can delete only admin</target>
+      </trans-unit>
+      <trans-unit id="6vtsjIK" resname="admin.comments">
+        <source>admin.comments</source>
+        <target>Comments</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

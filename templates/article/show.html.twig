@@ -84,7 +84,7 @@
 {% endblock %}
 
 {% block sidebar %}
-    {% if article.isAuthor(app.user) %}
+    {% if article.isAuthor(app.user) or is_granted('ROLE_SUPER_ADMIN') %}
         <div class="section">
             <a href="{{ path('article_edit', {slug: article.slug}) }}" class="btn btn-lg btn-block btn-warning">
                 <i class="fa fa-edit" aria-hidden="true"></i> {{ 'action.edit_contents'|trans }}
