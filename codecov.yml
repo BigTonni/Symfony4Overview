@@ -1,5 +1,7 @@
-coverage:
-    status:
-        patch:
-            default:
-                enabled: no
+#coverage:
+#    status:
+#        patch:
+#            default:
+#                enabled: no
+codecov:
+    token: 130051b4-d222-4038-9f54-000a5ef6bd22
