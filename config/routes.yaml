@@ -16,10 +16,10 @@ app.swagger_ui:
     methods: GET
     defaults: { _controller: nelmio_api_doc.controller.swagger_ui }
 
-register:
-    path: /api/register
-    controller: App\Controller\Api\AuthController::register
-    methods: POST
+#register:
+#    path: /api/register
+#    controller: App\Controller\Api\AuthController::register
+#    methods: POST
 
 api:
     path: /api

@@ -27,6 +27,11 @@
     </filter>
 
     <listeners>
-        <listener class="\DAMA\DoctrineTestBundle\PHPUnit\PHPUnitListener" />
+        <!--<listener class="\DAMA\DoctrineTestBundle\PHPUnit\PHPUnitListener" />-->
+        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
     </listeners>
+
+    <logging>
+        <log type="coverage-clover" target="clover.xml"/>
+    </logging>
 </phpunit>

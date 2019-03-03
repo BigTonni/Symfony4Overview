@@ -1,11 +1,19 @@
-#language: php
-#
-#php:
-#    - 7.2
-#
+language: php
+
+php:
+    - 7.2
+
+before_install:
+    - composer self-update
+    - composer install --no-interaction --prefer-source --dev
+
 #install:
 #    - composer install
 #    - ./bin/phpunit install
-#    -
-#script:
+
+script:
+    - vendor/bin/phpunit --coverage-clover=coverage.xml
 #    - ./bin/phpunit
+
+after_success:
+    - bash <(curl -s https://codecov.io/bash)
