@@ -7,13 +7,9 @@ before_install:
     - composer self-update
     - composer install --no-interaction --prefer-source --dev
 
-#install:
+install:
 #    - composer install
-#    - ./bin/phpunit install
+    - ./bin/phpunit install
 
 script:
-    - vendor/bin/phpunit --coverage-clover=coverage.xml
-#    - ./bin/phpunit
-
-after_success:
-    - bash <(curl -s https://codecov.io/bash)
+    - ./bin/phpunit --coverage-clover=coverage.xml
