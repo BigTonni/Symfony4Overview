@@ -11,5 +11,3 @@ install:
 #    - composer install
     - ./bin/phpunit install
 
-script:
-    - ./bin/phpunit --coverage-clover=coverage.xml
