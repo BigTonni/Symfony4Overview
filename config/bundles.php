@@ -31,4 +31,5 @@ return [
     Gesdinet\JWTRefreshTokenBundle\GesdinetJWTRefreshTokenBundle::class => ['all' => true],
     RedCode\TreeBundle\RedCodeTreeBundle::class => ['all' => true],
     DAMA\DoctrineTestBundle\DAMADoctrineTestBundle::class => ['test' => true],
+    App\Anton\BlogBundle\AntonBlogBundle::class => ['all' => true],
 ];

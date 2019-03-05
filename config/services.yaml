@@ -101,3 +101,6 @@ services:
     app.notification_sender:
         class: App\Service\NotificationSender
         arguments: ['@doctrine.orm.entity_manager', '@templating', ' @router']
+
+    App\Service\Paginator:
+        $limit: limit.article_items_per_page

@@ -1,0 +1,3 @@
+anton_blog:
+    limit:
+        article_items_per_page: 5
