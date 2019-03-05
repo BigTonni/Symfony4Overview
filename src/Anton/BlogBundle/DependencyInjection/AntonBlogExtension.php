@@ -17,7 +17,6 @@ class AntonBlogExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $definition = $container->getDefinition('anton_blog.limit.article_items_per_page');
-        $definition->replaceArgument(0, $config['limit']['article_items_per_page']);
+        $container->setParameter('limit.article_items_per_page', $config['limit']['article_items_per_page']);
     }
 }
