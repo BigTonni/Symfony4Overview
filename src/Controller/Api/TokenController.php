@@ -4,17 +4,16 @@ namespace App\Controller\Api;
 
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
+use Swagger\Annotations as SWG;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use FOS\RestBundle\Controller\Annotations as Rest;
-use Swagger\Annotations as SWG;
-use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 
 /**
  * @SWG\Tag(name="Tokens")
-*/
+ */
 class TokenController extends BaseRestController
 {
     private $em;
@@ -23,8 +22,9 @@ class TokenController extends BaseRestController
     {
         $this->em = $entityManager;
     }
+
     /**
-     * Example test user - test@author1.com
+     * Example test user - test@author1.com.
      * @SWG\Response(
      *     response=200,
      *     description="Returns user token"

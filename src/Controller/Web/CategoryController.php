@@ -5,6 +5,7 @@ namespace App\Controller\Web;
 use App\Entity\Article;
 use App\Entity\Category;
 use App\Form\CategoryType;
+use App\Service\Paginator;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,14 +24,18 @@ class CategoryController extends AbstractController
 
     private $breadcrumbs;
 
+    private $servicePaginator;
+
     /**
      * @param TranslatorInterface $translator
      * @param Breadcrumbs $breadcrumbs
+     * @param Paginator $servicePaginator
      */
-    public function __construct(TranslatorInterface $translator, Breadcrumbs $breadcrumbs)
+    public function __construct(TranslatorInterface $translator, Breadcrumbs $breadcrumbs, Paginator $servicePaginator)
     {
         $this->translator = $translator;
         $this->breadcrumbs = $breadcrumbs;
+        $this->servicePaginator = $servicePaginator;
     }
 
     /**
@@ -128,7 +133,7 @@ class CategoryController extends AbstractController
         ]);
 
         $query = $this->getDoctrine()->getManager()->getRepository(Article::class)->findArticlesByCategoryId($category->getId());
-        $articles = $paginator->paginate($query, $request->query->getInt('page', 1), Article::NUM_ITEMS);
+        $articles = $paginator->paginate($query, $request->query->getInt('page', 1), $this->servicePaginator->getLimit());
 
         return $this->render('category/show.html.twig', [
             'category' => $category,

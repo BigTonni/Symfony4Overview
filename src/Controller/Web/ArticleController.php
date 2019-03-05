@@ -34,20 +34,20 @@ class ArticleController extends AbstractController
 
     private $articleManager;
 
-    private $paginator;
+    private $servicePaginator;
 
     /**
      * @param TranslatorInterface $translator
      * @param Breadcrumbs $breadcrumbs
      * @param ArticleManager $articleManager
-     * @param Paginator $paginator
+     * @param Paginator $servicePaginator
      */
-    public function __construct(TranslatorInterface $translator, Breadcrumbs $breadcrumbs, ArticleManager $articleManager, Paginator $paginator)
+    public function __construct(TranslatorInterface $translator, Breadcrumbs $breadcrumbs, ArticleManager $articleManager, Paginator $servicePaginator)
     {
         $this->translator = $translator;
         $this->breadcrumbs = $breadcrumbs;
         $this->articleManager = $articleManager;
-        $this->paginator = $paginator;
+        $this->servicePaginator = $servicePaginator;
     }
 
     /**
@@ -58,13 +58,12 @@ class ArticleController extends AbstractController
      */
     public function index(Request $request, PaginatorInterface $paginator): Response
     {
-//        dd($this->paginator);
         $this->breadcrumbs->prependRouteItem('menu.home', 'homepage');
         $this->breadcrumbs->addRouteItem('menu.blog', 'article_index');
 
         $em = $this->getDoctrine()->getManager();
         $query = $em->getRepository(Article::class)->findLatestPublished();
-        $articles = $paginator->paginate($query, $request->query->getInt('page', 1), Article::NUM_ITEMS);
+        $articles = $paginator->paginate($query, $request->query->getInt('page', 1), $this->servicePaginator->getLimit());
 
         return $this->render('article/index.html.twig', [
             'articles' => $articles,
@@ -102,7 +101,7 @@ class ArticleController extends AbstractController
             $request->query->get('search_field', '')
         );
 
-        $articles = $paginator->paginate($query, $request->query->getInt('page', 1), Article::NUM_ITEMS);
+        $articles = $paginator->paginate($query, $request->query->getInt('page', 1), $this->servicePaginator->getLimit());
 
         return $this->render('article/search.html.twig', [
             'articles' => $articles,
@@ -251,7 +250,7 @@ class ArticleController extends AbstractController
             $query_articles[] = $article->getArticle();
         }
 
-        $articles = $paginator->paginate($query_articles, $request->query->getInt('page', 1), Article::NUM_ITEMS);
+        $articles = $paginator->paginate($query_articles, $request->query->getInt('page', 1), $this->servicePaginator->getLimit());
 
         return $this->render('article/index.html.twig', [
             'articles' => $articles,

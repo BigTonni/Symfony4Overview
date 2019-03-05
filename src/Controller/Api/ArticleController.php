@@ -4,6 +4,7 @@ namespace App\Controller\Api;
 
 use App\Entity\Article;
 use App\Form\ArticleType;
+use App\Service\Paginator;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Knp\Component\Pager\PaginatorInterface;
@@ -21,12 +22,16 @@ use Symfony\Component\HttpFoundation\Response;
 class ArticleController extends BaseRestController
 {
     private $em;
+
     private $paginator;
 
-    public function __construct(EntityManagerInterface $entityManager, PaginatorInterface $paginator)
+    private $servicePaginator;
+
+    public function __construct(EntityManagerInterface $entityManager, PaginatorInterface $paginator, Paginator $servicePaginator)
     {
         $this->em = $entityManager;
         $this->paginator = $paginator;
+        $this->servicePaginator = $servicePaginator;
     }
 
     /**
@@ -90,7 +95,7 @@ class ArticleController extends BaseRestController
         }
 
         $page = $request->query->get('page') ?? 1;
-        $count = $request->query->get('count') ?? Article::NUM_ITEMS;
+        $count = $request->query->get('count') ?? $this->servicePaginator->getLimit();
 
         $articles = $this->paginator->paginate(
             $articles,
