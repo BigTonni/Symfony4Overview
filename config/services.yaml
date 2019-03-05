@@ -103,4 +103,4 @@ services:
         arguments: ['@doctrine.orm.entity_manager', '@templating', ' @router']
 
     App\Service\Paginator:
-        $limit: limit.article_items_per_page
+        $limit: '%limit.article_items_per_page%'
