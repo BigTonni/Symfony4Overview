@@ -11,6 +11,7 @@ use App\Event\ArticleViewedEvent;
 use App\Form\ArticleType;
 use App\Form\CommentType;
 use App\Service\Article\Manager\ArticleManager;
+use App\Service\Paginator;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -33,16 +34,20 @@ class ArticleController extends AbstractController
 
     private $articleManager;
 
+    private $paginator;
+
     /**
      * @param TranslatorInterface $translator
      * @param Breadcrumbs $breadcrumbs
      * @param ArticleManager $articleManager
+     * @param Paginator $paginator
      */
-    public function __construct(TranslatorInterface $translator, Breadcrumbs $breadcrumbs, ArticleManager $articleManager)
+    public function __construct(TranslatorInterface $translator, Breadcrumbs $breadcrumbs, ArticleManager $articleManager, Paginator $paginator)
     {
         $this->translator = $translator;
         $this->breadcrumbs = $breadcrumbs;
         $this->articleManager = $articleManager;
+        $this->paginator = $paginator;
     }
 
     /**
@@ -53,6 +58,7 @@ class ArticleController extends AbstractController
      */
     public function index(Request $request, PaginatorInterface $paginator): Response
     {
+//        dd($this->paginator);
         $this->breadcrumbs->prependRouteItem('menu.home', 'homepage');
         $this->breadcrumbs->addRouteItem('menu.blog', 'article_index');
 
