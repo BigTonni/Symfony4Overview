@@ -17,6 +17,17 @@ class ArticleFixtures extends Fixture implements DependentFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
+        //for Tests
+        $article = new Article();
+        $article->setTitle('Art1');
+        $article->setBody('test test');
+        $article->setStatus(Article::STATUS_PUBLISH);
+        $article->setAuthor($this->getReference(UserFixtures::USER_REFERENCE));
+        $article->setCategory($this->getReference(CategoryFixtures::CATEGORY_REFERENCE));
+        $article->addTag($this->getReference(TagFixtures::TAG_REFERENCE));
+        $article->addComment($this->getReference(CommentFixtures::COMMENT_REFERENCE));
+        $manager->persist($article);
+
         $faker = Factory::create();
         for ($i = 1; $i < 11; ++$i) {
             $article = new Article();
@@ -30,6 +41,7 @@ class ArticleFixtures extends Fixture implements DependentFixtureInterface
 
             $manager->persist($article);
         }
+
         $manager->flush();
     }
 

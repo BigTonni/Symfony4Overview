@@ -1,11 +1,13 @@
-#language: php
-#
-#php:
-#    - 7.2
-#
-#install:
+language: php
+
+php:
+    - 7.2
+
+before_install:
+    - composer self-update
+    - composer install --no-interaction --prefer-source --dev
+
+install:
 #    - composer install
-#    - ./bin/phpunit install
-#    -
-#script:
-#    - ./bin/phpunit
+    - ./bin/phpunit install
+

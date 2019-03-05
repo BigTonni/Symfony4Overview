@@ -12,6 +12,59 @@ nelmio_api_doc:
                 in: header
             security:
                 -   Bearer: []
+            paths:
+                /api/login:
+                    post:
+                        tags:
+                            - Login
+                        description: Login into the api.
+                        produces:
+                            - application/json
+                        parameters:
+                            -   name: user
+                                description: User to login
+                                in: body
+                                required: true
+                                schema:
+                                    type: object
+                                    properties:
+                                        username:
+                                            type: string
+                                        password:
+                                            type: string
+                        responses:
+                            '200':
+                                description: Login successful
+                                schema:
+                                    type: object
+                                    properties:
+                                        token:
+                                            type: string
+                                        refresh_token:
+                                            type: string
+                                        type:
+                                            type: string
+
+                    /api/token/refresh:
+                        post:
+                            tags:
+                                - Token refresh
+                            parameters:
+                                -   name: data
+                                    in: body
+                                    schema:
+                                        type: object
+                                        properties:
+                                            refresh_token:
+                                                type: string
+                            responses:
+                                '200':
+                                    description: Token refreshed successfully
+                                    schema:
+                                        type: object
+                                        properties:
+                                            token:
+                                                type: string
 
     areas: # to filter documented areas
         path_patterns:

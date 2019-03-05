@@ -18,38 +18,39 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        login:
-            pattern:  ^/api/login
-            stateless: true
-            anonymous: true
-            json_login:
-                check_path:               /api/login_check
-                success_handler:          lexik_jwt_authentication.handler.authentication_success
-                failure_handler:          lexik_jwt_authentication.handler.authentication_failure
-#                require_previous_session: false
-
-        register:
-            pattern:  ^/api/register
-            stateless: true
-            anonymous: true
-
-        api:
-            pattern:   ^/api
-            stateless: true
-            anonymous: true
-            #            provider: app_user_provider
-            guard:
-                authenticators:
-                    - lexik_jwt_authentication.jwt_token_authenticator
-
         refresh:
             pattern:  ^/api/token/refresh
             stateless: true
             anonymous: true
 
+        login:
+            pattern:  ^/api/login
+            stateless: true
+            anonymous: true
+            provider: app_user_provider
+            json_login:
+                check_path:               /api/login_check
+                success_handler:          lexik_jwt_authentication.handler.authentication_success
+                failure_handler:          lexik_jwt_authentication.handler.authentication_failure
+                require_previous_session: false
+
+#        register:
+#            pattern:  ^/api/register
+#            stateless: true
+#            anonymous: true
+
+        api:
+            pattern:   ^/api
+            stateless: true
+            anonymous: true
+            provider: app_user_provider
+            guard:
+                authenticators:
+                    - lexik_jwt_authentication.jwt_token_authenticator
+
+
         main:
             anonymous: true
-
             guard:
                 authenticators:
                     - App\Security\LoginFormAuthenticator
@@ -95,10 +96,10 @@ security:
         - { path: ^/(%app_locales%)/profile, roles: IS_AUTHENTICATED_FULLY }
 
         - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+#        - { path: ^/api/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/token/refresh, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/doc, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
 #        - { path: ^/, roles: IS_AUTHENTICATED_REMEMBERED }
 
     role_hierarchy:
