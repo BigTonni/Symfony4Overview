@@ -2,6 +2,7 @@
 
 namespace App\Controller\Web;
 
+use App\Anton\BlogBundle\Service\Paginator;
 use App\Entity\Article;
 use App\Entity\Category;
 use App\Entity\Comment;
@@ -9,9 +10,9 @@ use App\Entity\Like;
 use App\Event\ArticlePublishedEvent;
 use App\Event\ArticleViewedEvent;
 use App\Form\ArticleType;
+//use App\Service\Paginator;
 use App\Form\CommentType;
 use App\Service\Article\Manager\ArticleManager;
-use App\Service\Paginator;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;

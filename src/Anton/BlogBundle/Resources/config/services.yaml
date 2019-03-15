@@ -1,0 +1,9 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    App\Anton\BlogBundle\Service\Paginator:
+        arguments:
+            $limit: '%limit.article_items_per_page%'

@@ -102,5 +102,6 @@ services:
         class: App\Service\NotificationSender
         arguments: ['@doctrine.orm.entity_manager', '@templating', ' @router']
 
-    App\Service\Paginator:
-        $limit: '%limit.article_items_per_page%'
+#    App\Anton\BlogBundle\Service\Paginator:
+#        arguments:
+#            $limit: '%limit.article_items_per_page%'
