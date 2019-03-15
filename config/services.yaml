@@ -30,7 +30,7 @@ services:
     # this creates a service per class whose id is the fully-qualified class name
     App\:
         resource: '../src/*'
-        exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+        exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php,Anton/BlogBundle/Service}'
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
@@ -102,6 +102,3 @@ services:
         class: App\Service\NotificationSender
         arguments: ['@doctrine.orm.entity_manager', '@templating', ' @router']
 
-#    App\Anton\BlogBundle\Service\Paginator:
-#        arguments:
-#            $limit: '%limit.article_items_per_page%'
