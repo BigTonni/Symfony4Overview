@@ -2,10 +2,11 @@
 
 namespace App\Controller\Web;
 
+use App\Anton\BlogBundle\Service\Paginator;
 use App\Entity\Article;
 use App\Entity\Category;
+//use App\Service\Paginator;
 use App\Form\CategoryType;
-use App\Service\Paginator;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

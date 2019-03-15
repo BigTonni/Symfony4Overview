@@ -2,9 +2,10 @@
 
 namespace App\Controller\Api;
 
+use App\Anton\BlogBundle\Service\Paginator;
 use App\Entity\Article;
+//use App\Service\Paginator;
 use App\Form\ArticleType;
-use App\Service\Paginator;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Knp\Component\Pager\PaginatorInterface;
