@@ -2,9 +2,8 @@
 
 namespace App\Controller\Api;
 
-use App\Anton\BlogBundle\Service\Paginator;
+use App\Anton\BlogBundle\Service\PageLimiter;
 use App\Entity\Article;
-//use App\Service\Paginator;
 use App\Form\ArticleType;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\Annotations as Rest;
@@ -26,13 +25,13 @@ class ArticleController extends BaseRestController
 
     private $paginator;
 
-    private $servicePaginator;
+    private $pageLimiter;
 
-    public function __construct(EntityManagerInterface $entityManager, PaginatorInterface $paginator, Paginator $servicePaginator)
+    public function __construct(EntityManagerInterface $entityManager, PaginatorInterface $paginator, PageLimiter $pageLimiter)
     {
         $this->em = $entityManager;
         $this->paginator = $paginator;
-        $this->servicePaginator = $servicePaginator;
+        $this->pageLimiter = $pageLimiter;
     }
 
     /**
@@ -96,7 +95,7 @@ class ArticleController extends BaseRestController
         }
 
         $page = $request->query->get('page') ?? 1;
-        $count = $request->query->get('count') ?? $this->servicePaginator->getLimit();
+        $count = $request->query->get('count') ?? $this->pageLimiter->getLimit();
 
         $articles = $this->paginator->paginate(
             $articles,

@@ -2,7 +2,7 @@
 
 namespace App\Controller\Web;
 
-use App\Anton\BlogBundle\Service\Paginator;
+use App\Anton\BlogBundle\Service\PageLimiter;
 use App\Entity\Article;
 use App\Entity\Category;
 use App\Entity\Comment;
@@ -10,7 +10,6 @@ use App\Entity\Like;
 use App\Event\ArticlePublishedEvent;
 use App\Event\ArticleViewedEvent;
 use App\Form\ArticleType;
-//use App\Service\Paginator;
 use App\Form\CommentType;
 use App\Service\Article\Manager\ArticleManager;
 use Knp\Component\Pager\PaginatorInterface;
@@ -35,20 +34,20 @@ class ArticleController extends AbstractController
 
     private $articleManager;
 
-    private $servicePaginator;
+    private $pageLimiter;
 
     /**
      * @param TranslatorInterface $translator
      * @param Breadcrumbs $breadcrumbs
      * @param ArticleManager $articleManager
-     * @param Paginator $servicePaginator
+     * @param PageLimiter $pageLimiter
      */
-    public function __construct(TranslatorInterface $translator, Breadcrumbs $breadcrumbs, ArticleManager $articleManager, Paginator $servicePaginator)
+    public function __construct(TranslatorInterface $translator, Breadcrumbs $breadcrumbs, ArticleManager $articleManager, PageLimiter $pageLimiter)
     {
         $this->translator = $translator;
         $this->breadcrumbs = $breadcrumbs;
         $this->articleManager = $articleManager;
-        $this->servicePaginator = $servicePaginator;
+        $this->pageLimiter = $pageLimiter;
     }
 
     /**
@@ -64,7 +63,7 @@ class ArticleController extends AbstractController
 
         $em = $this->getDoctrine()->getManager();
         $query = $em->getRepository(Article::class)->findLatestPublished();
-        $articles = $paginator->paginate($query, $request->query->getInt('page', 1), $this->servicePaginator->getLimit());
+        $articles = $paginator->paginate($query, $request->query->getInt('page', 1), $this->pageLimiter->getLimit());
 
         return $this->render('article/index.html.twig', [
             'articles' => $articles,
@@ -102,7 +101,7 @@ class ArticleController extends AbstractController
             $request->query->get('search_field', '')
         );
 
-        $articles = $paginator->paginate($query, $request->query->getInt('page', 1), $this->servicePaginator->getLimit());
+        $articles = $paginator->paginate($query, $request->query->getInt('page', 1), $this->pageLimiter->getLimit());
 
         return $this->render('article/search.html.twig', [
             'articles' => $articles,
@@ -251,7 +250,7 @@ class ArticleController extends AbstractController
             $query_articles[] = $article->getArticle();
         }
 
-        $articles = $paginator->paginate($query_articles, $request->query->getInt('page', 1), $this->servicePaginator->getLimit());
+        $articles = $paginator->paginate($query_articles, $request->query->getInt('page', 1), $this->pageLimiter->getLimit());
 
         return $this->render('article/index.html.twig', [
             'articles' => $articles,

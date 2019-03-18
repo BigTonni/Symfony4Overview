@@ -2,10 +2,9 @@
 
 namespace App\Controller\Web;
 
-use App\Anton\BlogBundle\Service\Paginator;
+use App\Anton\BlogBundle\Service\PageLimiter;
 use App\Entity\Article;
 use App\Entity\Tag;
-//use App\Service\Paginator;
 use App\Form\TagType;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -25,18 +24,18 @@ class TagController extends AbstractController
 
     private $breadcrumbs;
 
-    private $servicePaginator;
+    private $pageLimiter;
 
     /**
      * @param TranslatorInterface $translator
      * @param Breadcrumbs $breadcrumbs
-     * @param Paginator $servicePaginator
+     * @param PageLimiter $pageLimiter
      */
-    public function __construct(TranslatorInterface $translator, Breadcrumbs $breadcrumbs, Paginator $servicePaginator)
+    public function __construct(TranslatorInterface $translator, Breadcrumbs $breadcrumbs, PageLimiter $pageLimiter)
     {
         $this->translator = $translator;
         $this->breadcrumbs = $breadcrumbs;
-        $this->servicePaginator = $servicePaginator;
+        $this->pageLimiter = $pageLimiter;
     }
 
     /**
@@ -143,7 +142,7 @@ class TagController extends AbstractController
         ]);
 
         $query = $this->getDoctrine()->getManager()->getRepository(Article::class)->findArticlesByTagId($tag->getId());
-        $articles = $paginator->paginate($query, $request->query->getInt('page', 1), $this->servicePaginator->getLimit());
+        $articles = $paginator->paginate($query, $request->query->getInt('page', 1), $this->pageLimiter->getLimit());
 
         return $this->render('tag/show.html.twig', [
             'tag' => $tag,

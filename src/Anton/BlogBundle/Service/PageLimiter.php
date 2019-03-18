@@ -2,12 +2,12 @@
 
 namespace App\Anton\BlogBundle\Service;
 
-class Paginator
+class PageLimiter
 {
     private $limit;
 
     /**
-     * Paginator constructor.
+     * PageLimiter constructor.
      * @param int $limit
      */
     public function __construct(int $limit)
