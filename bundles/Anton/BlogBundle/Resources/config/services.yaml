@@ -4,6 +4,6 @@ services:
         autoconfigure: true
         public: false
 
-    App\Anton\BlogBundle\Service\PageLimiter:
+    Anton\BlogBundle\Service\PageLimiter:
         arguments:
             $limit: '%limit.article_items_per_page%'

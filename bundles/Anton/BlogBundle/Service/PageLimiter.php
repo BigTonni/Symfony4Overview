@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Anton\BlogBundle\Service;
+namespace Anton\BlogBundle\Service;
 
 class PageLimiter
 {

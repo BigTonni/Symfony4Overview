@@ -2,7 +2,7 @@
 
 namespace App\Controller\Web;
 
-use App\Anton\BlogBundle\Service\PageLimiter;
+use Anton\BlogBundle\Service\PageLimiter;
 use App\Entity\Article;
 use App\Entity\Category;
 use App\Entity\Comment;

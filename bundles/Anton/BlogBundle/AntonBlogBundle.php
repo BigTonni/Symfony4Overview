@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Anton\BlogBundle;
+namespace Anton\BlogBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

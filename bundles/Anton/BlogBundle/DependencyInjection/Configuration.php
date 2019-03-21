@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Anton\BlogBundle\DependencyInjection;
+namespace Anton\BlogBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;

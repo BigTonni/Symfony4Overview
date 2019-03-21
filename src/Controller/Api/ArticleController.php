@@ -2,7 +2,7 @@
 
 namespace App\Controller\Api;
 
-use App\Anton\BlogBundle\Service\PageLimiter;
+use Anton\BlogBundle\Service\PageLimiter;
 use App\Entity\Article;
 use App\Form\ArticleType;
 use Doctrine\ORM\EntityManagerInterface;
