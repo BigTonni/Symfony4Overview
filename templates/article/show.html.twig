@@ -22,7 +22,11 @@
                                 <span class="pl-2 article-details"> {{ article.createdAt|date("j F Y, H:i:s") }}</span>
                                 <span class="pl-2 article-details">
                                 <span class="js-like-article-count">{{ like.countLikes }}</span>
-                                <a href="{{ path('article_toggle_like', {slug: article.slug}) }}" class="fa fa-heart-o like-article js-like-article"></a>
+                                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                                    <a href="{{ path('article_toggle_like', {slug: article.slug}) }}" class="fa fa-heart-o like-article js-like-article"></a>
+                                {% else %}
+                                    <a href="#" class="fa fa-heart-o like-article"></a>
+                                {% endif %}
                             </span>
                             </div>
                         </div>
