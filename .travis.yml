@@ -24,7 +24,8 @@ install:
     - ./bin/phpunit install
 
 script:
-    - ./bin/phpunit tests/Unit/
+    - vendor/bin/behat
+    - ./bin/phpunit --configuration phpunit.xml.dist --coverage-text
     # this checks that the YAML config files contain no syntax errors
     - ./bin/console lint:yaml config
     # this checks that the Twig template files contain no syntax errors
