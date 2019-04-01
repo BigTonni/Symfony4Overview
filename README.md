@@ -1,5 +1,9 @@
 # GeekHub Advanced PHP 2018-2019
 
+[![Build Status](https://travis-ci.org/BigTonni/Symfony4Overview.svg?branch=master)](https://travis-ci.org/BigTonni/Symfony4Overview)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/BigTonni/Symfony4Overview/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/BigTonni/Symfony4Overview/?branch=master)
+[![Code Intelligence Status](https://scrutinizer-ci.com/g/BigTonni/Symfony4Overview/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence)
+
 ## Lessons by Symfony#4 
 <ol>
 <li>Entities: article, comment, category, tag, user and etc.</li>
@@ -20,10 +24,17 @@
 <li>Search articles.</li>
 <li>Tree category behaviour via **StofDoctrineExtensionsBundle**.</li>
 <li>Configure pagination (article count per page via own bundle).</li>
-<li>Like for articles.</li>
+<li>Like-action for articles.</li>
 <li>Wysiwyg-editor for articles.</li>
 <li>Override error pages (404, 403, 500).</li>
 <li>Translated files.</li>
+<li>User profile (settings, articles, comments, likes)</li>
 <li>REST-API with API-doc.</li>
 <li>Tests (PHPUnit, Behat). Code coverage.</li>
 </ol>
+
+To show list all the existing users:
+>  php bin/console app:list-users
+
+To send notifications about new notifications:
+>  php bin/console app:send-notification
