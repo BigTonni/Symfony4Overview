@@ -74,6 +74,9 @@
 
         {% block body %}
             <div class="container">
+
+                {% block sorting %}{% endblock %}
+
                 <div class="row">
                     <div class="col-sm-12 col-md-8">
                         {% block main %}{% endblock %}

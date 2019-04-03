@@ -102,6 +102,21 @@ class ArticleRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param $order
+     * @param $by
+     * @return mixed
+     */
+    public function findLatestPublishedWithOrder($order, $by)
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.status = :status')
+            ->setParameter('status', $this->statusPublished)
+            ->orderBy('a.'. $order, $by)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
      * @param $user_id
      * @throws \Doctrine\ORM\NonUniqueResultException
      * @return mixed

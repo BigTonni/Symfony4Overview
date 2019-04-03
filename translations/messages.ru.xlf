@@ -453,13 +453,29 @@
         <source>button.subscribed_articles</source>
         <target>__button.subscribed_articles</target>
       </trans-unit>
-      <trans-unit id="V5iHh7w" resname="article.can_delete_only_admin">
+      <trans-unit id="jsY0HEO" resname="article.can_delete_only_admin">
         <source>article.can_delete_only_admin</source>
         <target>Article can delete only admin</target>
       </trans-unit>
-      <trans-unit id="6vtsjIK" resname="admin.comments">
+      <trans-unit id=".8r3Kr8" resname="admin.comments">
         <source>admin.comments</source>
         <target>Comments</target>
+      </trans-unit>
+      <trans-unit id="e1pIK59" resname="articles.sorting.title">
+        <source>articles.sorting.title</source>
+        <target>Sorting:</target>
+      </trans-unit>
+      <trans-unit id="PjLo95L" resname="articles.sorting.date_created_desc">
+        <source>articles.sorting.date_created_desc</source>
+        <target>Created date DESC</target>
+      </trans-unit>
+      <trans-unit id="2Hk0gtk" resname="articles.sorting.date_created_asc">
+        <source>articles.sorting.date_created_asc</source>
+        <target>Created date ASC</target>
+      </trans-unit>
+      <trans-unit id="Put_luW" resname="order">
+        <source>order</source>
+        <target>Order</target>
       </trans-unit>
     </body>
   </file>

@@ -82,8 +82,12 @@ html {height:100%}
     border-top: 5px solid #543eff;
 }
 
-/* ARTICLES */
+/*Sorting articles*/
+.articles_sorting{
+    margin-right: 10px;
+}
 
+/* ARTICLES */
 .main-article {
     border: 2px solid #efefee;
     Background: #fff;
