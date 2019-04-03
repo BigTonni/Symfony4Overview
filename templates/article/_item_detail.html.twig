@@ -17,7 +17,7 @@
                     {{ tag.name }}
                 {% endfor %}
             </div>
-            <p>{{ article.body|truncate(20)|raw }}</p>
+            <p>{{ article.body|length > 20 ? article.body|striptags|slice(0, 20) ~ '...' : article.body|striptags}}</p>
         </div>
     </a>
 </div>
