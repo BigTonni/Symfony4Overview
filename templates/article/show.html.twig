@@ -71,7 +71,7 @@
                                         <div class="comment-container d-inline-block pl-3 align-top">
                                             <span class="commenter-name">{{ comment.author.fullName }}</span>
                                             <br>
-                                            <span class="comment">{{ comment.content }}</span> (<i>{{ comment.publishedAt|date("j F Y, H:i") }}</i>)
+                                            <span class="comment">{{ comment.content|raw }}</span> (<i>{{ comment.publishedAt|date("j F Y, H:i") }}</i>)
                                             <p><a href="#">{{ 'button.reply'|trans }}</a></p>
                                         </div>
                                     </div>
