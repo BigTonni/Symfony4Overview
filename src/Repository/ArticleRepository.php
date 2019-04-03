@@ -111,7 +111,7 @@ class ArticleRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('a')
             ->where('a.status = :status')
             ->setParameter('status', $this->statusPublished)
-            ->orderBy('a.'. $order, $by)
+            ->orderBy('a.' . $order, $by)
             ->getQuery()
             ->getResult();
     }
