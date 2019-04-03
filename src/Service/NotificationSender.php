@@ -60,15 +60,16 @@ class NotificationSender
             }
 
             foreach ($users as $user_email => $user) {
-                $articles = [];
                 foreach ($user['articles'] as $key => $article) {
-                    $articles[] = [
-                        'title' => $article->getTitle(),
-                        'slug' => $this->router->generate('article_show', ['slug' => $article->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL),
-                    ];
+                    if ($article->getSlug() !== null) {
+                        $url = $this->router->generate('article_show', ['slug' => $article->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL);
+                    } else {
+                        $url = $this->router->generate('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL);
+                    }
+                    $user['articles'][$key]['url'] = $url;
                 }
 
-                $this->sendMail($user_email, $user['username'], $articles);
+                $this->sendMail($user_email, $user['username'], $user['articles']);
             }
         }
     }
