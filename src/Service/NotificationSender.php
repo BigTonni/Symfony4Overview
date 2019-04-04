@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class NotificationSender
 {
@@ -15,19 +16,25 @@ class NotificationSender
     private $templating;
     private $mailer;
     private $router;
+    private $fromEmail;
+    private $translator;
 
     /**
      * @param EntityManagerInterface $em
      * @param EngineInterface $templating
      * @param RouterInterface $router
+     * @param string $fromEmail
+     * @param TranslatorInterface $translator
      * @param \Swift_Mailer $mailer
      */
-    public function __construct(EntityManagerInterface $em, EngineInterface $templating, RouterInterface $router, \Swift_Mailer $mailer)
+    public function __construct(EntityManagerInterface $em, EngineInterface $templating, RouterInterface $router, string $fromEmail, TranslatorInterface $translator, \Swift_Mailer $mailer)
     {
         $this->em = $em;
         $this->templating = $templating;
         $this->mailer = $mailer;
         $this->router = $router;
+        $this->fromEmail = $fromEmail;
+        $this->translator = $translator;
     }
 
     /**
@@ -39,7 +46,7 @@ class NotificationSender
         $notification = $this->em->getRepository(Notification::class)->findBy([
             'user' => $user,
             'isRead' => false,
-        ]);
+        ], [], 5);
 
         return $notification;
     }
@@ -81,8 +88,8 @@ class NotificationSender
      */
     public function sendMail($user_email, $user_name, $articles): void
     {
-        $message = (new \Swift_Message('New notification'))
-            ->setFrom('admin@example.com')
+        $message = (new \Swift_Message($this->translator->trans('send.notification_new')))
+            ->setFrom($this->fromEmail)
             ->setTo($user_email)
             ->setBody(
                 $this->templating->render(

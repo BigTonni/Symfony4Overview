@@ -387,15 +387,15 @@
       </trans-unit>
       <trans-unit id="nfw.zVe" resname="category.list">
         <source>category.list</source>
-        <target>__category.list</target>
+        <target>Category list</target>
       </trans-unit>
       <trans-unit id="QVB8YfU" resname="button.unsubscribe">
         <source>button.unsubscribe</source>
-        <target>__button.unsubscribe</target>
+        <target>Unsubscribe</target>
       </trans-unit>
       <trans-unit id="0.pXJCm" resname="button.subscribe">
         <source>button.subscribe</source>
-        <target>__button.subscribe</target>
+        <target>Subscribe</target>
       </trans-unit>
       <trans-unit id="iiWFLaI" resname="label.new_password">
         <source>label.new_password</source>
@@ -415,11 +415,11 @@
       </trans-unit>
       <trans-unit id="MYm4S3F" resname="article.published">
         <source>article.published</source>
-        <target>__article.published</target>
+        <target>Article published</target>
       </trans-unit>
       <trans-unit id="MNPoxgU" resname="article.not_published">
         <source>article.not_published</source>
-        <target>__article.not_published</target>
+        <target>Article no published</target>
       </trans-unit>
       <trans-unit id="6s_Pdp." resname="article.to_publish_a_comment">
         <source>article.to_publish_a_comment</source>
@@ -476,6 +476,10 @@
       <trans-unit id="Put_luW" resname="order">
         <source>order</source>
         <target>Order</target>
+      </trans-unit>
+      <trans-unit id="Put_lux" resname="send.notification_new">
+        <source>send.notification_new</source>
+        <target>New notification</target>
       </trans-unit>
     </body>
   </file>

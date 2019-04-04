@@ -479,6 +479,10 @@
         <source>order</source>
         <target>Order</target>
       </trans-unit>
+      <trans-unit id="Put_lux" resname="send.notification_new">
+        <source>send.notification_new</source>
+        <target>New notification</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

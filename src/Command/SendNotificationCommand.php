@@ -29,6 +29,6 @@ class SendNotificationCommand extends Command
     {
         $output->writeln('Send notifications about new articles in selected categories');
         $this->notification->sendNotification();
-        $output->writeln('Notifications sent');
+        $output->writeln(date('Y-m-d H:i:s'). 'Notifications sent');
     }
 }
