@@ -22,16 +22,17 @@ class HomeController extends AbstractController
      */
     public function index(Request $request, ArticleRepository $articles, PaginatorInterface $paginator, PageLimiter $pageLimiter): Response
     {
-        if (false !== $sorting_params = $request->query->get('articles_sorting', '')) {
+        if (false != $sorting_params = $request->query->get('articles_sorting', '')) {
             $params = explode('-', $sorting_params);
             $query = $articles->findLatestPublishedWithOrder('createdAt', $params[1]);
         } else {
+            $sorting_params = '';
             $query = $articles->findLatestPublished();
         }
 
         $articles = $paginator->paginate($query, $request->query->getInt('page', 1), $pageLimiter->getLimit());
 
-        return $this->render('default/homepage.html.twig', ['articles' => $articles]);
+        return $this->render('default/homepage.html.twig', ['articles' => $articles, 'sorting_params' => $sorting_params]);
     }
 
     /**
