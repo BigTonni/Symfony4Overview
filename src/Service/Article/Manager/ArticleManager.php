@@ -4,6 +4,7 @@ namespace App\Service\Article\Manager;
 
 use App\Entity\Article;
 use App\Entity\Notification;
+use App\Entity\Subscription;
 use App\Service\Uploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -86,12 +87,35 @@ class ArticleManager
         $this->em->flush();
     }
 
-    public function getNotReadArticles()
+    /**
+     * @return Article[]|object[]
+     * @throws \Exception
+     */
+    public function getNewArticlesInSubscribedCategoriesToday()
     {
-        return $this->em->getRepository(Notification::class)->findBy([
-            'user' => $this->tokenStorage->getToken()->getUser(),
-            'isRead' => false,
+        $currUser = $this->tokenStorage->getToken()->getUser();
+        //Get categories
+        $subscribedCategories = $this->em->getRepository(Subscription::class)->findBy([
+            'user' => $currUser,
         ]);
+
+        $articles = [];
+
+        if (\count($subscribedCategories) === 0) {
+            return $articles;
+        }
+
+        //Get articles
+        $currDate = new \DateTime();
+        foreach ($subscribedCategories as $key => $subscribedCategory) {
+            $articles[$subscribedCategory->getCategory()->getTitle()] = $this->em->getRepository(Article::class)->getTodayArticlesInSubscribedCategories(
+                $currDate,
+                $currUser->getId(),
+                $subscribedCategory->getCategory()->getId()
+            );
+        }
+
+        return $articles;
     }
 
     private function uploadImage(Article $article): void

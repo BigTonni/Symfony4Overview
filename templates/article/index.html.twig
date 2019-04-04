@@ -7,17 +7,21 @@
 {% block main %}
     {{ wo_render_breadcrumbs() }}
 
-    {% for article in articles %}
+    {% for catTitle, arrArticle in articles %}
+        <h5>{{ catTitle }}:</h5>
 
-        {{ include('article/_item_detail.html.twig', {article: article}) }}
+        {% for article in arrArticle %}
+
+            {{ include('article/_item_detail.html.twig', {article: article}) }}
+
+        {% else %}
+            <div class="well">{{ 'article.no_posts_found'|trans }}</div>
+        {% endfor %}
+        <hr/>
 
     {% else %}
         <div class="well">{{ 'article.no_posts_found'|trans }}</div>
     {% endfor %}
-
-    <div class="navigation text-center">
-        {{ knp_pagination_render(articles) }}
-    </div>
 
 {% endblock %}
 

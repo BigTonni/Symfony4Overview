@@ -7,7 +7,6 @@ use App\Entity\Article;
 use App\Entity\Category;
 use App\Entity\Comment;
 use App\Entity\Like;
-use App\Event\ArticlePublishedEvent;
 use App\Event\ArticleViewedEvent;
 use App\Form\ArticleType;
 use App\Form\CommentType;
@@ -160,10 +159,9 @@ class ArticleController extends AbstractController
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      * @Route("/new", methods={"GET", "POST"}, name="article_new")
      * @param Request $request
-     * @param EventDispatcherInterface $eventDispatcher
      * @return Response
      */
-    public function new(Request $request, EventDispatcherInterface $eventDispatcher): Response
+    public function new(Request $request): Response
     {
         //Do any Categories exist?
         if (empty($this->getDoctrine()
@@ -185,8 +183,6 @@ class ArticleController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->articleManager->create($article);
-
-            $eventDispatcher->dispatch(ArticlePublishedEvent::NAME, new ArticlePublishedEvent($article));
 
             $this->addFlash(
                 'notice',
@@ -237,20 +233,12 @@ class ArticleController extends AbstractController
     /**
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      * @Route("/subscriptions", methods={"GET"}, name="articles_in_subscribed_categories")
-     * @param Request            $request
-     * @param PaginatorInterface $paginator
      * @return Response
+     * @throws \Exception
      */
-    public function showNewArticlesInSubscribedCategories(Request $request, PaginatorInterface $paginator): Response
+    public function showNewArticlesInSubscribedCategories(): Response
     {
-        $query = $this->articleManager->getNotReadArticles();
-
-        $query_articles = [];
-        foreach ($query as $article) {
-            $query_articles[] = $article->getArticle();
-        }
-
-        $articles = $paginator->paginate($query_articles, $request->query->getInt('page', 1), $this->pageLimiter->getLimit());
+        $articles = $this->articleManager->getNewArticlesInSubscribedCategoriesToday(new \DateTime());
 
         return $this->render('article/index.html.twig', [
             'articles' => $articles,
@@ -259,12 +247,11 @@ class ArticleController extends AbstractController
 
     /**
      * @param Article $article
-     * @param EventDispatcherInterface $eventDispatcher
      * @throws \Doctrine\ORM\NonUniqueResultException
      * @return Response
      * @Route("/{slug}", methods={"GET"}, name="article_show")
      */
-    public function show(Article $article, EventDispatcherInterface $eventDispatcher): Response
+    public function show(Article $article): Response
     {
         // This security check can also be performed
         // using an annotation: @IsGranted("show", subject="article", message="Articles can only be shown to their authors.")
@@ -280,8 +267,6 @@ class ArticleController extends AbstractController
 
         $em = $this->getDoctrine()->getManager();
         $countLikes = $em->getRepository(Like::class)->getCountLikesForArticle($article->getId());
-
-        $eventDispatcher->dispatch(ArticleViewedEvent::NAME, new ArticleViewedEvent($article));
 
         return $this->render('article/show.html.twig', [
             'article' => $article,

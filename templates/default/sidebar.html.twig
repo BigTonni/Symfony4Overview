@@ -1,4 +1,4 @@
-<div class="quote-space pb-2 pt-2 px-5">
+<div class="sidebar-wrap list-comments pb-2 pt-2 px-5">
     <h3 class="text-center pb-3">{{ 'comments.new'|trans }}</h3>
     {% for comment in comments %}
         <p>
@@ -9,7 +9,12 @@
     {% endfor %}
 </div>
 
-<div class="list-categories pb-2 pt-2 px-5">
+<div class="sidebar-wrap pb-2 pt-2 px-5">
+    <h5 class="text-center pb-3">{{ 'category.to_subscribe'|trans }}</h5>
+    <a href="{{ path('category_list') }}">{{ 'subscribe_here'|trans }}</a>
+</div>
+
+<div class="sidebar-wrap list-categories pb-2 pt-2 px-5">
     <h3 class="text-center pb-3">{{ 'categories'|trans }}</h3>
     <ul class="list-group">
         {% for category in categories %}

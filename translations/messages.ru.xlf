@@ -477,9 +477,17 @@
         <source>order</source>
         <target>Order</target>
       </trans-unit>
-      <trans-unit id="Put_lux" resname="send.notification_new">
+      <trans-unit id="TS6jXvl" resname="send.notification_new">
         <source>send.notification_new</source>
         <target>New notification</target>
+      </trans-unit>
+      <trans-unit id="_KmhcYJ" resname="category.to_subscribe">
+        <source>category.to_subscribe</source>
+        <target>Подписаться на категорию</target>
+      </trans-unit>
+      <trans-unit id="OZARqvg" resname="subscribe_here">
+        <source>subscribe_here</source>
+        <target>Кликни здесь</target>
       </trans-unit>
     </body>
   </file>
