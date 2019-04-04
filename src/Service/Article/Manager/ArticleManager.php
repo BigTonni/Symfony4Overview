@@ -93,7 +93,10 @@ class ArticleManager
      */
     public function getNewArticlesInSubscribedCategoriesToday()
     {
+//        $allSubscribers = $this->em->getRepository(Subscription::class)->getAllSubscribers();
+//        dd($allSubscribers);
         $currUser = $this->tokenStorage->getToken()->getUser();
+
         //Get categories
         $subscribedCategories = $this->em->getRepository(Subscription::class)->findBy([
             'user' => $currUser,
@@ -107,11 +110,13 @@ class ArticleManager
 
         //Get articles
         $currDate = new \DateTime();
+
         foreach ($subscribedCategories as $key => $subscribedCategory) {
-            $articles[$subscribedCategory->getCategory()->getTitle()] = $this->em->getRepository(Article::class)->getTodayArticlesInSubscribedCategories(
+//    dd($subscribedCategory->getValues());
+            $articles[$subscribedCategory->getCategories()->getTitle()] = $this->em->getRepository(Article::class)->getTodayArticlesInSubscribedCategories(
                 $currDate,
                 $currUser->getId(),
-                $subscribedCategory->getCategory()->getId()
+                $subscribedCategory->getCategories()->getId()
             );
         }
 

@@ -30,29 +30,31 @@ class SubscriptionController extends AbstractController
      * @Route("/subscribe/{slug}", name="category_subscribe")
      * @param Category $category
      * @return Response
+     * @throws \Exception
      */
     public function subscribe(Category $category): Response
     {
         $em = $this->getDoctrine()->getManager();
-        $isSubscription = $em->getRepository(Subscription::class)->findBy(
-            [
-                'user' => $this->getUser(),
-                'category' => $category,
-            ]
-        );
-        if (!$isSubscription) {
-            $subscribers = new Subscription();
-            $subscribers->setUser($this->getUser());
-            $subscribers->setCategory($category);
+//        $isSubscription = $em->getRepository(Subscription::class)->findBy(
+//            [
+//                'user' => $this->getUser(),
+//                'categories' => $category,
+//            ]
+//        );
+//        if (!$isSubscription) {
+            $subscription = new Subscription();
+            $subscription->setUser($this->getUser());
+            $subscription->addCategory($category);
+            $subscription->setCreatedAt(new \DateTime());
 
-            $em->persist($subscribers);
-        }
-        $em->flush();
+            $em->persist($subscription);
+            $em->flush();
 
-        $this->addFlash(
-            'notice',
-            $this->translator->trans('subscription.created_successfully')
-        );
+            $this->addFlash(
+                'notice',
+                $this->translator->trans('subscription.created_successfully')
+            );
+//        }
 
         return $this->redirectToRoute('category_list');
     }
@@ -60,7 +62,6 @@ class SubscriptionController extends AbstractController
     /**
      * @Route("/unsubscribe/{slug}", name="category_unsubscribe")
      * @param Category $category
-     * @throws \Doctrine\ORM\NonUniqueResultException
      * @return Response
      */
     public function unsubscribe(Category $category): Response
@@ -69,7 +70,7 @@ class SubscriptionController extends AbstractController
         $arrSubscription = $em->getRepository(Subscription::class)->findBy(
             [
                 'user' => $this->getUser(),
-                'category' => $category,
+//                'categories' => $category,
             ]
         );
 
@@ -77,6 +78,8 @@ class SubscriptionController extends AbstractController
             $em->remove($arrSubscription[0]);
 
             $em->flush();
+            $em->clear();
+
             $this->addFlash(
                 'notice',
                 $this->translator->trans('subscription.deleted_successfully')

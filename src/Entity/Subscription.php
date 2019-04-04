@@ -2,7 +2,11 @@
 
 namespace App\Entity;
 
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SubscriptionRepository")
@@ -17,15 +21,28 @@ class Subscription
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="subscribers")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Category", inversedBy="subscriptions")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $category;
+    private $categories;
+
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
+
+    /**
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime")
+     * @Assert\DateTime()
+    */
+    private $createdAt;
+
+    public function __construct()
+    {
+        $this->categories = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -33,11 +50,11 @@ class Subscription
     }
 
     /**
-     * @return Category|null
+     * @return Collection
      */
-    public function getCategory(): ?Category
+    public function getCategories(): Collection
     {
-        return $this->category;
+        return $this->categories;
     }
 
     /**
@@ -45,9 +62,27 @@ class Subscription
      *
      * @return Subscription
      */
-    public function setCategory(?Category $category): self
+    public function addCategory(Category $category): self
     {
-        $this->category = $category;
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
+            $category->addSubscription($this);
+        }
+//        $this->categories = $category;
+
+        return $this;
+    }
+
+    /**
+     * @param Category $category
+     * @return Subscription
+     */
+    public function removeCategory(Category $category): self
+    {
+        if ($this->categories->contains($category)) {
+            $this->categories->removeElement($category);
+            $category->removeSubscription($this);
+        }
 
         return $this;
     }
@@ -68,6 +103,24 @@ class Subscription
     {
         $this->user = $user;
 
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt(): ?DateTime
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param DateTime $createdAt
+     * @return Subscription
+     */
+    public function setCreatedAt(DateTime $createdAt): self
+    {
+        $this->createdAt = $createdAt;
         return $this;
     }
 }

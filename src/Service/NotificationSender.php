@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Notification;
+use App\Entity\Subscription;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -60,10 +61,10 @@ class NotificationSender
     public function sendNotification(): void
     {
 //        $allSubscribers = $this->em->getRepository(Subscription::class)->findAll();
-        //For test
+//        For test
 //        $allSubscribers = $this->em->getRepository(Subscription::class)->getAllSubscribers();
 //        dd($allSubscribers);
-        //End test
+//        End test
 
         //Not right. Need to remake.
         $notifications = $this->em->getRepository(Notification::class)->selectUsersByReadStatus(false);

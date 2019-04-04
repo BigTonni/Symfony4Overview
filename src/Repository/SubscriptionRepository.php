@@ -6,8 +6,8 @@ namespace App\Repository;
 use App\Entity\Subscription;
 //use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
@@ -27,17 +27,26 @@ class SubscriptionRepository extends ServiceEntityRepository
     }
 
     public function getAllSubscribers() {
-//        $rsm = new ResultSetMapping();
-//        $query = $this->em->createNativeQuery('SELECT user_id FROM subscription GROUP BY user_id', $rsm);
-//
-//        $subscribers = $query->getResult();
+        $rsm = new ResultSetMapping();
+        $query = $this->em->createNativeQuery('SELECT IDENTITY(user_id) AS userId FROM subscription GROUP BY userId', $rsm);
 
-        $subscribers = $this->createQueryBuilder('s')
-            ->select('s.user_id')
-            ->groupBy('user_id')
-            ->getQuery()
-            ->getResult();
+        $subscribers = $query->getResult();
 
+//        $subscribers = $this->createQueryBuilder('s')
+//            ->select('IDENTITY(s.user)')
+//            ->groupBy('s.user')
+//            ->getQuery()
+//            ->getResult();
+dd($subscribers);
         return $subscribers;
     }
+//    public function getAllSubscribers() {
+//        $subscribers = $this->createQueryBuilder('s')
+//            ->select('IDENTITY(s.user), s.category')
+//            ->groupBy('s.user')
+//            ->getQuery()
+//            ->getResult();
+//
+//        return $subscribers;
+//    }
 }
