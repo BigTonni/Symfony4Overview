@@ -2,11 +2,13 @@
 
 namespace App\Repository;
 
-use App\Entity\Category;
+//use App\Entity\Category;
 use App\Entity\Subscription;
-use App\Entity\User;
+//use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\ORM\Query\ResultSetMapping;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * @method Subscription|null find($id, $lockMode = null, $lockVersion = null)
@@ -16,27 +18,26 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class SubscriptionRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    private $em;
+
+    public function __construct(RegistryInterface $registry, EntityManagerInterface $em)
     {
+        $this->em = $em;
         parent::__construct($registry, Subscription::class);
     }
 
-    /**
-     * @param Category $category
-     * @param User     $user
-     *
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     * @return mixed
-     */
-    public function deleteByCatagoryAndUser(Category $category, User $user)
-    {
-        return $this->createQueryBuilder('s')
-            ->delete()
-            ->where('s.category = :category')
-            ->andWhere('s.user = :user')
-            ->setParameter(':category', $category)
-            ->setParameter(':user', $user)
+    public function getAllSubscribers() {
+//        $rsm = new ResultSetMapping();
+//        $query = $this->em->createNativeQuery('SELECT user_id FROM subscription GROUP BY user_id', $rsm);
+//
+//        $subscribers = $query->getResult();
+
+        $subscribers = $this->createQueryBuilder('s')
+            ->select('s.user_id')
+            ->groupBy('user_id')
             ->getQuery()
-            ->getSingleScalarResult();
+            ->getResult();
+
+        return $subscribers;
     }
 }

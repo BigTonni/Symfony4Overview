@@ -238,7 +238,7 @@ class ArticleController extends AbstractController
      */
     public function showNewArticlesInSubscribedCategories(): Response
     {
-        $articles = $this->articleManager->getNewArticlesInSubscribedCategoriesToday(new \DateTime());
+        $articles = $this->articleManager->getNewArticlesInSubscribedCategoriesToday();
 
         return $this->render('article/index.html.twig', [
             'articles' => $articles,

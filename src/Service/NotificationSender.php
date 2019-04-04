@@ -59,6 +59,13 @@ class NotificationSender
 
     public function sendNotification(): void
     {
+//        $allSubscribers = $this->em->getRepository(Subscription::class)->findAll();
+        //For test
+//        $allSubscribers = $this->em->getRepository(Subscription::class)->getAllSubscribers();
+//        dd($allSubscribers);
+        //End test
+
+        //Not right. Need to remake.
         $notifications = $this->em->getRepository(Notification::class)->selectUsersByReadStatus(false);
 
         if (!empty($notifications)) {
