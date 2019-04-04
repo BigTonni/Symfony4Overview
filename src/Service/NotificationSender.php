@@ -27,8 +27,14 @@ class NotificationSender
      * @param TranslatorInterface $translator
      * @param \Swift_Mailer $mailer
      */
-    public function __construct(EntityManagerInterface $em, EngineInterface $templating, RouterInterface $router, string $fromEmail, TranslatorInterface $translator, \Swift_Mailer $mailer)
-    {
+    public function __construct(
+        EntityManagerInterface $em,
+        EngineInterface $templating,
+        RouterInterface $router,
+        string $fromEmail,
+        TranslatorInterface $translator,
+        \Swift_Mailer $mailer
+    ) {
         $this->em = $em;
         $this->templating = $templating;
         $this->mailer = $mailer;
