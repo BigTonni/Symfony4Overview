@@ -36,7 +36,7 @@ class Subscription
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      * @Assert\DateTime()
-    */
+     */
     private $createdAt;
 
     public function __construct()
@@ -50,9 +50,9 @@ class Subscription
     }
 
     /**
-     * @return Collection
+//     * @return Collection
      */
-    public function getCategories(): Collection
+    public function getCategories()
     {
         return $this->categories;
     }
@@ -121,6 +121,7 @@ class Subscription
     public function setCreatedAt(DateTime $createdAt): self
     {
         $this->createdAt = $createdAt;
+
         return $this;
     }
 }

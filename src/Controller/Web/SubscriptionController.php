@@ -29,8 +29,8 @@ class SubscriptionController extends AbstractController
     /**
      * @Route("/subscribe/{slug}", name="category_subscribe")
      * @param Category $category
-     * @return Response
      * @throws \Exception
+     * @return Response
      */
     public function subscribe(Category $category): Response
     {
@@ -42,15 +42,15 @@ class SubscriptionController extends AbstractController
 //            ]
 //        );
 //        if (!$isSubscription) {
-            $subscription = new Subscription();
-            $subscription->setUser($this->getUser());
-            $subscription->addCategory($category);
-            $subscription->setCreatedAt(new \DateTime());
+        $subscription = new Subscription();
+        $subscription->setUser($this->getUser());
+        $subscription->addCategory($category);
+        $subscription->setCreatedAt(new \DateTime());
 
-            $em->persist($subscription);
-            $em->flush();
+        $em->persist($subscription);
+        $em->flush();
 
-            $this->addFlash(
+        $this->addFlash(
                 'notice',
                 $this->translator->trans('subscription.created_successfully')
             );

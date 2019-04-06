@@ -3,7 +3,6 @@
 namespace App\Service\Article\Manager;
 
 use App\Entity\Article;
-use App\Entity\Notification;
 use App\Entity\Subscription;
 use App\Service\Uploader;
 use Doctrine\ORM\EntityManagerInterface;
@@ -45,7 +44,7 @@ class ArticleManager
         $this->em->flush();
     }
 
-    public function edit(Article $article)
+    public function edit(Article $article): void
     {
         $image = $article->getImage();
 
@@ -69,11 +68,6 @@ class ArticleManager
 
     public function remove(Article $article): void
     {
-        //Remove article notifications
-        $notifications = $this->em->getRepository(Notification::class)->findBy(['article' => $article]);
-        foreach ($notifications as $notification) {
-            $this->em->remove($notification);
-        }
         //Remove article image
         if (null !== $image = $article->getImage()) {
             if ($this->uploader->hasNewImage($image)) {
@@ -88,19 +82,33 @@ class ArticleManager
     }
 
     /**
-     * @return Article[]|object[]
      * @throws \Exception
+     * @return Article[]|object[]
      */
     public function getNewArticlesInSubscribedCategoriesToday()
     {
-//        $allSubscribers = $this->em->getRepository(Subscription::class)->getAllSubscribers();
-//        dd($allSubscribers);
         $currUser = $this->tokenStorage->getToken()->getUser();
+        $batchSize = 20;
+        $i = 0;
+        $currDate = new \DateTime();
 
-        //Get categories
-        $subscribedCategories = $this->em->getRepository(Subscription::class)->findBy([
-            'user' => $currUser,
-        ]);
+        $iterableSubscribedCategories = $this->em->getRepository(Subscription::class)
+            ->getTodaySubscriptionsByUserQuery($currDate, $currUser)
+            ->iterate()
+        ;
+
+        $subscribedCategories = [];
+        foreach ($iterableSubscribedCategories as $subscriber) {
+            $arrPersistentCollection = $subscriber[0]->getCategories()->getValues();
+            if (!empty($arrPersistentCollection)) {
+                $subscribedCategories[$arrPersistentCollection[0]->getId()] = $arrPersistentCollection[0]->getTitle();
+            }
+            if (($i % $batchSize) === 0) {
+                $this->em->flush(); // Executes all updates.
+                $this->em->clear(); // Detaches all objects from Doctrine!
+            }
+            ++$i;
+        }
 
         $articles = [];
 
@@ -109,14 +117,11 @@ class ArticleManager
         }
 
         //Get articles
-        $currDate = new \DateTime();
-
-        foreach ($subscribedCategories as $key => $subscribedCategory) {
-//    dd($subscribedCategory->getValues());
-            $articles[$subscribedCategory->getCategories()->getTitle()] = $this->em->getRepository(Article::class)->getTodayArticlesInSubscribedCategories(
+        foreach ($subscribedCategories as $catId => $catTitle) {
+            $articles[$catTitle] = $this->em->getRepository(Article::class)->getTodayArticlesInSubscribedCategories(
                 $currDate,
                 $currUser->getId(),
-                $subscribedCategory->getCategories()->getId()
+                $catId
             );
         }
 

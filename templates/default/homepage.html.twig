@@ -9,7 +9,7 @@
     <div class="col-sm-12 col-md-8" id="article-sorting">
         <form class="form-inline my-2 my-lg-0" method="get" action="{{ path('homepage') }}">
             <label>{{ 'articles.sorting.title' | trans }}</label>
-            <select name="articles_sorting" class="articles_sorting">
+            <select name="articles_sorting" class="form-control articles_sorting">
                 <option value="created_date-DESC" {{ (sorting_params == 'created_date-DESC') ? 'selected' }}>{{ 'articles.sorting.date_created_desc' | trans }}</option>
                 <option value="created_date-ASC" {{ (sorting_params == 'created_date-ASC') ? 'selected' }}>{{ 'articles.sorting.date_created_asc' | trans }}</option>
             </select>

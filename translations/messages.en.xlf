@@ -485,7 +485,7 @@
       </trans-unit>
       <trans-unit id="_KmhcYJ" resname="category.to_subscribe">
         <source>category.to_subscribe</source>
-        <target>Subscribe to a category</target>
+        <target>Subscribe to categories</target>
       </trans-unit>
       <trans-unit id="OZARqvg" resname="subscribe_here">
         <source>subscribe_here</source>

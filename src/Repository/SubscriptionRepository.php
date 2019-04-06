@@ -2,13 +2,9 @@
 
 namespace App\Repository;
 
-//use App\Entity\Category;
 use App\Entity\Subscription;
-//use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Query\ResultSetMapping;
 use Symfony\Bridge\Doctrine\RegistryInterface;
-use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * @method Subscription|null find($id, $lockMode = null, $lockVersion = null)
@@ -18,35 +14,34 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class SubscriptionRepository extends ServiceEntityRepository
 {
-    private $em;
-
-    public function __construct(RegistryInterface $registry, EntityManagerInterface $em)
+    public function __construct(RegistryInterface $registry)
     {
-        $this->em = $em;
         parent::__construct($registry, Subscription::class);
     }
 
-    public function getAllSubscribers() {
-        $rsm = new ResultSetMapping();
-        $query = $this->em->createNativeQuery('SELECT IDENTITY(user_id) AS userId FROM subscription GROUP BY userId', $rsm);
+    public function getTodaySubscriptionsByUserQuery($currDate, $currUser)
+    {
+        $from = new \DateTime($currDate->format('Y-m-d') . ' 00:00:00');
+        $to = new \DateTime($currDate->format('Y-m-d') . ' 23:59:59');
 
-        $subscribers = $query->getResult();
-
-//        $subscribers = $this->createQueryBuilder('s')
-//            ->select('IDENTITY(s.user)')
-//            ->groupBy('s.user')
-//            ->getQuery()
-//            ->getResult();
-dd($subscribers);
-        return $subscribers;
+        return $this->createQueryBuilder('s')
+            ->where('s.user = :user_id')
+            ->setParameter('user_id', $currUser)
+            ->andWhere('s.createdAt BETWEEN :from AND :to')
+            ->setParameter(':from', $from)
+            ->setParameter(':to', $to)
+            ->getQuery();
     }
-//    public function getAllSubscribers() {
-//        $subscribers = $this->createQueryBuilder('s')
-//            ->select('IDENTITY(s.user), s.category')
-//            ->groupBy('s.user')
-//            ->getQuery()
-//            ->getResult();
-//
-//        return $subscribers;
-//    }
+
+    public function getTodaySubscriptionsQuery($currDate)
+    {
+        $from = new \DateTime($currDate->format('Y-m-d') . ' 00:00:00');
+        $to = new \DateTime($currDate->format('Y-m-d') . ' 23:59:59');
+
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.createdAt BETWEEN :from AND :to')
+            ->setParameter(':from', $from)
+            ->setParameter(':to', $to)
+            ->getQuery();
+    }
 }
