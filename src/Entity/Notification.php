@@ -1,14 +1,14 @@
 <?php
 
-//namespace App\Entity;
-//
-//use Doctrine\ORM\Mapping as ORM;
-//
-///**
-// * @ORM\Entity(repositoryClass="App\Repository\NotificationRepository")
-// */
-//class Notification
-//{
+namespace App\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity(repositoryClass="App\Repository\NotificationRepository")
+ */
+class Notification
+{
 //    /**
 //     * @ORM\Id()
 //     * @ORM\GeneratedValue()
@@ -96,4 +96,4 @@
 //    {
 //        $this->isRead = $isRead;
 //    }
-//}
+}

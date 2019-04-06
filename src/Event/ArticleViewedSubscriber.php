@@ -10,9 +10,9 @@ class ArticleViewedSubscriber extends AbstractController implements EventSubscri
 {
     public static function getSubscribedEvents(): array
     {
-//        return [
+        return [
 //            ArticleViewedEvent::NAME => 'onArticleViewed',
-//        ];
+        ];
     }
 
 //    public function onArticleViewed(ArticleViewedEvent $articleViewedEvent)

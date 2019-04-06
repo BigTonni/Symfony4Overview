@@ -11,9 +11,9 @@ class ArticlePublishedSubscriber extends AbstractController implements EventSubs
 {
     public static function getSubscribedEvents(): array
     {
-//        return [
+        return [
 //            ArticlePublishedEvent::NAME => 'onArticlePublished',
-//        ];
+        ];
     }
 
 //    public function onArticlePublished(ArticlePublishedEvent $articlePublishedEvent)

@@ -22,7 +22,7 @@ class HomeController extends AbstractController
      */
     public function index(Request $request, ArticleRepository $articles, PaginatorInterface $paginator, PageLimiter $pageLimiter): Response
     {
-        if (false !== $sorting_params = $request->query->get('articles_sorting', '')) {
+        if ('' !== $sorting_params = $request->query->get('articles_sorting', '')) {
             $params = explode('-', $sorting_params);
             $query = $articles->findLatestPublishedWithOrder('createdAt', $params[1]);
         } else {
