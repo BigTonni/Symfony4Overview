@@ -66,7 +66,7 @@ class NotificationSender
         $currDate = new \DateTime();
 
         $iterableSubscribedCategories = $this->em->getRepository(Subscription::class)
-            ->getTodaySubscriptionsQuery($currDate)
+            ->getTodaySubscriptionsQuery()
             ->iterate()
         ;
 

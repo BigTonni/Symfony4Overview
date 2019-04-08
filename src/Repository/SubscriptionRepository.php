@@ -33,15 +33,9 @@ class SubscriptionRepository extends ServiceEntityRepository
             ->getQuery();
     }
 
-    public function getTodaySubscriptionsQuery($currDate)
+    public function getTodaySubscriptionsQuery()
     {
-        $from = new \DateTime($currDate->format('Y-m-d') . ' 00:00:00');
-        $to = new \DateTime($currDate->format('Y-m-d') . ' 23:59:59');
-
         return $this->createQueryBuilder('s')
-            ->andWhere('s.createdAt BETWEEN :from AND :to')
-            ->setParameter(':from', $from)
-            ->setParameter(':to', $to)
             ->getQuery();
     }
 }
