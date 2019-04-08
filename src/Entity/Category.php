@@ -82,15 +82,16 @@ class Category
     private $articles;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Subscription", mappedBy="category", orphanRemoval=true)
+     * @ORM\ManyToMany(targetEntity="App\Entity\Subscription", inversedBy="categories")
+     * @ORM\JoinColumn(nullable=true)
      */
-    private $subscribers;
+    private $subscriptions;
 
     public function __construct()
     {
         $this->children = new ArrayCollection();
         $this->articles = new ArrayCollection();
-        $this->subscribers = new ArrayCollection();
+        $this->subscriptions = new ArrayCollection();
     }
 
     /**
@@ -164,20 +165,29 @@ class Category
     /**
      * @return Collection
      */
-    public function getSubscriber(): Collection
+    public function getSubscriptions(): ?Collection
     {
-        return $this->subscribers;
+        return $this->subscriptions;
     }
 
     /**
-     * @param Subscription $subscribers
+     * @param Subscription $subscription
      * @return Category
      */
-    public function addSubscriber(Subscription $subscribers): self
+    public function addSubscription(Subscription $subscription): self
     {
-        if (!$this->subscribers->contains($subscribers)) {
-            $this->subscribers[] = $subscribers;
-            $subscribers->setCategory($this);
+        if (!$this->subscriptions->contains($subscription)) {
+            $this->subscriptions[] = $subscription;
+            $subscription->addCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubscription(Subscription $subscription): self
+    {
+        if ($this->subscriptions->contains($subscription)) {
+            $this->subscriptions->removeElement($subscription);
         }
 
         return $this;

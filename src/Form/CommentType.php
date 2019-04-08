@@ -17,7 +17,7 @@ class CommentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('content', TextareaType::class, ['attr' => ['class' => 'mceNoEditor']])
+            ->add('content', TextareaType::class, ['attr' => ['class' => 'mceEditor']])
             ->add('save', SubmitType::class, ['label' => 'Create Comment', 'attr' => ['class' => 'btn btn-primary']]);
     }
 

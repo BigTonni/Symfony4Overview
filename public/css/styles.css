@@ -68,22 +68,25 @@ html {height:100%}
 .sidebar-text {
     font-weight: bold;
 }
-
-.quote-space {
+.sidebar-wrap{
     background: #fff;
     margin-top: 30px;
     border-radius: 5px;
-    border-top: 5px solid hotpink;
+    border-top: 5px solid;
+}
+.list-comments {
+    border-top-color: hotpink;
 }
 .list-categories{
-    background: #fff;
-    margin-top: 30px;
-    border-radius: 5px;
-    border-top: 5px solid #543eff;
+    border-top-color: #543eff;
+}
+
+/*Sorting articles*/
+.articles_sorting{
+    margin-right: 10px;
 }
 
 /* ARTICLES */
-
 .main-article {
     border: 2px solid #efefee;
     Background: #fff;

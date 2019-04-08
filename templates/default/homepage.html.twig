@@ -4,9 +4,24 @@
 
 {% block body_id 'homepage' %}
 
+{% block sorting %}
+<div class="row">
+    <div class="col-sm-12 col-md-8" id="article-sorting">
+        <form class="form-inline my-2 my-lg-0" method="get" action="{{ path('homepage') }}">
+            <label>{{ 'articles.sorting.title' | trans }}</label>
+            <select name="articles_sorting" class="form-control articles_sorting">
+                <option value="created_date-DESC" {{ (sorting_params == 'created_date-DESC') ? 'selected' }}>{{ 'articles.sorting.date_created_desc' | trans }}</option>
+                <option value="created_date-ASC" {{ (sorting_params == 'created_date-ASC') ? 'selected' }}>{{ 'articles.sorting.date_created_asc' | trans }}</option>
+            </select>
+            <button class="btn btn-info my-2 my-sm-0" type="submit">{{ 'order'|trans }}</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
 {% block main %}
     <h2>{{ 'articles.new'|trans }}</h2>
-    {% for article in pagination %}
+    {% for article in articles %}
         <div class="article-container my-1">
             <a href="{{ path('article_show', {slug: article.slug}) }}">
 
@@ -26,6 +41,10 @@
     {% else %}
         <div class="well">{{ 'article.no_found'|trans }}</div>
     {% endfor %}
+
+    <div class="navigation text-center">
+        {{ knp_pagination_render(articles) }}
+    </div>
 {% endblock %}
 
 {% block sidebar %}

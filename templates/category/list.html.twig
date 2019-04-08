@@ -17,8 +17,8 @@
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
 
                         {% set isSubscribe = false %}
-                        {% for subscriber in category.subscriber.values %}
-                            {% if  subscriber.user == app.user%}
+                        {% for subscription in category.subscriptions.values %}
+                            {% if  subscription.user == app.user%}
                                 {% set isSubscribe = true %}
                             {% endif %}
                         {% endfor %}

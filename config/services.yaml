@@ -7,6 +7,8 @@ parameters:
     locale: 'en'
     image_articles_thumbnails_directory: '%kernel.project_dir%/public/uploads/articles/thumbnails/'
     image_articles_thumbnails_display: '/uploads/articles/thumbnails/'
+    router.request_context.host:   localhost
+    router.request_context.scheme: http
     # This parameter defines the codes of the locales (languages) enabled in the application
     app_locales: en|ru
 
@@ -98,6 +100,5 @@ services:
         tags:
         - { name: sonata.admin, manager_type: orm, group: 'Pages', label: admin.pages }
 
-    app.notification_sender:
-        class: App\Service\NotificationSender
-        arguments: ['@doctrine.orm.entity_manager', '@templating', ' @router']
+    App\Service\NotificationSender:
+        arguments: ['@doctrine.orm.entity_manager', '@templating', '@router', 'shandm85@gmail.com']

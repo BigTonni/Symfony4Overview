@@ -2,9 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\Category;
 use App\Entity\Subscription;
-use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -21,22 +19,23 @@ class SubscriptionRepository extends ServiceEntityRepository
         parent::__construct($registry, Subscription::class);
     }
 
-    /**
-     * @param Category $category
-     * @param User     $user
-     *
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     * @return mixed
-     */
-    public function deleteByCatagoryAndUser(Category $category, User $user)
+    public function getTodaySubscriptionsByUserQuery($currDate, $currUser)
+    {
+        $from = new \DateTime($currDate->format('Y-m-d') . ' 00:00:00');
+        $to = new \DateTime($currDate->format('Y-m-d') . ' 23:59:59');
+
+        return $this->createQueryBuilder('s')
+            ->where('s.user = :user_id')
+            ->setParameter('user_id', $currUser)
+            ->andWhere('s.createdAt BETWEEN :from AND :to')
+            ->setParameter(':from', $from)
+            ->setParameter(':to', $to)
+            ->getQuery();
+    }
+
+    public function getTodaySubscriptionsQuery()
     {
         return $this->createQueryBuilder('s')
-            ->delete()
-            ->where('s.category = :category')
-            ->andWhere('s.user = :user')
-            ->setParameter(':category', $category)
-            ->setParameter(':user', $user)
-            ->getQuery()
-            ->getSingleScalarResult();
+            ->getQuery();
     }
 }

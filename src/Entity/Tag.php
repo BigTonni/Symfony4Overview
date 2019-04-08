@@ -98,6 +98,7 @@ class Tag
 
     /**
      * @param Article $article
+     * @return Tag
      */
     public function removeArticle(Article $article): self
     {

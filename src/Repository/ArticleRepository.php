@@ -90,13 +90,48 @@ class ArticleRepository extends ServiceEntityRepository
     public function findTodayArticlesByCategoryId($id)
     {
         return $this->createQueryBuilder('a')
-            ->innerJoin('a.category', 'c')
-            ->where('c.id = :id')
+            ->where('a.category = :cat_id')
+            ->setParameter(':cat_id', $id)
             ->andWhere('a.createdAt <= :now')
-            ->setParameter(':id', $id)
             ->setParameter(':now', new \DateTime())
             ->orderBy('a.createdAt', 'Desc')
             ->setMaxResults(Article::NUM_ITEMS)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function getTodayArticlesInSubscribedCategories(\DateTimeInterface $currDate, $userId, $catId)
+    {
+        $from = new \DateTime($currDate->format('Y-m-d') . ' 00:00:00');
+        $to = new \DateTime($currDate->format('Y-m-d') . ' 23:59:59');
+
+        return $this->createQueryBuilder('a')
+            ->where('a.category = :cat_id')
+            ->setParameter(':cat_id', $catId)
+            ->andWhere('a.author = :user_id')
+            ->setParameter(':user_id', $userId)
+            ->andWhere('a.createdAt BETWEEN :from AND :to')
+            ->setParameter(':from', $from)
+            ->setParameter(':to', $to)
+            ->andWhere('a.status = :status')
+            ->setParameter('status', $this->statusPublished)
+            ->orderBy('a.createdAt', 'DESC')
+            ->setMaxResults(Article::NUM_ITEMS)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @param $order
+     * @param $by
+     * @return mixed
+     */
+    public function findLatestPublishedWithOrder($order, $by)
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.status = :status')
+            ->setParameter('status', $this->statusPublished)
+            ->orderBy('a.' . $order, $by)
             ->getQuery()
             ->getResult();
     }
